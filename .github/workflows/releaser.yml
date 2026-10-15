@@ -1,0 +1,154 @@
+name: 📦 Releaser
+
+on:
+  workflow_dispatch:
+    inputs:
+      version-type:
+        description: "Release Type"
+        required: true
+        default: "release"
+        type: choice
+        options:
+          - release
+          - beta
+          - alpha
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      MODRINTH_ID: eLwyHtUJ
+
+    steps:
+      - name: ⚙️ Checkout code
+        uses: actions/checkout@v7
+
+      - name: 🔍 Get Mod Version
+        id: get-version
+        run: |
+          $Version = (Get-Content gradle.properties | Select-String '^mod_version =').ToString().Split('=')[1].Trim()
+          echo "version=$Version" >> $env:GITHUB_OUTPUT
+
+      - name: 🔍 Check Tag doesn't exist
+        id: get-tag
+        run: |
+          $Tag = "v${{ steps.get-version.outputs.version }}"
+
+          git fetch --tags
+          $tagExists = git tag --list $Tag
+          if ($tagExists) {
+            throw "❌ Tag '$Tag' already exists. Aborting release."
+          }
+          Write-Host "✅ Tag '$Tag' does not exist. Proceeding with release."
+
+          # Set output for next step
+          echo "version=$Tag" >> $env:GITHUB_OUTPUT
+
+      - name: ⚙️ Setup JDK
+        uses: actions/setup-java@v6
+        with:
+          java-version: 25
+          distribution: temurin
+
+      - name: ⚙️ Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-read-only: false
+          gradle-version: wrapper
+          add-job-summary: "on-failure"
+
+      - name: ⚙️ Make Gradlew Executable
+        shell: bash
+        run: chmod +x ./gradlew
+
+      - name: 🔨 Build Mods
+        shell: bash
+        run: ./gradlew build
+
+      - name: 📦 Upload Fabric Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: fabric_${{ steps.get-version.outputs.version }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: fabric/build/libs/*.jar
+          retention-days: 3
+          include-hidden-files: true
+          if-no-files-found: error
+
+      - name: 📦 Upload NeoForge Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: neoforge_${{ steps.get-version.outputs.version }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: neoforge/build/libs/*.jar
+          retention-days: 3
+          include-hidden-files: true
+          if-no-files-found: error
+
+      - name: 🏷️ Create Tag
+        run: |
+          $Tag = "${{ steps.get-tag.outputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "$Tag" -m "$Tag"
+          git push origin "$Tag"
+
+      - name: 🚀 Create GitHub Release
+        uses: softprops/action-gh-release@v3
+        id: gh-release
+        with:
+          tag_name: ${{ steps.get-tag.outputs.version }}
+          generate_release_notes: false
+          draft: false
+          prerelease: ${{ github.event.inputs.version-type != 'release' }}
+          files: |
+            fabric/build/libs/!(*-@(sources)).jar
+            fabric/build/libs/*-@(sources).jar
+            neoforge/build/libs/!(*-@(sources)).jar
+            neoforge/build/libs/*-@(sources).jar
+
+      - name: 🚀 Create NeoForge Modrinth Release
+        uses: Kir-Antipov/mc-publish@v3.3
+        if: steps.gh-release.conclusion == 'success'
+        with:
+          modrinth-id: ${{ env.MODRINTH_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_PAT }}
+          files: |
+            neoforge/build/libs/!(*-@(sources)).jar
+            neoforge/build/libs/*-@(sources).jar
+          version: ${{ steps.get-version.outputs.version }}
+          name: ${{ steps.get-tag.outputs.version }}
+          version-type: ${{ github.event.inputs.version-type }}
+          loaders: |
+            neoforge
+          game-versions: |
+            1.21.1
+          fail-mode: fail
+          retry-attempts: 2
+          retry-delay: 10000
+
+      - name: 🚀 Create Fabric Modrinth Release
+        uses: Kir-Antipov/mc-publish@v3.3
+        if: steps.gh-release.conclusion == 'success'
+        with:
+          modrinth-id: ${{ env.MODRINTH_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_PAT }}
+          files: |
+            fabric/build/libs/!(*-@(sources)).jar
+            fabric/build/libs/*-@(sources).jar
+          version: ${{ steps.get-version.outputs.version }}
+          name: ${{ steps.get-tag.outputs.version }}
+          version-type: ${{ github.event.inputs.version-type }}
+          loaders: |
+            fabric
+          game-versions: |
+            1.21.1
+          fail-mode: fail
+          retry-attempts: 2
+          retry-delay: 10000

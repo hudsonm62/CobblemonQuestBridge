@@ -1,0 +1,49 @@
+modLoader = "kotlinforforge"
+loaderVersion = "[5.3,)"
+issueTrackerURL = "https://github.com/hudsonm62/cobblequest-bridge/issues"
+license = "Apache-2.0"
+
+[[mods]]
+modId = "cobblequestbridge"
+version = "${version}"
+displayName = "Cobble Quest Bridge"
+authors = "Hudson M."
+description = '''
+Cobblemon compatibility to Heracles (aka Odyssey Quests)
+'''
+logoFile = "icon.png"
+
+[[dependencies.cobblequestbridge]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.cobblequestbridge]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1]"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.cobblequestbridge]]
+modId = "architectury"
+type = "required"
+versionRange = "[13.0.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.cobblequestbridge]]
+modId = "cobblemon"
+type = "required"
+versionRange = "[1.8.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.cobblequestbridge]]
+modId = "heracles"
+type = "required"
+versionRange = "[2.0.0,)"
+ordering = "AFTER"
+side = "BOTH"

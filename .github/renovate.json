@@ -1,0 +1,10 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": ["config:recommended"],
+    "dependencyDashboard": false,
+    "addLabels": ["dependencies"],
+    "forkProcessing": "disabled",
+    "commitMessagePrefix": "📦 ",
+    "reviewers": ["hudsonm62"],
+    "ignoreDeps": ["net.minecraft:minecraft"]
+}
