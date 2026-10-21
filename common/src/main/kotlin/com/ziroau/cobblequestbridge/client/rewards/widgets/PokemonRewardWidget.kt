@@ -58,7 +58,7 @@ class PokemonRewardWidget private constructor(
         get() = QuestScreenTheme.getRewardDescription()
 
     override val widgetTitle: Text
-        get() = pokemonText(
+        get() = pluralizedTranslationText(
             reward.title,
             reward.amount.coerceAtLeast(1),
             getPokemonName(reward.species),
@@ -66,7 +66,7 @@ class PokemonRewardWidget private constructor(
         )
 
     override val widgetDescription: Text
-        get() = pokemonText(
+        get() = pluralizedTranslationText(
             reward.description,
             reward.amount.coerceAtLeast(1),
             getPokemonName(reward.species),

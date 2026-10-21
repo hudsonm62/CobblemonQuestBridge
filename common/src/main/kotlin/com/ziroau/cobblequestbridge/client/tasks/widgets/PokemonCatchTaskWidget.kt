@@ -25,7 +25,7 @@ class PokemonCatchTaskWidget(
         get() = QuestScreenTheme.getTaskDescription()
 
     override val widgetTitle: Text
-        get() = pokemonText(
+        get() = pluralizedTranslationText(
             task.title,
             task.amount,
             getPokemonName(task.species),
@@ -33,7 +33,12 @@ class PokemonCatchTaskWidget(
         )
 
     override val widgetDescription: Text
-        get() = Text.literal(task.description)
+        get() = pluralizedTranslationText(
+            task.description,
+            task.amount,
+            getPokemonName(task.species),
+            "tasks.cobblequestbridge.pokemon_catch.description"
+        )
 
     /**
      * Render Progress Bar and Text

@@ -92,13 +92,17 @@ abstract class AbstractPokemonWidget(
      */
     abstract fun renderExtra(graphics: DrawContext, x: Int, y: Int, width: Int, mouseX: Int, mouseY: Int)
 
-    protected fun pokemonText(
-        custom: String,
+    /**
+     * Helper function to get a pluralized translation text based on the passed in amount.
+     * Used for tasks and rewards that can have more than 1 amount of xyz and need to display the correct translation for that.
+     */
+    protected fun pluralizedTranslationText(
+        custom: String?,
         amount: Int,
         name: Any,
         translationKey: String
     ): Text = when {
-        custom.isNotEmpty() -> Text.literal(custom)
+        custom?.isNotEmpty() ?: false -> Text.literal(custom)
         amount > 1 -> Text.translatable(
             "$translationKey.plural", amount, name
         )

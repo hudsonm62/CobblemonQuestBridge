@@ -26,10 +26,10 @@ import java.util.stream.Stream
  */
 data class RewardPokemon(
     private val rewardId: String,
-    val title: String = "",
     val species: String = "pikachu",
     val properties: String = "",
     val amount: Int = 1,
+    val title: String = "",
     val description: String = ""
 ) : QuestReward<RewardPokemon> {
 
@@ -92,18 +92,18 @@ data class RewardPokemon(
             RecordCodecBuilder.mapCodec { instance ->
                 instance.group(
                     RecordCodecBuilder.point<RewardPokemon, String>(id),
-                    Codec.STRING.optionalFieldOf("title", "")
-                        .forGetter(RewardPokemon::title),
                     Codec.STRING.optionalFieldOf("species", "pikachu")
                         .forGetter(RewardPokemon::species),
                     Codec.STRING.optionalFieldOf("properties", "")
                         .forGetter(RewardPokemon::properties),
                     Codec.INT.optionalFieldOf("amount", 1)
                         .forGetter(RewardPokemon::amount),
+                    Codec.STRING.optionalFieldOf("title", "")
+                        .forGetter(RewardPokemon::title),
                     Codec.STRING.optionalFieldOf("description", "")
                         .forGetter(RewardPokemon::description),
-                ).apply(instance) { rewardId, title, species, properties, amount, description ->
-                    RewardPokemon(rewardId, title, species, properties, amount, description)
+                ).apply(instance) { rewardId, species, properties, amount, title, description ->
+                    RewardPokemon(rewardId, species, properties, amount, title, description)
                 }
             }
     }

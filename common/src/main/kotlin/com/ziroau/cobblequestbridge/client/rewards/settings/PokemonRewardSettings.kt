@@ -12,10 +12,10 @@ class PokemonRewardSettings private constructor() : AbstractSettings<RewardPokem
 
     override fun create(reward: RewardPokemon?): SettingInitializer.CreationData {
         val settings = SettingInitializer.CreationData()
-        settings.put("title", textSetting(), reward?.title ?: "")
         settings.put("species", textSetting(), reward?.species ?: "pikachu")
         settings.put("properties", textSetting(), reward?.properties ?: "")
         settings.put("amount", intSetting(), reward?.amount ?: 1)
+        settings.put("title", textSetting(), reward?.title ?: "")
         settings.put("description", textSetting(), reward?.description ?: "")
         return settings
     }
@@ -25,10 +25,10 @@ class PokemonRewardSettings private constructor() : AbstractSettings<RewardPokem
     ): RewardPokemon {
         return RewardPokemon(
             id,
-            data.get("title", textSetting()).orElse(reward?.title ?: ""),
             data.get("species", textSetting()).orElse(reward?.species ?: "pikachu"),
             data.get("properties", textSetting()).orElse(reward?.properties ?: ""),
             data.get("amount", intSetting()).orElse(reward?.amount ?: 1).coerceAtLeast(1),
+            data.get("title", textSetting()).orElse(reward?.title ?: ""),
             data.get("description", textSetting()).orElse(reward?.title ?: ""),
         )
     }

@@ -17,12 +17,12 @@ import net.minecraft.util.Identifier
  */
 data class PokemonCatchTask(
     private val taskId: String,
-    val title: String = "", // title override
     val species: String = "any",
     val properties: String = "",
     val minLevel: Int = 1,
     val amount: Int = 1,
-    val description: String = "Catch Pokémon to complete the task."
+    val title: String = "",
+    val description: String = ""
 ) : QuestTask<Pokemon, AbstractNbtNumber, PokemonCatchTask> {
     override fun id(): String = taskId
 
@@ -47,7 +47,6 @@ data class PokemonCatchTask(
         if (!matchesSpecies || input.level < minLevel || !matcher.matches(input)) {
             return progress
         }
-
 
         // Increment by 1, capped at the required amount
         val current = storage().readInt(progress)
@@ -83,10 +82,6 @@ data class PokemonCatchTask(
                     RecordCodecBuilder.point<PokemonCatchTask, String>(id),
 
                     Codec.STRING
-                        .optionalFieldOf("title", "")
-                        .forGetter(PokemonCatchTask::title),
-
-                    Codec.STRING
                         .optionalFieldOf("species", "any")
                         .forGetter(PokemonCatchTask::species),
 
@@ -103,12 +98,16 @@ data class PokemonCatchTask(
                         .forGetter(PokemonCatchTask::amount),
 
                     Codec.STRING
-                        .optionalFieldOf("description", "Catch Pokémon to complete the task.")
+                        .optionalFieldOf("title", "")
+                        .forGetter(PokemonCatchTask::title),
+
+                    Codec.STRING
+                        .optionalFieldOf("description", "")
                         .forGetter(PokemonCatchTask::description)
 
-                ).apply(instance) { taskId, title, species, properties, minLevel, amount, description ->
+                ).apply(instance) { taskId, species, properties, minLevel, amount, title, description ->
                     PokemonCatchTask(
-                        taskId, title, species, properties, minLevel, amount, description
+                        taskId, species, properties, minLevel, amount, title, description
                     )
                 }
             }
