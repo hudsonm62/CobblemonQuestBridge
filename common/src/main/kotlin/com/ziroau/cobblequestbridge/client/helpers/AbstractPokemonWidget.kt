@@ -60,9 +60,8 @@ abstract class AbstractPokemonWidget(
                 ICON_SIZE, partialTicks
             )
         } else {
-            // Fallback to an egg icon if none available
             WidgetUtils.drawItemIcon(
-                graphics, Items.EGG.defaultStack,
+                graphics, null,
                 x + 5, y + 5, ICON_SIZE
             )
         }

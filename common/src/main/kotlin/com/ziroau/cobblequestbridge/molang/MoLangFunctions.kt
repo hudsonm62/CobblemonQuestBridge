@@ -5,7 +5,7 @@ import com.ziroau.cobblequestbridge.molang.functions.PlayerFunctions
 import com.ziroau.cobblequestbridge.CobbleQuestBridge.LOGGER
 
 object MoLangFunctions {
-    fun init() {
+    fun register() {
         PlayerMoLangFunctions.custom.add { player ->
             PlayerFunctions.attach(player)
         }

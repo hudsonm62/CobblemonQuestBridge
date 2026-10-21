@@ -6,7 +6,8 @@ import earth.terrarium.heracles.api.tasks.QuestTasks
 object BridgeTasks {
     fun register() {
         val tasks = arrayListOf(
-            PokemonCatchTask.TYPE
+            PokemonCatchTask.TYPE,
+            PokemonDefeatTask.TYPE
         )
 
         tasks.forEach { taskType ->

@@ -11,6 +11,18 @@
     "setting.cobblequestbridge.pokemon_catch.amount": "Amount",
     "setting.cobblequestbridge.pokemon_catch.description": "Description Override",
 
+    "tasks.cobblequestbridge.pokemon_defeat": "Defeat Pokémon",
+    "tasks.cobblequestbridge.pokemon_defeat.title": "Defeat: %s",
+    "tasks.cobblequestbridge.pokemon_defeat.title.plural": "Defeat: %s %s",
+    "tasks.cobblequestbridge.pokemon_defeat.description": "Defeat %s",
+    "tasks.cobblequestbridge.pokemon_defeat.description.plural": "Defeat %sx %s",
+    "setting.cobblequestbridge.pokemon_defeat.title": "Title Override",
+    "setting.cobblequestbridge.pokemon_defeat.species": "Species",
+    "setting.cobblequestbridge.pokemon_defeat.properties": "Properties",
+    "setting.cobblequestbridge.pokemon_defeat.minLevel": "Minimum Level",
+    "setting.cobblequestbridge.pokemon_defeat.amount": "Amount",
+    "setting.cobblequestbridge.pokemon_defeat.description": "Description Override",
+
     "rewards.cobblequestbridge.pokemon_reward": "Receive Pokémon",
     "rewards.cobblequestbridge.pokemon_reward.title": "Receive: %s",
     "rewards.cobblequestbridge.pokemon_reward.title.plural": "Receive: %sx %s",
