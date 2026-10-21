@@ -1,10 +1,12 @@
 package com.ziroau.cobblequestbridge.tasks
 
+import com.cobblemon.mod.common.api.events.battles.BattleFaintedEvent
 import com.cobblemon.mod.common.api.pokemon.PokemonProperties
-import com.cobblemon.mod.common.pokemon.Pokemon
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
+import com.teamresourceful.resourcefullib.common.codecs.EnumCodec
+import com.ziroau.cobblequestbridge.data.BattleTypeEnum
 import earth.terrarium.heracles.api.tasks.QuestTask
 import earth.terrarium.heracles.api.tasks.QuestTaskType
 import earth.terrarium.heracles.api.tasks.storage.defaults.IntegerTaskStorage
@@ -16,10 +18,11 @@ data class PokemonDefeatTask (
     val species: String = "any",
     val properties: String = "",
     val minLevel: Int = 1,
+    val battleType: BattleTypeEnum = BattleTypeEnum.ANY,
     val amount: Int = 1,
     val title: String = "",
     val description: String = ""
-) : QuestTask<Pokemon, AbstractNbtNumber, PokemonDefeatTask> {
+) : QuestTask<BattleFaintedEvent, AbstractNbtNumber, PokemonDefeatTask> {
     override fun id(): String = taskId
 
     // Property Parser
@@ -30,15 +33,28 @@ data class PokemonDefeatTask (
     override fun test(
         type: QuestTaskType<*>,
         progress: AbstractNbtNumber,
-        input: Pokemon
+        input: BattleFaintedEvent
     ): AbstractNbtNumber {
-        val defeatedMon = input.species.resourceIdentifier.path
-
-        val matchesSpecies: Boolean = species == "any" || defeatedMon == species
-        if (!matchesSpecies || input.level < minLevel || !matcher.matches(input)) {
-            // return if doesn't meet the criteria
-            return progress
+        val battle = input.battle
+        when(battleType) {
+            BattleTypeEnum.ANY -> { /*noop*/ }
+            BattleTypeEnum.PVW -> if (!battle.isPvW) return progress
+            BattleTypeEnum.PVN -> if (!battle.isPvN) return progress
+            BattleTypeEnum.PVP -> if (!battle.isPvP) return progress
         }
+
+        val sourceBattlePkm = input.context.origin ?: return progress
+        val defeatedBattlePkm = input.killed
+
+        // Ignore self-KOs and friendly fire
+        if (defeatedBattlePkm.actor.getSide() == sourceBattlePkm.actor.getSide()) return progress
+
+        val defeatedMon = defeatedBattlePkm.effectedPokemon
+        val defeatedSpecies = defeatedMon.species.resourceIdentifier.path
+
+        val matchesSpecies: Boolean = species == "any" || defeatedSpecies == species
+
+        if (!matchesSpecies || defeatedMon.level < minLevel || !matcher.matches(defeatedMon)) return progress
 
         // Increment by 1, capped at the required amount
         val current = storage().readInt(progress)
@@ -85,6 +101,10 @@ data class PokemonDefeatTask (
                         .optionalFieldOf("minLevel", 1)
                         .forGetter(PokemonDefeatTask::minLevel),
 
+                    EnumCodec.of(BattleTypeEnum::class.java)
+                        .fieldOf("battleType").orElse(BattleTypeEnum.ANY)
+                        .forGetter(PokemonDefeatTask::battleType),
+
                     Codec.INT
                         .optionalFieldOf("amount", 1)
                         .forGetter(PokemonDefeatTask::amount),
@@ -96,8 +116,8 @@ data class PokemonDefeatTask (
                     Codec.STRING
                         .optionalFieldOf("description", "")
                         .forGetter(PokemonDefeatTask::description)
-                ).apply(instance) { id, species, properties, minLevel, amount, title, description ->
-                    PokemonDefeatTask(id, species, properties, minLevel, amount, title, description)
+                ).apply(instance) { id, species, properties, minLevel, battleType, amount, title, description ->
+                    PokemonDefeatTask(id, species, properties, minLevel, battleType, amount, title, description)
                 }
             }
     }

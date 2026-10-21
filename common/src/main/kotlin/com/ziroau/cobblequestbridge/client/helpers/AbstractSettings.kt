@@ -1,8 +1,10 @@
 package com.ziroau.cobblequestbridge.client.helpers
 
+import com.ziroau.cobblequestbridge.data.BattleTypeEnum
 import earth.terrarium.heracles.api.client.settings.Setting
 import earth.terrarium.heracles.api.client.settings.SettingInitializer
 import earth.terrarium.heracles.api.client.settings.base.BooleanSetting
+import earth.terrarium.heracles.api.client.settings.base.EnumSetting
 import earth.terrarium.heracles.api.client.settings.base.IntSetting
 import earth.terrarium.heracles.api.client.settings.base.TextSetting
 import net.minecraft.client.gui.widget.ClickableWidget
@@ -11,7 +13,7 @@ import net.minecraft.client.gui.widget.ClickableWidget
  * Provides the common methods for creating settings of different types.
  * This class is intended to be extended by other classes that need to create settings.
  *
- * @sample com.ziroau.cobblequestbridge.client.rewards.settings.PokemonRewardSettings
+ * @sample com.ziroau.cobblequestbridge.client.tasks.settings.PokemonDefeatTaskSettings
  */
 abstract class AbstractSettings<T> : SettingInitializer<T> {
     @Suppress("UNCHECKED_CAST")
@@ -29,4 +31,13 @@ abstract class AbstractSettings<T> : SettingInitializer<T> {
     @Suppress("UNCHECKED_CAST")
     fun boolFalseSetting(): Setting<Boolean, ClickableWidget> =
         BooleanSetting.FALSE as Setting<Boolean, ClickableWidget>
+
+    // ENUMS
+    @Suppress("UNCHECKED_CAST")
+    fun battleTypeSetting(): Setting<BattleTypeEnum, ClickableWidget> =
+        battleType as Setting<BattleTypeEnum, ClickableWidget>
+    protected val battleType = EnumSetting(
+        BattleTypeEnum::class.java,
+        BattleTypeEnum.ANY
+    )
 }

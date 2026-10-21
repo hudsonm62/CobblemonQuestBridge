@@ -19,6 +19,7 @@
     "setting.cobblequestbridge.pokemon_defeat.title": "Title Override",
     "setting.cobblequestbridge.pokemon_defeat.species": "Species",
     "setting.cobblequestbridge.pokemon_defeat.properties": "Properties",
+    "setting.cobblequestbridge.pokemon_defeat.battleType": "Battle Type",
     "setting.cobblequestbridge.pokemon_defeat.minLevel": "Minimum Level",
     "setting.cobblequestbridge.pokemon_defeat.amount": "Amount",
     "setting.cobblequestbridge.pokemon_defeat.description": "Description Override",
@@ -32,5 +33,10 @@
     "setting.cobblequestbridge.pokemon_reward.species": "Species",
     "setting.cobblequestbridge.pokemon_reward.properties": "Properties",
     "setting.cobblequestbridge.pokemon_reward.amount": "Amount",
-    "setting.cobblequestbridge.pokemon_reward.description": "Description Override"
+    "setting.cobblequestbridge.pokemon_reward.description": "Description Override",
+
+    "gui.cobblequestbridge.battletype.any": "Any",
+    "gui.cobblequestbridge.battletype.pvp": "PvP",
+    "gui.cobblequestbridge.battletype.pvn": "PvN",
+    "gui.cobblequestbridge.battletype.pvw": "PvW"
 }
