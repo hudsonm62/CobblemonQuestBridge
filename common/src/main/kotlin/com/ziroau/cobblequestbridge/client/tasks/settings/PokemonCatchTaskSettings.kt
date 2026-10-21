@@ -13,7 +13,7 @@ class PokemonCatchTaskSettings private constructor() : AbstractSettings<PokemonC
     override fun create(task: PokemonCatchTask?): SettingInitializer.CreationData {
         val settings = SettingInitializer.CreationData()
         settings.put("species", textSetting(), task?.species ?: "any")
-        settings.put("properties", textSetting(), task?.properties ?: "")
+        settings.put("attributes", textSetting(), task?.attributes ?: "")
         settings.put("minLevel", intSetting(), task?.minLevel ?: 1)
         settings.put("amount", intSetting(), task?.amount ?: 1)
         settings.put("title", textSetting(), task?.title ?: "")
@@ -27,7 +27,7 @@ class PokemonCatchTaskSettings private constructor() : AbstractSettings<PokemonC
         val result = PokemonCatchTask(
             id,
             data.get("species", textSetting()).orElse(task?.species ?: "any"),
-            data.get("properties", textSetting()).orElse(task?.properties ?: ""),
+            data.get("attributes", textSetting()).orElse(task?.attributes ?: ""),
             data.get("minLevel", intSetting()).orElse(task?.minLevel ?: 1),
             data.get("amount", intSetting()).orElse(task?.amount ?: 1).coerceAtLeast(1),
             data.get("title", textSetting()).orElse(task?.title ?: ""),

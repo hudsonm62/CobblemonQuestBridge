@@ -15,7 +15,7 @@ class PokemonDefeatTaskSettings private constructor() : AbstractSettings<Pokemon
         val settings = SettingInitializer.CreationData()
 
         settings.put("species", textSetting(), task?.species ?: "any")
-        settings.put("properties", textSetting(), task?.properties ?: "")
+        settings.put("attributes", textSetting(), task?.attributes ?: "")
         settings.put("minLevel", intSetting(), task?.minLevel ?: 1)
         settings.put("battleType", battleTypeSetting(), task?.battleType ?: BattleTypeEnum.ANY)
         settings.put("amount", intSetting(), task?.amount ?: 1)
@@ -31,7 +31,7 @@ class PokemonDefeatTaskSettings private constructor() : AbstractSettings<Pokemon
         return PokemonDefeatTask(
             id,
             data.get("species", textSetting()).orElse(task?.species ?: "any"),
-            data.get("properties", textSetting()).orElse(task?.properties ?: ""),
+            data.get("attributes", textSetting()).orElse(task?.attributes ?: ""),
             data.get("minLevel", intSetting()).orElse(task?.minLevel ?: 1),
             data.get("battleType", battleTypeSetting()).orElse(task?.battleType ?: BattleTypeEnum.ANY),
             data.get("amount", intSetting()).orElse(task?.amount ?: 1).coerceAtLeast(1),

@@ -16,7 +16,7 @@ import net.minecraft.util.Identifier
 data class PokemonDefeatTask (
     private val taskId: String,
     val species: String = "any",
-    val properties: String = "",
+    val attributes: String = "",
     val minLevel: Int = 1,
     val battleType: BattleTypeEnum = BattleTypeEnum.ANY,
     val amount: Int = 1,
@@ -27,7 +27,7 @@ data class PokemonDefeatTask (
 
     // Property Parser
     private val matcher: PokemonProperties by lazy {
-        PokemonProperties.parse(properties)
+        PokemonProperties.parse(attributes)
     }
 
     override fun test(
@@ -94,8 +94,8 @@ data class PokemonDefeatTask (
                         .forGetter(PokemonDefeatTask::species),
 
                     Codec.STRING
-                        .optionalFieldOf("properties", "")
-                        .forGetter(PokemonDefeatTask::properties),
+                        .optionalFieldOf("attributes", "")
+                        .forGetter(PokemonDefeatTask::attributes),
 
                     Codec.INT
                         .optionalFieldOf("minLevel", 1)
@@ -116,8 +116,8 @@ data class PokemonDefeatTask (
                     Codec.STRING
                         .optionalFieldOf("description", "")
                         .forGetter(PokemonDefeatTask::description)
-                ).apply(instance) { id, species, properties, minLevel, battleType, amount, title, description ->
-                    PokemonDefeatTask(id, species, properties, minLevel, battleType, amount, title, description)
+                ).apply(instance) { id, species, attributes, minLevel, battleType, amount, title, description ->
+                    PokemonDefeatTask(id, species, attributes, minLevel, battleType, amount, title, description)
                 }
             }
     }

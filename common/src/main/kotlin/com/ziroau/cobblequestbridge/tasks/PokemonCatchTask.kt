@@ -13,12 +13,12 @@ import net.minecraft.nbt.AbstractNbtNumber
 import net.minecraft.util.Identifier
 
 /**
- * Heracles [QuestTask] for catching a Pokémon with optional requirements for species, properties, and minimum level.
+ * Heracles [QuestTask] for catching a Pokémon with optional requirements for species, attributes, and minimum level.
  */
 data class PokemonCatchTask(
     private val taskId: String,
     val species: String = "any",
-    val properties: String = "",
+    val attributes: String = "",
     val minLevel: Int = 1,
     val amount: Int = 1,
     val title: String = "",
@@ -26,9 +26,9 @@ data class PokemonCatchTask(
 ) : QuestTask<Pokemon, AbstractNbtNumber, PokemonCatchTask> {
     override fun id(): String = taskId
 
-    // Property Parser
+    // Attribute Parser
     private val matcher: PokemonProperties by lazy {
-        PokemonProperties.parse(properties)
+        PokemonProperties.parse(attributes)
     }
 
     override fun test(
@@ -86,8 +86,8 @@ data class PokemonCatchTask(
                         .forGetter(PokemonCatchTask::species),
 
                     Codec.STRING
-                        .optionalFieldOf("properties", "")
-                        .forGetter(PokemonCatchTask::properties),
+                        .optionalFieldOf("attributes", "")
+                        .forGetter(PokemonCatchTask::attributes),
 
                     Codec.INT
                         .optionalFieldOf("minLevel", 1)
@@ -105,9 +105,9 @@ data class PokemonCatchTask(
                         .optionalFieldOf("description", "")
                         .forGetter(PokemonCatchTask::description)
 
-                ).apply(instance) { taskId, species, properties, minLevel, amount, title, description ->
+                ).apply(instance) { taskId, species, attributes, minLevel, amount, title, description ->
                     PokemonCatchTask(
-                        taskId, species, properties, minLevel, amount, title, description
+                        taskId, species, attributes, minLevel, amount, title, description
                     )
                 }
             }

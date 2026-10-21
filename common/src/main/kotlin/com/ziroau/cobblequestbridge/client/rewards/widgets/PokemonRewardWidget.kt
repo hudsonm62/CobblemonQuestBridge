@@ -28,7 +28,7 @@ class PokemonRewardWidget private constructor(
     private val progress: QuestProgress?,
     private val interactive: Boolean
 ) : AbstractPokemonWidget(
-    createPreviewPokemon(reward.species, reward.properties)
+    createPreviewPokemon(reward.species, reward.attributes)
 ) {
     companion object {
         private const val BUTTON_SIZE = 20

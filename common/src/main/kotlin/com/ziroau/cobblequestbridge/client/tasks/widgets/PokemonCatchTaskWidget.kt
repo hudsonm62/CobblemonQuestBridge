@@ -15,7 +15,7 @@ class PokemonCatchTaskWidget(
     private val task: PokemonCatchTask,
     private val progress: TaskProgress<AbstractNbtNumber>
 ) : AbstractPokemonWidget(
-    createPreviewPokemon(task.species, task.properties)
+    createPreviewPokemon(task.species, task.attributes)
 ) {
 
     override val titleColor: Int

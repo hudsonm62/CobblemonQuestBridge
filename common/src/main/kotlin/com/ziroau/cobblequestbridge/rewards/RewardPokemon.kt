@@ -18,8 +18,6 @@ import java.util.stream.Stream
  * Gives [amount] newly generated Pokémon to the player when claimed.
  *
  * [species] is required (unlike a catch task, "any" is not meaningful here).
- * [properties] accepts the same Cobblemon property syntax as the catch task,
- * for example "shiny=yes level=50 gender=female".
  *
  * The properties are parsed separately for each Pokémon, so unforced values
  * (IVs, gender, shininess, etc.) are rolled independently.
@@ -27,7 +25,7 @@ import java.util.stream.Stream
 data class RewardPokemon(
     private val rewardId: String,
     val species: String = "pikachu",
-    val properties: String = "",
+    val attributes: String = "",
     val amount: Int = 1,
     val title: String = "",
     val description: String = ""
@@ -59,7 +57,7 @@ data class RewardPokemon(
 
         for (index in 0 until count) {
             // Reparse for each iteration: every awarded Pokémon is distinct.
-            val props = PokemonProperties.parse(properties)
+            val props = PokemonProperties.parse(attributes)
             // Species field takes precedence over a species embedded in properties.
             props.species = pokemonSpecies.resourceIdentifier.toString()
             props.updateAspects()
@@ -94,16 +92,16 @@ data class RewardPokemon(
                     RecordCodecBuilder.point<RewardPokemon, String>(id),
                     Codec.STRING.optionalFieldOf("species", "pikachu")
                         .forGetter(RewardPokemon::species),
-                    Codec.STRING.optionalFieldOf("properties", "")
-                        .forGetter(RewardPokemon::properties),
+                    Codec.STRING.optionalFieldOf("attributes", "")
+                        .forGetter(RewardPokemon::attributes),
                     Codec.INT.optionalFieldOf("amount", 1)
                         .forGetter(RewardPokemon::amount),
                     Codec.STRING.optionalFieldOf("title", "")
                         .forGetter(RewardPokemon::title),
                     Codec.STRING.optionalFieldOf("description", "")
                         .forGetter(RewardPokemon::description),
-                ).apply(instance) { rewardId, species, properties, amount, title, description ->
-                    RewardPokemon(rewardId, species, properties, amount, title, description)
+                ).apply(instance) { rewardId, species, attributes, amount, title, description ->
+                    RewardPokemon(rewardId, species, attributes, amount, title, description)
                 }
             }
     }

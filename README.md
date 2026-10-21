@@ -13,7 +13,7 @@ Both this mod & the [Heracles 1.21.1 port](https://github.com/terrarium-earth/He
 | Property      | Type      | Description                                |
 | ------------- | --------- | ------------------------------------------ |
 | `species`     | `String?` | The species of Pokémon to catch.           |
-| `properties`  | `String?` | Cobblemon properties to check.             |
+| `attributes`  | `String?` | Cobblemon attributes to check.             |
 | `minLevel `   | `Int`     | The minimum level of the Pokémon to catch. |
 | `amount`      | `Int`     | The amount of Pokémon to catch.            |
 | `title`       | `String?` | The title override for the task.           |
@@ -31,7 +31,7 @@ Both this mod & the [Heracles 1.21.1 port](https://github.com/terrarium-earth/He
     },
     "catch_shinyaipom": {
       "species": "aipom",
-      "properties": "shiny=yes",
+      "attributes": "shiny=yes",
       "minLevel": 1,
       "amount": 1,
       "title": "Ooo! Shiny Aipom!",
@@ -47,7 +47,7 @@ Both this mod & the [Heracles 1.21.1 port](https://github.com/terrarium-earth/He
 | Property      | Type      | Description                                 |
 | ------------- | --------- | ------------------------------------------- |
 | `species`     | `String?` | The species of Pokémon to defeat.           |
-| `properties`  | `String?` | Cobblemon properties to check.              |
+| `attributes`  | `String?` | Cobblemon attributes to check.              |
 | `minLevel `   | `Int`     | The minimum level of the Pokémon to defeat. |
 | `battleType`  | `enum`    | The type of battle (Any, PvW, PvP, PvN).    |
 | `amount`      | `Int`     | The amount of Pokémon to defeat.            |
@@ -59,7 +59,7 @@ Both this mod & the [Heracles 1.21.1 port](https://github.com/terrarium-earth/He
 | Property      | Type      | Description                              |
 | ------------- | --------- | ---------------------------------------- |
 | `species`     | `String?` | The species of Pokémon to defeat.        |
-| `properties`  | `String?` | Cobblemon properties to check.           |
+| `attributes`  | `String?` | Cobblemon attributes to check.           |
 | `battleType`  | `enum`    | The type of battle (Any, PvW, PvP, PvN). |
 | `amount`      | `Int`     | The amount of Pokémon to defeat.         |
 | `title`       | `String?` | The title override for the task.         |
