@@ -49,10 +49,16 @@ jobs:
         id: short-sha
         uses: hudsonm62/short-sha@v1
 
+      - name: 🔍 Get Mod Version
+        id: get-version
+        run: |
+          $Version = (Get-Content gradle.properties | Select-String '^mod_version =').ToString().Split('=')[1].Trim()
+          echo "version=$Version" >> $env:GITHUB_OUTPUT
+
       - name: 📦 Upload Fabric Artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: fabric_${{ steps.short-sha.outputs.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          name: ${{ steps.get-version.outputs.version }}-${{ github.run_id }}.${{ github.run_attempt }}.${{ steps.short-sha.outputs.sha }}+fabric
           path: fabric/build/libs/*.jar
           retention-days: 3
           include-hidden-files: true
@@ -61,7 +67,7 @@ jobs:
       - name: 📦 Upload NeoForge Artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: neoforge_${{ steps.short-sha.outputs.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          name: ${{ steps.get-version.outputs.version }}-${{ github.run_id }}.${{ github.run_attempt }}.${{ steps.short-sha.outputs.sha }}+neoforge
           path: neoforge/build/libs/*.jar
           retention-days: 3
           include-hidden-files: true

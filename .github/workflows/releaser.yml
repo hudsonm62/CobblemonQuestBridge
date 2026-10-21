@@ -73,10 +73,14 @@ jobs:
         shell: bash
         run: ./gradlew build
 
+      - name: 🩹 Get Short SHA
+        id: short-sha
+        uses: hudsonm62/short-sha@v1
+
       - name: 📦 Upload Fabric Artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: fabric_${{ steps.get-version.outputs.version }}-${{ github.run_id }}-${{ github.run_attempt }}
+          name: ${{ steps.get-version.outputs.version }}-${{ github.run_id }}.${{ github.run_attempt }}.${{ steps.short-sha.outputs.sha }}+fabric
           path: fabric/build/libs/*.jar
           retention-days: 3
           include-hidden-files: true
@@ -85,7 +89,7 @@ jobs:
       - name: 📦 Upload NeoForge Artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: neoforge_${{ steps.get-version.outputs.version }}-${{ github.run_id }}-${{ github.run_attempt }}
+          name: ${{ steps.get-version.outputs.version }}-${{ github.run_id }}.${{ github.run_attempt }}.${{ steps.short-sha.outputs.sha }}+neoforge
           path: neoforge/build/libs/*.jar
           retention-days: 3
           include-hidden-files: true
@@ -122,8 +126,8 @@ jobs:
           files: |
             neoforge/build/libs/!(*-@(sources)).jar
             neoforge/build/libs/*-@(sources).jar
-          version: ${{ steps.get-version.outputs.version }}
-          name: ${{ steps.get-tag.outputs.version }}
+          version: ${{ steps.get-version.outputs.version }}+neoforge
+          name: ${{ steps.get-tag.outputs.version }}+neoforge
           version-type: ${{ github.event.inputs.version-type }}
           loaders: |
             neoforge
@@ -142,8 +146,8 @@ jobs:
           files: |
             fabric/build/libs/!(*-@(sources)).jar
             fabric/build/libs/*-@(sources).jar
-          version: ${{ steps.get-version.outputs.version }}
-          name: ${{ steps.get-tag.outputs.version }}
+          version: ${{ steps.get-version.outputs.version }}+fabric
+          name: ${{ steps.get-tag.outputs.version }}+fabric
           version-type: ${{ github.event.inputs.version-type }}
           loaders: |
             fabric
