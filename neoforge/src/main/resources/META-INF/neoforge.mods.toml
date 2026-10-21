@@ -9,7 +9,7 @@ version = "${version}"
 displayName = "Cobble Quest Bridge"
 authors = "Hudson M."
 description = '''
-Cobblemon compatibility to Heracles (aka Odyssey Quests)
+Cobblemon compatibility bridge for Heracles (aka Odyssey Quests)
 '''
 logoFile = "icon.png"
 
@@ -37,7 +37,7 @@ side = "BOTH"
 [[dependencies.cobblequestbridge]]
 modId = "cobblemon"
 type = "required"
-versionRange = "[1.8.0,)"
+versionRange = "[1.7.0,)"
 ordering = "AFTER"
 side = "BOTH"
 

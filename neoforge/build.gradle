@@ -47,7 +47,9 @@ dependencies {
     modApi "com.cobblemon:neoforge:${rootProject.cobblemon_version}"
 
     // Heracles
-    modImplementation ("earth.terrarium.heracles:heracles-neoforge-1.21.1:${heracles_version}"){ transitive = false }
+    modImplementation ("earth.terrarium.heracles:heracles-neoforge-1.21.1:${heracles_version}")
+    modImplementation ("com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21:${resourcefullib_version}")
+    modImplementation ("earth.terrarium.hermes:hermes-neoforge-1.21.1:${hermes_version}"){ transitive = false }
 }
 
 processResources {
