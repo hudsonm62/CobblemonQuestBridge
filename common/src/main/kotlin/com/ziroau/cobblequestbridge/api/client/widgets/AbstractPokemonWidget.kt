@@ -11,7 +11,8 @@ import com.teamresourceful.resourcefullib.client.scissor.ScissorBoxStack
 import com.teamresourceful.resourcefullib.client.utils.RenderUtils
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
 import earth.terrarium.heracles.api.client.DisplayWidget
-import earth.terrarium.heracles.api.client.WidgetUtils
+import earth.terrarium.heracles.api.quests.QuestIcon
+import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
@@ -23,13 +24,9 @@ import kotlin.use
 /**
  * Base class for most Pokémon-related widgets.
  * Provides logic for displaying a Pokémon icon, overridden title, and description.
- *
- * @param previewPokemon The [RenderablePokemon] to preview in the widget, or null if none is available.
  * @sample com.ziroau.cobblequestbridge.client.tasks.widgets.PokemonCatchTaskWidget
  */
-abstract class AbstractPokemonWidget(
-    private val previewPokemon: RenderablePokemon?
-) : DisplayWidget {
+abstract class AbstractPokemonWidget : DisplayWidget {
     companion object {
         private const val ICON_SIZE = 32
         private const val ROW_HEIGHT = 42
@@ -42,7 +39,7 @@ abstract class AbstractPokemonWidget(
          * @param attributes The properties of the Pokémon in string format (i.e. "`shiny=yes gender=female`").
          * @return A [RenderablePokemon] if the species is valid, otherwise null/empty.
          */
-        fun createPreviewPokemon(species: String, attributes: String): RenderablePokemon? {
+        fun createPokemonIcon(species: String, attributes: String): RenderablePokemon? {
             val name = species.trim().lowercase()
 
             if (name.isBlank() || name == "any") return null
@@ -59,20 +56,23 @@ abstract class AbstractPokemonWidget(
 
             return RenderablePokemon(species, props.aspects)
         }
-        fun createPreviewPokemon(pokemon: String): RenderablePokemon? {
+        fun createPokemonIcon(pokemon: String): RenderablePokemon? {
             val input = pokemon.trim().lowercase()
             if (input.isBlank() || input.equals("any", ignoreCase = true)) return null
 
             val speciesName = input.substringBefore(" ")
             val attributes = input.substringAfter(" ", "").trim()
 
-            return createPreviewPokemon(speciesName, attributes)
+            return createPokemonIcon(speciesName, attributes)
         }
     }
 
     private val modelState = FloatingState()
     protected val font: TextRenderer
         get() = MinecraftClient.getInstance().textRenderer
+
+    protected abstract val pokemonIcon: RenderablePokemon?
+    protected abstract val widgetItemIcon: QuestIcon<*>
 
     protected abstract val widgetTitle: Text
     protected abstract val widgetDescription: Text
@@ -92,20 +92,17 @@ abstract class AbstractPokemonWidget(
         hovered: Boolean,
         partialTicks: Float
     ) {
-        // Pokémon preview
-        /// TODO: Optional Icon/Pokemon override
-        if (previewPokemon != null) {
-            renderPokemonIcon(
-                previewPokemon, modelState,
-                graphics, scissor,
-                x + 5, y + 5,
-                ICON_SIZE, partialTicks
-            )
-        } else {
-            WidgetUtils.drawItemIcon(
-                graphics, null,
-                x + 5, y + 5, ICON_SIZE
-            )
+        // Render the custom Heracles icon first.
+        // AIR returns false, allowing the Pokémon preview to render.
+        if (!widgetItemIcon.render(graphics, x + 5, y + 5, ICON_SIZE, ICON_SIZE)) {
+            if (pokemonIcon != null) {
+                renderPokemonIcon(
+                    pokemonIcon, modelState,
+                    graphics, scissor,
+                    x + 5, y + 5,
+                    ICON_SIZE, partialTicks
+                )
+            }
         }
 
         // Title
@@ -176,7 +173,7 @@ abstract class AbstractPokemonWidget(
      * Creates a [RenderablePokemon] preview on the widget.
      * Uses a [ScissorBoxStack] to ensure that the model is rendered within the specified bounds.
      *
-     * @param pokemon The [RenderablePokemon] to render - Usually from [createPreviewPokemon].
+     * @param pokemon The [RenderablePokemon] to render - Usually from [createPokemonIcon].
      * @param modelState The [PosableState] of the model.
      * @param graphics The [DrawContext] to draw on.
      * @param scissor The [ScissorBoxStack] to use for scissoring.

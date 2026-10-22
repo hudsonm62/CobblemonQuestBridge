@@ -7,7 +7,12 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.ziroau.cobblequestbridge.CobbleQuestBridge
+import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
+import com.ziroau.cobblequestbridge.tasks.PokemonCatchTask
+import earth.terrarium.heracles.api.quests.QuestIcon
+import earth.terrarium.heracles.api.quests.QuestIcons
+import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
 import earth.terrarium.heracles.api.rewards.QuestReward
 import earth.terrarium.heracles.api.rewards.QuestRewardType
 import net.minecraft.item.ItemStack
@@ -28,13 +33,19 @@ data class RewardPokemon(
     val species: String = "pikachu",
     val attributes: String = "",
     val amount: Int = 1,
-    val title: String = "",
-    val description: String = ""
-) : QuestReward<RewardPokemon> {
+    val titleOverride: String,
+    val descriptionOverride: String,
+    val pokemonIconOverride: String,
+    val iconOverride: QuestIcon<*> = ItemQuestIcon.AIR
+) : QuestReward<RewardPokemon>, CustomizableQuestElement {
 
     override fun id(): String = rewardId
-
     override fun type(): QuestRewardType<RewardPokemon> = TYPE
+
+    override fun title(): String = titleOverride
+    override fun description(): String = descriptionOverride
+    override fun pokemonIcon(): String = pokemonIconOverride
+    override fun icon(): QuestIcon<*> = iconOverride
 
     override fun reward(player: ServerPlayerEntity): Stream<ItemStack> {
         val name = species.trim().lowercase()
@@ -43,8 +54,8 @@ data class RewardPokemon(
 
         if (name.isBlank() || name == "any" || pokemonSpecies == null) {
             CobbleQuestBridge.LOGGER.error(
-                "[CQB] Cannot claim Pokémon reward {}: invalid species '{}'",
-                rewardId, species
+                "[CQB] Cannot claim Pokémon Reward from '{}' for '{}': Invalid species '{}'",
+                rewardId, player.gameProfile.name, species
             )
             return Stream.empty()
         }
@@ -89,18 +100,30 @@ data class RewardPokemon(
             RecordCodecBuilder.mapCodec { instance ->
                 instance.group(
                     RecordCodecBuilder.point<RewardPokemon, String>(id),
-                    Codec.STRING.optionalFieldOf("species", "pikachu")
+                    Codec.STRING.fieldOf("species")
                         .forGetter(RewardPokemon::species),
+
                     Codec.STRING.optionalFieldOf("attributes", "")
                         .forGetter(RewardPokemon::attributes),
+
                     Codec.INT.optionalFieldOf("amount", 1)
                         .forGetter(RewardPokemon::amount),
+
                     Codec.STRING.optionalFieldOf("title", "")
-                        .forGetter(RewardPokemon::title),
+                        .forGetter(RewardPokemon::titleOverride),
+
                     Codec.STRING.optionalFieldOf("description", "")
-                        .forGetter(RewardPokemon::description),
-                ).apply(instance) { rewardId, species, attributes, amount, title, description ->
-                    RewardPokemon(rewardId, species, attributes, amount, title, description)
+                        .forGetter(RewardPokemon::descriptionOverride),
+
+                    Codec.STRING.optionalFieldOf("pokemonIcon", "")
+                        .forGetter(RewardPokemon::pokemonIconOverride),
+
+                    QuestIcons.CODEC
+                        .lenientOptionalFieldOf("icon", ItemQuestIcon.AIR)
+                        .forGetter(RewardPokemon::iconOverride)
+
+                ).apply(instance) { rewardId, species, attributes, amount, title, description, pokemonIcon, icon ->
+                    RewardPokemon(rewardId, species, attributes, amount, title, description, pokemonIcon, icon)
                 }
             }
     }

@@ -5,6 +5,7 @@ import com.teamresourceful.resourcefullib.client.screens.CursorScreen
 import com.teamresourceful.resourcefullib.client.utils.CursorUtils
 import com.teamresourceful.resourcefullib.client.utils.ScreenUtils
 import earth.terrarium.heracles.api.client.theme.QuestScreenTheme
+import earth.terrarium.heracles.api.quests.QuestIcon
 import earth.terrarium.heracles.api.rewards.QuestReward
 import earth.terrarium.heracles.client.handlers.ClientQuests
 import earth.terrarium.heracles.client.ui.quest.AbstractQuestScreen
@@ -22,11 +23,9 @@ import net.minecraft.util.Identifier
 /**
  * A widget class for displaying quest rewards, with a preview of a [RenderablePokemon] and a Heracles claim button.
  *
- * @property previewPokemon An optional [RenderablePokemon] to display as a preview icon in the task widget.
+ * @property pokemonIcon An optional [RenderablePokemon] to display as a preview icon in the task widget.
  */
-abstract class AbstractPokemonRewardWidget(
-    previewPokemon: RenderablePokemon?
-) : AbstractPokemonWidget(previewPokemon) {
+abstract class AbstractPokemonRewardWidget : AbstractPokemonWidget() {
     abstract val reward: QuestReward<*>
     abstract val questId: String
     abstract val progress: QuestProgress?

@@ -15,11 +15,10 @@ import net.minecraft.nbt.AbstractNbtNumber
  * @param I The type of the input for the quest task (e.g. an event or [Pokemon])
  * @param S NBT number type used for tracking progress.
  * @param T The type of the quest task.
- * @property previewPokemon An optional [RenderablePokemon] to display as a preview icon in the task widget.
+ * @property pokemonIcon An optional [RenderablePokemon] to display as a preview icon in the task widget.
  */
-abstract class AbstractPokemonProgressTaskWidget<I, S : AbstractNbtNumber, T : QuestTask<I, S, T>>(
-    previewPokemon: RenderablePokemon?
-) : AbstractPokemonWidget(previewPokemon) {
+abstract class AbstractPokemonProgressTaskWidget<I, S : AbstractNbtNumber, T : QuestTask<I, S, T>>
+: AbstractPokemonWidget() {
     abstract val task: T
     abstract val progress: TaskProgress<S>
 

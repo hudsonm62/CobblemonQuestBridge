@@ -1,10 +1,12 @@
 package com.ziroau.cobblequestbridge.client.tasks.widgets
 
 import com.cobblemon.mod.common.api.events.battles.BattleVictoryEvent
+import com.cobblemon.mod.common.pokemon.RenderablePokemon
 import com.ziroau.cobblequestbridge.api.client.widgets.AbstractPokemonProgressTaskWidget
 import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
 import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum.Companion.alternateTranslation
 import com.ziroau.cobblequestbridge.tasks.BattleWinTask
+import earth.terrarium.heracles.api.quests.QuestIcon
 import earth.terrarium.heracles.common.handlers.progress.TaskProgress
 import net.minecraft.nbt.AbstractNbtNumber
 import net.minecraft.text.Text
@@ -12,12 +14,8 @@ import net.minecraft.text.Text
 class BattleWinTaskWidget(
     override val task: BattleWinTask,
     override val progress: TaskProgress<AbstractNbtNumber>
-) : AbstractPokemonProgressTaskWidget<BattleVictoryEvent, AbstractNbtNumber, BattleWinTask>(
-    createPreviewPokemon(task.previewPokemon)
-) {
-    private fun battleWinText(custom: String?, type: String): Text {
-        if (!custom.isNullOrEmpty()) return Text.literal(custom)
-
+) : AbstractPokemonProgressTaskWidget<BattleVictoryEvent, AbstractNbtNumber, BattleWinTask>() {
+    private fun battleWinText(type: String): Text {
         val isAny = task.battleType == BattleTypeEnum.ANY
         val isPlural = task.amount > 1
 
@@ -35,10 +33,17 @@ class BattleWinTaskWidget(
         }
     }
 
+    override val pokemonIcon: RenderablePokemon?
+        get() = if(task.pokemonIcon().isNotEmpty())
+            createPokemonIcon(task.pokemonIcon())
+        else null
+    override val widgetItemIcon: QuestIcon<*>
+        get() = task.icon()
+
     override val widgetTitle: Text
-        get() = battleWinText(task.title, "title")
+        get() = task.titleOr(battleWinText("title"))
 
     override val widgetDescription: Text
-        get() = battleWinText(task.description, "description")
+        get() = task.descriptionOr(battleWinText("description"))
 
 }

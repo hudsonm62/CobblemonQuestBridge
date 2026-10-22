@@ -4,7 +4,9 @@
 
 ### Added
 
-- JavaDoc support
+- Item & Pokémon Icon Overrides
+- Translatable Task/Reward Titles & Descriptions
+- JavaDocs
 
 ### Fixed
 

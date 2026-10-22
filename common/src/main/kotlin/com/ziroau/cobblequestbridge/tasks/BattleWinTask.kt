@@ -6,6 +6,10 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.teamresourceful.resourcefullib.common.codecs.EnumCodec
 import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
+import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
+import earth.terrarium.heracles.api.quests.QuestIcon
+import earth.terrarium.heracles.api.quests.QuestIcons
+import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
 import earth.terrarium.heracles.api.tasks.QuestTask
 import earth.terrarium.heracles.api.tasks.QuestTaskType
 import earth.terrarium.heracles.api.tasks.storage.defaults.IntegerTaskStorage
@@ -17,10 +21,11 @@ data class BattleWinTask(
     val battleType: BattleTypeEnum = BattleTypeEnum.ANY,
     val ignoreWildCaptures: Boolean,
     val amount: Int = 1,
-    val title: String = "",
-    val description: String = "",
-    val previewPokemon: String
-): QuestTask<BattleVictoryEvent, AbstractNbtNumber, BattleWinTask> {
+    val titleOverride: String,
+    val descriptionOverride: String,
+    val pokemonIconOverride: String,
+    val iconOverride: QuestIcon<*> = ItemQuestIcon.AIR
+): QuestTask<BattleVictoryEvent, AbstractNbtNumber, BattleWinTask>, CustomizableQuestElement {
     override fun id(): String = taskId
 
     override fun test(
@@ -53,6 +58,12 @@ data class BattleWinTask(
 
     override fun type(): QuestTaskType<BattleWinTask> = TYPE
 
+    override fun title(): String = titleOverride
+    override fun description(): String = descriptionOverride
+    override fun pokemonIcon(): String = pokemonIconOverride
+    override fun icon(): QuestIcon<*> = iconOverride
+
+
     companion object {
         @JvmField
         val TYPE: QuestTaskType<BattleWinTask> = Type()
@@ -80,16 +91,21 @@ data class BattleWinTask(
                         .forGetter(BattleWinTask::amount),
 
                     Codec.STRING.optionalFieldOf("title", "")
-                        .forGetter(BattleWinTask::title),
+                        .forGetter(BattleWinTask::titleOverride),
 
                     Codec.STRING.optionalFieldOf("description", "")
-                        .forGetter(BattleWinTask::description),
+                        .forGetter(BattleWinTask::descriptionOverride),
 
-                    Codec.STRING.optionalFieldOf("previewPokemon", "pikachu")
-                        .forGetter(BattleWinTask::previewPokemon)
+                    Codec.STRING.optionalFieldOf("pokemonIcon", "pikachu")
+                        .forGetter(BattleWinTask::pokemonIconOverride),
 
-                ).apply(instance) { taskId, battleType, ignoreWildCaptures, amount, title, description, previewPokemon ->
-                    BattleWinTask(taskId, battleType, ignoreWildCaptures, amount, title, description, previewPokemon)
+                    QuestIcons.CODEC
+                        .lenientOptionalFieldOf("icon", ItemQuestIcon.AIR)
+                        .forGetter(BattleWinTask::iconOverride)
+
+                ).apply(instance) {
+                    taskId, battleType, ignoreWildCaptures, amount, title, description, pokemonIcon, icon ->
+                    BattleWinTask(taskId, battleType, ignoreWildCaptures, amount, title, description, pokemonIcon, icon)
                 }
 
         }

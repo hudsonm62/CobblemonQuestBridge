@@ -7,6 +7,10 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.teamresourceful.resourcefullib.common.codecs.EnumCodec
 import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
+import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
+import earth.terrarium.heracles.api.quests.QuestIcon
+import earth.terrarium.heracles.api.quests.QuestIcons
+import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
 import earth.terrarium.heracles.api.tasks.QuestTask
 import earth.terrarium.heracles.api.tasks.QuestTaskType
 import earth.terrarium.heracles.api.tasks.storage.defaults.IntegerTaskStorage
@@ -20,9 +24,11 @@ data class PokemonDefeatTask (
     val minLevel: Int = 1,
     val battleType: BattleTypeEnum = BattleTypeEnum.ANY,
     val amount: Int = 1,
-    val title: String = "",
-    val description: String = ""
-) : QuestTask<BattleFaintedEvent, AbstractNbtNumber, PokemonDefeatTask> {
+    val titleOverride: String,
+    val descriptionOverride: String,
+    val pokemonIconOverride: String,
+    val iconOverride: QuestIcon<*> = ItemQuestIcon.AIR
+) : QuestTask<BattleFaintedEvent, AbstractNbtNumber, PokemonDefeatTask>, CustomizableQuestElement {
     override fun id(): String = taskId
 
     // Property Parser
@@ -68,6 +74,11 @@ data class PokemonDefeatTask (
     override fun storage(): IntegerTaskStorage = IntegerTaskStorage.INSTANCE
     override fun type(): QuestTaskType<PokemonDefeatTask> = TYPE
 
+    override fun title(): String = titleOverride
+    override fun description(): String = descriptionOverride
+    override fun pokemonIcon(): String = pokemonIconOverride
+    override fun icon(): QuestIcon<*> = iconOverride
+
     companion object {
         @JvmField
         val TYPE: QuestTaskType<PokemonDefeatTask> = Type()
@@ -106,13 +117,22 @@ data class PokemonDefeatTask (
 
                     Codec.STRING
                         .optionalFieldOf("title", "")
-                        .forGetter(PokemonDefeatTask::title),
+                        .forGetter(PokemonDefeatTask::titleOverride),
 
                     Codec.STRING
                         .optionalFieldOf("description", "")
-                        .forGetter(PokemonDefeatTask::description)
-                ).apply(instance) { id, species, attributes, minLevel, battleType, amount, title, description ->
-                    PokemonDefeatTask(id, species, attributes, minLevel, battleType, amount, title, description)
+                        .forGetter(PokemonDefeatTask::descriptionOverride),
+
+                    Codec.STRING
+                        .optionalFieldOf("pokemonIcon", "")
+                        .forGetter(PokemonDefeatTask::pokemonIconOverride),
+
+                    QuestIcons.CODEC
+                        .lenientOptionalFieldOf("icon", ItemQuestIcon.AIR)
+                        .forGetter(PokemonDefeatTask::iconOverride)
+
+                ).apply(instance) { id, species, attributes, minLevel, battleType, amount, title, description, pokemonIcon, icon ->
+                    PokemonDefeatTask(id, species, attributes, minLevel, battleType, amount, title, description, pokemonIcon, icon)
                 }
             }
     }
