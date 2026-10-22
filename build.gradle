@@ -22,9 +22,9 @@ subprojects {
     apply plugin: 'org.jetbrains.kotlin.jvm'
 
     base {
-        // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
-        archivesName = "$rootProject.archives_name-$project.name"
+        archivesName = rootProject.archives_name
     }
+    version = "${rootProject.mod_version}+${project.name}"
 
     repositories {
         maven {
@@ -35,6 +35,13 @@ subprojects {
         maven {
             name = "Team Resourceful"
             url = "https://maven.teamresourceful.com/repository/maven-public/"
+        }
+        maven {
+            url = uri("https://maven.dediamondpro.dev/releases")
+        }
+        maven {
+            name = "MCEF"
+            url = uri("https://mcef-download.cinemamod.com/repositories/releases")
         }
 
         maven {
@@ -53,7 +60,6 @@ subprojects {
 
     java {
         withSourcesJar()
-
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }

@@ -37,7 +37,6 @@ repositories {
 
 dependencies {
     neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
-    modImplementation "dev.architectury:architectury-neoforge:$rootProject.architectury_api_version"
     implementation "thedarkcolour:kotlinforforge-neoforge:${rootProject.forge_kotlin_version}"
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive = false }
@@ -47,7 +46,9 @@ dependencies {
     modApi "com.cobblemon:neoforge:${rootProject.cobblemon_version}"
 
     // Heracles
-    modImplementation ("earth.terrarium.heracles:heracles-neoforge-1.21.1:${heracles_version}"){ transitive = false }
+    modImplementation ("earth.terrarium.heracles:heracles-neoforge-1.21.1:${heracles_version}")
+    modImplementation ("com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21:${resourcefullib_version}")
+    modImplementation ("earth.terrarium.hermes:hermes-neoforge-1.21.1:${hermes_version}"){ transitive = false }
 }
 
 processResources {

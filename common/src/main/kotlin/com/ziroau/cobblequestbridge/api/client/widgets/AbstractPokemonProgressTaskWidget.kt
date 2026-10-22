@@ -1,0 +1,43 @@
+package com.ziroau.cobblequestbridge.api.client.widgets
+
+import com.cobblemon.mod.common.pokemon.RenderablePokemon
+import earth.terrarium.heracles.api.client.WidgetUtils
+import earth.terrarium.heracles.api.client.theme.QuestScreenTheme
+import earth.terrarium.heracles.api.tasks.QuestTask
+import earth.terrarium.heracles.common.handlers.progress.TaskProgress
+import net.minecraft.client.gui.DrawContext
+import com.cobblemon.mod.common.pokemon.Pokemon
+import net.minecraft.nbt.AbstractNbtNumber
+
+/**
+ * A widget that displays a progress bar for a specific quest task, with a preview of a [RenderablePokemon]
+ *
+ * @param I The type of the input for the quest task (e.g. an event or [Pokemon])
+ * @param S NBT number type used for tracking progress.
+ * @param T The type of the quest task.
+ * @property previewPokemon An optional [RenderablePokemon] to display as a preview icon in the task widget.
+ */
+abstract class AbstractPokemonProgressTaskWidget<I, S : AbstractNbtNumber, T : QuestTask<I, S, T>>(
+    previewPokemon: RenderablePokemon?
+) : AbstractPokemonWidget(previewPokemon) {
+    abstract val task: T
+    abstract val progress: TaskProgress<S>
+
+    override val titleColor: Int
+        get() = QuestScreenTheme.getTaskTitle()
+
+    override val descriptionColor: Int
+        get() = QuestScreenTheme.getTaskDescription()
+
+    override fun renderExtra(graphics: DrawContext, x: Int, y: Int, width: Int, mouseX: Int, mouseY: Int) {
+        WidgetUtils.drawProgressText(graphics, x, y, width, task, progress)
+        WidgetUtils.drawProgressBar(
+            graphics,
+            textX(x),
+            y + getHeight(width) - font.fontHeight - 5,
+            x + width - 5,
+            y + getHeight(width) - 6,
+            task, progress
+        )
+    }
+}

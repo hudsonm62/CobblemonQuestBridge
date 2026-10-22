@@ -27,7 +27,6 @@ configurations {
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
-    modImplementation "dev.architectury:architectury-fabric:${rootProject.architectury_api_version}"
     modImplementation "net.fabricmc:fabric-language-kotlin:${rootProject.fabric_kotlin_version}"
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive = false }
@@ -36,7 +35,9 @@ dependencies {
     // Cobblemon Fabric
     modImplementation "com.cobblemon:fabric:${rootProject.cobblemon_version}"
     // Heracles
-    modImplementation ("earth.terrarium.heracles:heracles-fabric-1.21.1:${heracles_version}"){ transitive = false }
+    modImplementation ("earth.terrarium.heracles:heracles-fabric-1.21.1:${heracles_version}")
+    modImplementation ("com.teamresourceful.resourcefullib:resourcefullib-fabric-1.21:${resourcefullib_version}")
+    modImplementation ("earth.terrarium.hermes:hermes-fabric-1.21.1:${hermes_version}"){ transitive = false }
 }
 
 processResources {
