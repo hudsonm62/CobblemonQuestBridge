@@ -112,10 +112,10 @@ jobs:
           draft: false
           prerelease: ${{ github.event.inputs.version-type != 'release' }}
           files: |
-            fabric/build/libs/!(*-@(sources)).jar
-            fabric/build/libs/*-@(sources).jar
-            neoforge/build/libs/!(*-@(sources)).jar
-            neoforge/build/libs/*-@(sources).jar
+            fabric/build/libs/*+fabric.jar
+            fabric/build/libs/*+fabric-sources.jar
+            neoforge/build/libs/*+neoforge.jar
+            neoforge/build/libs/*+neoforge-sources.jar
 
       - name: 🚀 Create NeoForge Modrinth Release
         uses: Kir-Antipov/mc-publish@v3.3
@@ -124,8 +124,8 @@ jobs:
           modrinth-id: ${{ env.MODRINTH_ID }}
           modrinth-token: ${{ secrets.MODRINTH_PAT }}
           files: |
-            neoforge/build/libs/!(*-@(sources)).jar
-            neoforge/build/libs/*-@(sources).jar
+            neoforge/build/libs/*+neoforge.jar
+            neoforge/build/libs/*+neoforge-sources.jar
           version: ${{ steps.get-version.outputs.version }}+neoforge
           name: ${{ steps.get-tag.outputs.version }}+neoforge
           version-type: ${{ github.event.inputs.version-type }}
@@ -133,6 +133,10 @@ jobs:
             neoforge
           game-versions: |
             1.21.1
+          dependencies: |
+            cobblemon{modrinth:MdwFAVRL}
+            odyssey-quests{modrinth:lo90fZoB}
+            kotlin-for-forge{modrinth:ordsPcFz}
           fail-mode: fail
           retry-attempts: 2
           retry-delay: 10000
@@ -144,8 +148,8 @@ jobs:
           modrinth-id: ${{ env.MODRINTH_ID }}
           modrinth-token: ${{ secrets.MODRINTH_PAT }}
           files: |
-            fabric/build/libs/!(*-@(sources)).jar
-            fabric/build/libs/*-@(sources).jar
+            fabric/build/libs/*+fabric.jar
+            fabric/build/libs/*+fabric-sources.jar
           version: ${{ steps.get-version.outputs.version }}+fabric
           name: ${{ steps.get-tag.outputs.version }}+fabric
           version-type: ${{ github.event.inputs.version-type }}
@@ -153,6 +157,10 @@ jobs:
             fabric
           game-versions: |
             1.21.1
+          dependencies: |
+            cobblemon{modrinth:MdwFAVRL}
+            odyssey-quests{modrinth:lo90fZoB}
+            fabric-api{modrinth:P7dR8mSH}
           fail-mode: fail
           retry-attempts: 2
           retry-delay: 10000
