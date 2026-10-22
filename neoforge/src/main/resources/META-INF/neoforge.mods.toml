@@ -28,13 +28,6 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.cobblequestbridge]]
-modId = "architectury"
-type = "required"
-versionRange = "[13.0.0,)"
-ordering = "AFTER"
-side = "BOTH"
-
-[[dependencies.cobblequestbridge]]
 modId = "cobblemon"
 type = "required"
 versionRange = "[1.7.0,)"

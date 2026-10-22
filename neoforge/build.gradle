@@ -37,7 +37,6 @@ repositories {
 
 dependencies {
     neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
-    modImplementation "dev.architectury:architectury-neoforge:$rootProject.architectury_api_version"
     implementation "thedarkcolour:kotlinforforge-neoforge:${rootProject.forge_kotlin_version}"
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive = false }
