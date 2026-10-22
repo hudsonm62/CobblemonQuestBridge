@@ -29,7 +29,7 @@ class PokemonRewardSettings private constructor() : AbstractSettings<RewardPokem
             data.get("attributes", textSetting()).orElse(reward?.attributes ?: ""),
             data.get("amount", intSetting()).orElse(reward?.amount ?: 1).coerceAtLeast(1),
             data.get("title", textSetting()).orElse(reward?.title ?: ""),
-            data.get("description", textSetting()).orElse(reward?.title ?: ""),
+            data.get("description", textSetting()).orElse(reward?.description ?: ""),
         )
     }
 }
