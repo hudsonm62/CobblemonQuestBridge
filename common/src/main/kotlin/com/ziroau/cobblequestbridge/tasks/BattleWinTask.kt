@@ -73,7 +73,7 @@ data class BattleWinTask(
                         .fieldOf("battleType").orElse(BattleTypeEnum.ANY)
                         .forGetter(BattleWinTask::battleType),
 
-                    Codec.BOOL.optionalFieldOf("ignoreWildCaptures", false)
+                    Codec.BOOL.optionalFieldOf("ignoreWildCaptures", true)
                         .forGetter(BattleWinTask::ignoreWildCaptures),
 
                     Codec.INT.optionalFieldOf("amount", 1)

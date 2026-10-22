@@ -19,7 +19,7 @@ class BattleWinTaskSettings private constructor() : AbstractSettings<BattleWinTa
         settings.put("amount", intSetting(), task?.amount ?: 1)
         settings.put("title", textSetting(), task?.title ?: "")
         settings.put("description", textSetting(), task?.description ?: "")
-        settings.put("previewPokemon", textSetting(), task?.previewPokemon ?: "")
+        settings.put("previewPokemon", textSetting(), task?.previewPokemon ?: "pikachu")
 
         return settings
     }
