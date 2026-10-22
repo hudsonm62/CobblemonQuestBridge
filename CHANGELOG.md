@@ -1,7 +1,7 @@
 # ChangeLog
 
-## [0.0.1] - YYYY-MM-DD
+## [0.0.1] - 2026-10-22
 
-- Beta Release
+- Alpha Release
 
-[0.0.1]: https://modrinth.com/mod/cobblequest-bridge/version/0.0.1
+[0.0.1]: https://modrinth.com/mod/cobblemon-quest-bridge/version/0.0.1
