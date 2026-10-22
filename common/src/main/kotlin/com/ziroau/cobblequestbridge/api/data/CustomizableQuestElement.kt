@@ -1,40 +1,33 @@
 package com.ziroau.cobblequestbridge.api.data
 
-import com.teamresourceful.resourcefullib.common.codecs.predicates.NbtPredicate
-import earth.terrarium.heracles.api.quests.QuestIcon
-import net.minecraft.nbt.NbtCompound
 import net.minecraft.text.Text
 
 /**
- * Similar to [earth.terrarium.heracles.api.CustomizableQuestElement],
- * but with extended functionality for Cobblemon Quest Bridge.
+ * Same as [earth.terrarium.heracles.api.CustomizableQuestElement], but extended for common CQB customization.
  */
-interface CustomizableQuestElement {
-    fun title(): String
+interface CustomizableQuestElement : earth.terrarium.heracles.api.CustomizableQuestElement {
+    /**
+     * The description of the element, used in the Quest Viewer.
+     * Supports translatable text if used with [descriptionOr]
+     */
     fun description(): String
+
+    /**
+     * The string of a Pokémon to use for the icon of the element.
+     * Should support Cobblemon attributes.
+     *
+     * Sample: `vaporeon shiny=yes`
+     */
     fun pokemonIcon(): String
-    fun icon(): QuestIcon<*>
 
-    fun titleOr(overridden: Text): Text {
-        return if (title().isNotEmpty()) {
-            Text.translatable(title())
-        } else {
-            overridden
-        }
-    }
-
+    /**
+     * The description if it is not empty, otherwise returns the overridden description.
+     */
     fun descriptionOr(overridden: Text): Text {
         return if (description().isNotEmpty()) {
             Text.translatable(description())
         } else {
             overridden
-        }
-    }
-
-    companion object {
-        @JvmStatic
-        fun nbtPredicate(): NbtPredicate {
-            return NbtPredicate(NbtCompound())
         }
     }
 }
