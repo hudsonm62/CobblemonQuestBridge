@@ -1,4 +1,4 @@
-# Cobble Quest Bridge
+# Cobblemon Quest Bridge
 
 Adds Cobblemon compatibility for Heracles (aka Odyssey Quests) for Fabric and NeoForge.
 

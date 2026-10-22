@@ -2,7 +2,7 @@
     "schemaVersion": 1,
     "id": "cobblequestbridge",
     "version": "${version}",
-    "name": "Cobble Quest Bridge",
+    "name": "Cobblemon Quest Bridge",
     "description": "Cobblemon compatibility bridge for Heracles (aka Odyssey Quests)",
     "authors": ["Hudson M."],
     "contact": {

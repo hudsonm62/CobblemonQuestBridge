@@ -6,7 +6,7 @@ license = "Apache-2.0"
 [[mods]]
 modId = "cobblequestbridge"
 version = "${version}"
-displayName = "Cobble Quest Bridge"
+displayName = "Cobblemon Quest Bridge"
 authors = "Hudson M."
 description = '''
 Cobblemon compatibility bridge for Heracles (aka Odyssey Quests)
