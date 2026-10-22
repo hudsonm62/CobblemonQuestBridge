@@ -65,6 +65,8 @@ Catch any Pokémon, or catch a shiny Aipom:
 
 ### Defeat Pokémon
 
+**Task ID:** `cobblequestbridge:pokemon_defeat`
+
 Track Pokémon defeated in battle, with optional filters for species, attributes, minimum level, and battle type.
 
 | Property      | Type      | Description                                 |
