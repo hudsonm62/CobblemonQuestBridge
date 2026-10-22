@@ -1,17 +1,17 @@
-package com.ziroau.cobblequestbridge.client.helpers
+package com.ziroau.cobblequestbridge.api.client.settings
 
-import com.ziroau.cobblequestbridge.data.BattleTypeEnum
+import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
 import earth.terrarium.heracles.api.client.settings.Setting
 import earth.terrarium.heracles.api.client.settings.SettingInitializer
 import earth.terrarium.heracles.api.client.settings.base.BooleanSetting
+import earth.terrarium.heracles.api.client.settings.base.DoubleSetting
 import earth.terrarium.heracles.api.client.settings.base.EnumSetting
 import earth.terrarium.heracles.api.client.settings.base.IntSetting
 import earth.terrarium.heracles.api.client.settings.base.TextSetting
 import net.minecraft.client.gui.widget.ClickableWidget
 
 /**
- * Provides the common methods for creating settings of different types.
- * This class is intended to be extended by other classes that need to create settings.
+ * Provides the common data methods for creation of Quest Settings.
  *
  * @sample com.ziroau.cobblequestbridge.client.tasks.settings.PokemonDefeatTaskSettings
  */
@@ -31,6 +31,10 @@ abstract class AbstractSettings<T> : SettingInitializer<T> {
     @Suppress("UNCHECKED_CAST")
     fun boolFalseSetting(): Setting<Boolean, ClickableWidget> =
         BooleanSetting.FALSE as Setting<Boolean, ClickableWidget>
+
+    @Suppress("UNCHECKED_CAST")
+    fun doubleSetting(): Setting<Double, ClickableWidget> =
+        DoubleSetting.INSTANCE as Setting<Double, ClickableWidget>
 
     // ENUMS
     @Suppress("UNCHECKED_CAST")

@@ -1,24 +1,13 @@
 package com.ziroau.cobblequestbridge.tasks
 
-import com.ziroau.cobblequestbridge.CobbleQuestBridge.LOGGER
-import earth.terrarium.heracles.api.tasks.QuestTasks
+import com.ziroau.cobblequestbridge.api.registry.BridgeTasksRegistry
 
 object BridgeTasks {
     fun register() {
-        val tasks = arrayListOf(
+        BridgeTasksRegistry.registerAll(
             PokemonCatchTask.TYPE,
             PokemonDefeatTask.TYPE,
             BattleWinTask.TYPE
         )
-
-        tasks.forEach { taskType ->
-            val id = taskType.id()
-            QuestTasks.register(taskType)
-
-            LOGGER.info(
-                "Registered CQB Quest Task: {}",
-                id
-            )
-        }
     }
 }

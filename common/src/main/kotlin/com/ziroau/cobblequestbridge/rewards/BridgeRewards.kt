@@ -1,11 +1,12 @@
 package com.ziroau.cobblequestbridge.rewards
 
-import com.ziroau.cobblequestbridge.CobbleQuestBridge.LOGGER
-import earth.terrarium.heracles.api.rewards.QuestRewards
+import com.ziroau.cobblequestbridge.api.registry.BridgeRewardsRegistry
 
 object BridgeRewards {
+
     fun register() {
-        QuestRewards.register(RewardPokemon.TYPE)
-        LOGGER.info("Registered CQB Quest Reward: {}", RewardPokemon.TYPE.id())
+        BridgeRewardsRegistry.registerAll(
+            RewardPokemon.TYPE
+        )
     }
 }

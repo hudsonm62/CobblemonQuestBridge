@@ -1,7 +1,7 @@
 package com.ziroau.cobblequestbridge.client.tasks.settings
 
-import com.ziroau.cobblequestbridge.client.helpers.AbstractSettings
-import com.ziroau.cobblequestbridge.data.BattleTypeEnum
+import com.ziroau.cobblequestbridge.api.client.settings.AbstractSettings
+import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
 import com.ziroau.cobblequestbridge.tasks.BattleWinTask
 import earth.terrarium.heracles.api.client.settings.SettingInitializer
 

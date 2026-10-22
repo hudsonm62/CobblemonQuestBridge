@@ -6,7 +6,7 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.teamresourceful.resourcefullib.common.codecs.EnumCodec
-import com.ziroau.cobblequestbridge.data.BattleTypeEnum
+import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
 import earth.terrarium.heracles.api.tasks.QuestTask
 import earth.terrarium.heracles.api.tasks.QuestTaskType
 import earth.terrarium.heracles.api.tasks.storage.defaults.IntegerTaskStorage
@@ -35,13 +35,8 @@ data class PokemonDefeatTask (
         progress: AbstractNbtNumber,
         input: BattleFaintedEvent
     ): AbstractNbtNumber {
-        val battle = input.battle
-        when(battleType) {
-            BattleTypeEnum.ANY -> { /*noop*/ }
-            BattleTypeEnum.PVW -> if (!battle.isPvW) return progress
-            BattleTypeEnum.PVN -> if (!battle.isPvN) return progress
-            BattleTypeEnum.PVP -> if (!battle.isPvP) return progress
-        }
+        if (battleType != BattleTypeEnum.ANY && battleType != BattleTypeEnum.fromBattle(input.battle))
+            return progress
 
         val sourceBattlePkm = input.context.origin ?: return progress
         val defeatedBattlePkm = input.killed

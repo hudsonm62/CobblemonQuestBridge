@@ -1,25 +1,46 @@
 # Cobblemon Quest Bridge
 
-Adds Cobblemon compatibility for Heracles (aka Odyssey Quests) for Fabric and NeoForge.
+**Cobblemon integration for Heracles (aka Odyssey Quests), available for Fabric and NeoForge.**
+
+Cobblemon Quest Bridge adds Pokémon-focused tasks, rewards, and MoLang utilities!
+
+## Requirements
+
+- [Heracles 2.0+](https://modrinth.com/project/lo90fZoB)
+- [Cobblemon 1.8+](https://modrinth.com/project/MdwFAVRL)
+- Fabric or NeoForge
+
+> [!WARNING]
+> **Early Development**
+>
+> Both Cobblemon Quest Bridge and the [Heracles 1.21.1 port](https://github.com/terrarium-earth/Heracles/tree/1.21.1) are actively under development.
+>
+> Expect frequent updates, API changes, and potentially breaking changes.
 
 ---
 
-Both this mod & the [Heracles 1.21.1 port](https://github.com/terrarium-earth/Heracles/tree/1.21.1) are still deep in development and will receive frequent updates and breaking changes - I'd avoid using it in a production environment (for now).
+## Task Types
 
-## Task Type Additions
+Cobblemon Quest Bridge introduces several task types that can be used in Heracles quests.
 
 ### Catch Pokémon
 
-| Property      | Type      | Description                                |
-| ------------- | --------- | ------------------------------------------ |
-| `species`     | `String?` | The species of Pokémon to catch.           |
-| `attributes`  | `String?` | Cobblemon attributes to check.             |
-| `minLevel `   | `Int`     | The minimum level of the Pokémon to catch. |
-| `amount`      | `Int`     | The amount of Pokémon to catch.            |
-| `title`       | `String?` | The title override for the task.           |
-| `description` | `String?` | The description override for the task.     |
+Track Pokémon caught by a player, with optional filters for species, attributes, and minimum level.
 
-#### Sample
+**Task ID:** `cobblequestbridge:pokemon_catch`
+
+| Property      | Type      | Description                                       |
+| ------------- | --------- | ------------------------------------------------- |
+| `species`     | `String?` | Species of Pokémon to catch.                      |
+| `attributes`  | `String?` | Cobblemon attribute filters, such as `shiny=yes`. |
+| `minLevel`    | `Int`     | Minimum level of the Pokémon.                     |
+| `amount`      | `Int`     | Number of Pokémon required.                       |
+| `title`       | `String?` | Custom task title.                                |
+| `description` | `String?` | Custom task description.                          |
+
+**Example**
+
+Catch any Pokémon, or catch a shiny Aipom:
 
 ```json
 {
@@ -44,28 +65,36 @@ Both this mod & the [Heracles 1.21.1 port](https://github.com/terrarium-earth/He
 
 ### Defeat Pokémon
 
+Track Pokémon defeated in battle, with optional filters for species, attributes, minimum level, and battle type.
+
 | Property      | Type      | Description                                 |
 | ------------- | --------- | ------------------------------------------- |
-| `species`     | `String?` | The species of Pokémon to defeat.           |
-| `attributes`  | `String?` | Cobblemon attributes to check.              |
-| `minLevel `   | `Int`     | The minimum level of the Pokémon to defeat. |
-| `battleType`  | `Enum`    | The type of battle (Any, PvW, PvP, PvN).    |
-| `amount`      | `Int`     | The amount of Pokémon to defeat.            |
-| `title`       | `String?` | The title override for the task.            |
-| `description` | `String?` | The description override for the task.      |
+| `species`     | `String?` | Species of Pokémon to defeat.               |
+| `attributes`  | `String?` | Cobblemon attribute filters.                |
+| `minLevel`    | `Int`     | Minimum level of the Pokémon.               |
+| `battleType`  | `Enum`    | Battle type: `ANY`, `PVW`, `PVP`, or `PVN`. |
+| `amount`      | `Int`     | Number of Pokémon to defeat.                |
+| `title`       | `String?` | Custom task title.                          |
+| `description` | `String?` | Custom task description.                    |
 
 ### Battle Victory
 
-| Property             | Type       | Description                               |
-| -------------------- | ---------- | ----------------------------------------- |
-| `battleType`         | `Enum`     | The type of battle (Any, PvW, PvP, PvN).  |
-| `ignoreWildCaptures` | `Boolean?` | Whether to ignore wild captures.          |
-| `amount`             | `Int`      | The amount of Pokémon to defeat.          |
-| `title`              | `String?`  | The title override for the task.          |
-| `description`        | `String?`  | The description override for the task.    |
-| `previewPokemon`     | `String?`  | The Pokémon to preview for the task icon. |
+Track battles won by a player, with optional restrictions on battle type and wild Pokémon captures.
 
-#### Sample
+**Task ID:** `cobblequestbridge:win_battle`
+
+| Property             | Type       | Description                                                      |
+| -------------------- | ---------- | ---------------------------------------------------------------- |
+| `battleType`         | `Enum`     | Battle type: `ANY`, `PVW`, `PVP`, or `PVN`.                      |
+| `ignoreWildCaptures` | `Boolean?` | Whether wild Pokémon captures should be excluded from victories. |
+| `amount`             | `Int`      | Number of battle victories required.                             |
+| `title`              | `String?`  | Custom task title.                                               |
+| `description`        | `String?`  | Custom task description.                                         |
+| `previewPokemon`     | `String?`  | Pokémon to display as the task icon.                             |
+
+**Example**
+
+Win any battle, win five wild battles without counting captures, or win three PvP battles:
 
 ```json
 {
@@ -93,49 +122,43 @@ Both this mod & the [Heracles 1.21.1 port](https://github.com/terrarium-earth/He
 }
 ```
 
-### Evolve Pokémon
+## Reward Types
 
-| Property          | Type      | Description                            |
-| ----------------- | --------- | -------------------------------------- |
-| `species_from`    | `String?` | The species of Pokémon to evolve from. |
-| `species_to`      | `String?` | The species of Pokémon to evolve into. |
-| `attributes_from` | `String?` | Cobblemon attributes to check.         |
-| `attributes_to`   | `String?` | Cobblemon attributes to check.         |
-| `amount`          | `Int`     | The amount of Pokémon to evolve.       |
-| `title`           | `String?` | The title override for the task.       |
-| `description`     | `String?` | The description override for the task. |
-
-### Trade Pokémon
-
-### Pokédex Progress
-
-### Friendship Progress
-
-## Reward Type Additions
+Reward players when they complete quests.
 
 ### Pokémon
 
-Rewards a Pokémon to the player.
+Give a Pokémon directly to the player as a quest reward.
 
-### MoLang Command
+## MoLang Extensions
 
-### MoLang Script
+Cobblemon Quest Bridge extends server-side Cobblemon MoLang with additional functions for interacting with the quest system.
 
-## MoLang Additions
+### Player Functions
 
-Several Serverside MoLang functions are available for use in Cobblemon MoLang scripts:
+_Function reference coming soon._
 
-### Player
+## Developer Info
 
-| Function | Description |
-| -------- | ----------- |
-| TODO     | TODO        |
+For extending Cobblemon Quest Bridge, see files under [`common/src/main/kotlin/com/ziroau/cobblequestbridge/api`](https://github.com/hudsonm62/CobbleQuest-Bridge/tree/master/common/src/main/kotlin/com/ziroau/cobblequestbridge/api)
 
-## Permissions
+Several interfaces and functions are provided for rapidly adding new Pokémon-themed tasks, rewards and UI elements.
 
-You're welcome to use this in your modpack and server, all I ask is that you:
+---
 
-- Link back via [manifest in your modpack](https://support.modrinth.com/en/articles/8802351-modrinth-modpack-format-mrpack) (so I get stats & creator revenue 🙏)
-- Don't lock features behind a paywall, or restrict access in any other way
-- Don't re-upload this mod to other platforms
-- Don't claim this mod as your own
+## Permissions & Modpack Usage
+
+You're welcome to include Cobblemon Quest Bridge in your **modpack or server**, including publicly distributed modpacks.
+
+All I ask is that you:
+
+- **Keep attribution intact.**
+  - Include the mod through your modpack's [Modrinth `.mrpack` manifest](https://support.modrinth.com/en/articles/8802351-modrinth-modpack-format-mrpack) where applicable. This helps support the project through download statistics and creator revenue. 🙏
+- **Keep features accessible.**
+  - Don't lock the mod's functionality behind paywalls or otherwise restrict access to its features.
+- **Don't redistribute the mod separately.**
+  - Please don't re-upload the mod to other platforms.
+- **Respect authorship.**
+  - Don't claim the mod or its code as your own.
+
+Thanks for supporting the project! ❤️

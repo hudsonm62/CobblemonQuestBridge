@@ -7,6 +7,7 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.ziroau.cobblequestbridge.CobbleQuestBridge
+import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
 import earth.terrarium.heracles.api.rewards.QuestReward
 import earth.terrarium.heracles.api.rewards.QuestRewardType
 import net.minecraft.item.ItemStack
@@ -37,9 +38,7 @@ data class RewardPokemon(
 
     override fun reward(player: ServerPlayerEntity): Stream<ItemStack> {
         val name = species.trim().lowercase()
-        val speciesId = Identifier.tryParse(
-            if (':' in name) name else "cobblemon:$name"
-        )
+        val speciesId = parseSpeciesId(name)
         val pokemonSpecies = speciesId?.let(PokemonSpecies::getByIdentifier)
 
         if (name.isBlank() || name == "any" || pokemonSpecies == null) {
