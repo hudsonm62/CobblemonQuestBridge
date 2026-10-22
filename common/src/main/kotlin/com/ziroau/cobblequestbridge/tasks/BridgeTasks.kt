@@ -7,7 +7,8 @@ object BridgeTasks {
     fun register() {
         val tasks = arrayListOf(
             PokemonCatchTask.TYPE,
-            PokemonDefeatTask.TYPE
+            PokemonDefeatTask.TYPE,
+            BattleWinTask.TYPE
         )
 
         tasks.forEach { taskType ->

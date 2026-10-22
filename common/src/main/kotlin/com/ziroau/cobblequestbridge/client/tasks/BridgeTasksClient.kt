@@ -1,9 +1,12 @@
 package com.ziroau.cobblequestbridge.client.tasks
 
+import com.ziroau.cobblequestbridge.client.tasks.settings.BattleWinTaskSettings
 import com.ziroau.cobblequestbridge.client.tasks.settings.PokemonCatchTaskSettings
 import com.ziroau.cobblequestbridge.client.tasks.settings.PokemonDefeatTaskSettings
+import com.ziroau.cobblequestbridge.client.tasks.widgets.BattleWinTaskWidget
 import com.ziroau.cobblequestbridge.client.tasks.widgets.PokemonCatchTaskWidget
 import com.ziroau.cobblequestbridge.client.tasks.widgets.PokemonDefeatTaskWidget
+import com.ziroau.cobblequestbridge.tasks.BattleWinTask
 import com.ziroau.cobblequestbridge.tasks.PokemonCatchTask
 import com.ziroau.cobblequestbridge.tasks.PokemonDefeatTask
 import earth.terrarium.heracles.api.client.settings.Settings
@@ -15,6 +18,7 @@ object BridgeTasksClient {
     fun register() {
         registerCatchTask()
         registerDefeatTask()
+        registerBattleWinTask()
     }
 
     private fun registerCatchTask() {
@@ -55,5 +59,25 @@ object BridgeTasksClient {
 
             "$defeated/${task.amount.coerceAtLeast(1)}"
         }
+    }
+
+    private fun registerBattleWinTask() {
+        Settings.register(
+                BattleWinTask.TYPE,
+                BattleWinTaskSettings.INSTANCE
+            )
+            QuestTaskWidgets.registerSimple(
+                BattleWinTask.TYPE,
+                ::BattleWinTaskWidget
+            )
+            QuestTaskDisplayFormatter.register(
+                BattleWinTask.TYPE
+            ) { progress, task ->
+                val wins = task.storage()
+                    .readInt(progress.progress())
+                    .coerceAtLeast(0)
+
+                "$wins/${task.amount.coerceAtLeast(1)}"
+            }
     }
 }

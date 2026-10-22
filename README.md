@@ -49,27 +49,65 @@ Both this mod & the [Heracles 1.21.1 port](https://github.com/terrarium-earth/He
 | `species`     | `String?` | The species of Pokémon to defeat.           |
 | `attributes`  | `String?` | Cobblemon attributes to check.              |
 | `minLevel `   | `Int`     | The minimum level of the Pokémon to defeat. |
-| `battleType`  | `enum`    | The type of battle (Any, PvW, PvP, PvN).    |
+| `battleType`  | `Enum`    | The type of battle (Any, PvW, PvP, PvN).    |
 | `amount`      | `Int`     | The amount of Pokémon to defeat.            |
 | `title`       | `String?` | The title override for the task.            |
 | `description` | `String?` | The description override for the task.      |
 
-### Win Battle
+### Battle Victory
 
-| Property      | Type      | Description                              |
-| ------------- | --------- | ---------------------------------------- |
-| `species`     | `String?` | The species of Pokémon to defeat.        |
-| `attributes`  | `String?` | Cobblemon attributes to check.           |
-| `battleType`  | `enum`    | The type of battle (Any, PvW, PvP, PvN). |
-| `amount`      | `Int`     | The amount of Pokémon to defeat.         |
-| `title`       | `String?` | The title override for the task.         |
-| `description` | `String?` | The description override for the task.   |
+| Property             | Type       | Description                               |
+| -------------------- | ---------- | ----------------------------------------- |
+| `battleType`         | `Enum`     | The type of battle (Any, PvW, PvP, PvN).  |
+| `ignoreWildCaptures` | `Boolean?` | Whether to ignore wild captures.          |
+| `amount`             | `Int`      | The amount of Pokémon to defeat.          |
+| `title`              | `String?`  | The title override for the task.          |
+| `description`        | `String?`  | The description override for the task.    |
+| `previewPokemon`     | `String?`  | The Pokémon to preview for the task icon. |
+
+#### Sample
+
+```json
+{
+  "tasks": {
+    "win_any_battle": {
+      "battleType": "ANY",
+      "amount": 1,
+      "type": "cobblequestbridge:win_battle"
+    },
+    "win_5_wild_battles": {
+      "battleType": "PVW",
+      "ignoreWildCaptures": true,
+      "amount": 5,
+      "type": "cobblequestbridge:win_battle"
+    },
+    "win_pvp_battle": {
+      "battleType": "PVP",
+      "amount": 3,
+      "title": "Player VS Player",
+      "description": "Win 3 PvP battles!",
+      "previewPokemon": "garchomp shiny=no",
+      "type": "cobblequestbridge:win_battle"
+    }
+  }
+}
+```
+
+### Evolve Pokémon
+
+| Property          | Type      | Description                            |
+| ----------------- | --------- | -------------------------------------- |
+| `species_from`    | `String?` | The species of Pokémon to evolve from. |
+| `species_to`      | `String?` | The species of Pokémon to evolve into. |
+| `attributes_from` | `String?` | Cobblemon attributes to check.         |
+| `attributes_to`   | `String?` | Cobblemon attributes to check.         |
+| `amount`          | `Int`     | The amount of Pokémon to evolve.       |
+| `title`           | `String?` | The title override for the task.       |
+| `description`     | `String?` | The description override for the task. |
 
 ### Trade Pokémon
 
 ### Pokédex Progress
-
-### Deal Damage
 
 ### Friendship Progress
 
@@ -78,6 +116,10 @@ Both this mod & the [Heracles 1.21.1 port](https://github.com/terrarium-earth/He
 ### Pokémon
 
 Rewards a Pokémon to the player.
+
+### MoLang Command
+
+### MoLang Script
 
 ## MoLang Additions
 

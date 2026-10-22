@@ -1,5 +1,6 @@
 package com.ziroau.cobblequestbridge
 
+import com.ziroau.cobblequestbridge.events.BattleWinHandler
 import com.ziroau.cobblequestbridge.molang.MoLangFunctions
 import com.ziroau.cobblequestbridge.tasks.BridgeTasks
 import com.ziroau.cobblequestbridge.rewards.BridgeRewards
@@ -16,8 +17,13 @@ object CobbleQuestBridge {
         MoLangFunctions.register()
         BridgeTasks.register()
         BridgeRewards.register()
+        registerEvents()
+        LOGGER.info("Cobble Quest Bridge initialized - Happy questing!")
+    }
+
+    private fun registerEvents() {
         PokemonCatchHandler.register()
         PokemonDefeatHandler.register()
-        LOGGER.info("Cobble Quest Bridge initialized - Happy questing!")
+        BattleWinHandler.register()
     }
 }

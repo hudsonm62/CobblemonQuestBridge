@@ -44,6 +44,15 @@ object CQBWidgetHelpers {
 
         return RenderablePokemon(species, props.aspects)
     }
+    fun createPreviewPokemon(pokemon: String): RenderablePokemon? {
+        val input = pokemon.trim().lowercase()
+        if (input.isBlank() || input.equals("any", ignoreCase = true)) return null
+
+        val speciesName = input.substringBefore(" ")
+        val properties = input.substringAfter(" ", "").trim()
+
+        return createPreviewPokemon(speciesName, properties)
+    }
 
     /**
      * Returns the translated name of a Pokémon species based on the provided string
