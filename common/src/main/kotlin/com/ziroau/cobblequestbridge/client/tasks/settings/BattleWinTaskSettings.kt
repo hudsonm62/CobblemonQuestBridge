@@ -1,12 +1,12 @@
 package com.ziroau.cobblequestbridge.client.tasks.settings
 
-import com.ziroau.cobblequestbridge.api.client.settings.AbstractSettings
+import com.ziroau.cobblequestbridge.api.client.settings.AbstractSettingInitializer
 import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
 import com.ziroau.cobblequestbridge.tasks.BattleWinTask
 import earth.terrarium.heracles.api.client.settings.SettingInitializer
 import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
 
-class BattleWinTaskSettings private constructor() : AbstractSettings<BattleWinTask>() {
+class BattleWinTaskSettings private constructor() : AbstractSettingInitializer<BattleWinTask>() {
     companion object {
         @JvmField
         val INSTANCE = BattleWinTaskSettings()

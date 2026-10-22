@@ -1,11 +1,11 @@
 package com.ziroau.cobblequestbridge.client.tasks.settings
 
-import com.ziroau.cobblequestbridge.api.client.settings.AbstractSettings
+import com.ziroau.cobblequestbridge.api.client.settings.AbstractSettingInitializer
 import com.ziroau.cobblequestbridge.tasks.PokemonCatchTask
 import earth.terrarium.heracles.api.client.settings.SettingInitializer
 import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
 
-class PokemonCatchTaskSettings private constructor() : AbstractSettings<PokemonCatchTask>() {
+class PokemonCatchTaskSettings private constructor() : AbstractSettingInitializer<PokemonCatchTask>() {
     companion object {
         @JvmField
         val INSTANCE = PokemonCatchTaskSettings()

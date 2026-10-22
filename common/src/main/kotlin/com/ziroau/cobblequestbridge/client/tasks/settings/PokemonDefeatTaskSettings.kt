@@ -1,12 +1,12 @@
 package com.ziroau.cobblequestbridge.client.tasks.settings
 
-import com.ziroau.cobblequestbridge.api.client.settings.AbstractSettings
+import com.ziroau.cobblequestbridge.api.client.settings.AbstractSettingInitializer
 import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
 import com.ziroau.cobblequestbridge.tasks.PokemonDefeatTask
 import earth.terrarium.heracles.api.client.settings.SettingInitializer
 import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
 
-class PokemonDefeatTaskSettings private constructor() : AbstractSettings<PokemonDefeatTask>() {
+class PokemonDefeatTaskSettings private constructor() : AbstractSettingInitializer<PokemonDefeatTask>() {
     companion object {
         @JvmField
         val INSTANCE = PokemonDefeatTaskSettings()

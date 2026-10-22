@@ -13,11 +13,12 @@ import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
 import net.minecraft.client.gui.widget.ClickableWidget
 
 /**
- * Provides the common data methods for creation of Quest Settings.
+ * Provides some common data methods for creation of Task/Reward Settings (due to how Kotlin handles inference).
+ * You _probably_ don't need to use these in pure Java though.
  *
  * @sample com.ziroau.cobblequestbridge.client.tasks.settings.PokemonDefeatTaskSettings
  */
-abstract class AbstractSettings<T> : SettingInitializer<T> {
+abstract class AbstractSettingInitializer<T> : SettingInitializer<T> {
     @Suppress("UNCHECKED_CAST")
     protected fun textSetting(): Setting<String, ClickableWidget> =
         TextSetting.INSTANCE as Setting<String, ClickableWidget>
@@ -25,6 +26,10 @@ abstract class AbstractSettings<T> : SettingInitializer<T> {
     @Suppress("UNCHECKED_CAST")
     protected fun intSetting(): Setting<Int, ClickableWidget> =
         IntSetting.ONE as Setting<Int, ClickableWidget>
+
+    @Suppress("UNCHECKED_CAST")
+    protected fun intZeroSetting(): Setting<Int, ClickableWidget> =
+        IntSetting.ZERO as Setting<Int, ClickableWidget>
 
     @Suppress("UNCHECKED_CAST")
     protected fun boolTrueSetting(): Setting<Boolean, ClickableWidget> =
