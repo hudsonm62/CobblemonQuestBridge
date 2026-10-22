@@ -140,7 +140,7 @@ _Function reference coming soon._
 
 ## Developer Info
 
-For extending Cobblemon Quest Bridge, see files under [`common/src/main/kotlin/com/ziroau/cobblequestbridge/api`](https://github.com/hudsonm62/CobbleQuest-Bridge/tree/master/common/src/main/kotlin/com/ziroau/cobblequestbridge/api)
+For extending Cobblemon Quest Bridge, see files under [`common/src/main/kotlin/com/ziroau/cobblequestbridge/api`](https://github.com/hudsonm62/cobblemonquestbridge/tree/master/common/src/main/kotlin/com/ziroau/cobblequestbridge/api)
 
 Several interfaces and functions are provided for rapidly adding new Pokémon-themed tasks, rewards and UI elements.
 

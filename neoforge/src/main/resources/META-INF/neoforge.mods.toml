@@ -1,6 +1,6 @@
 modLoader = "kotlinforforge"
 loaderVersion = "[5.3,)"
-issueTrackerURL = "https://github.com/hudsonm62/cobblequest-bridge/issues"
+issueTrackerURL = "https://github.com/hudsonm62/cobblemonquestbridge/issues"
 license = "Apache-2.0"
 
 [[mods]]

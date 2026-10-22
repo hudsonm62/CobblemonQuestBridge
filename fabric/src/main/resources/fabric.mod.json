@@ -7,8 +7,8 @@
     "authors": ["Hudson M."],
     "contact": {
         "homepage": "https://modrinth.com/project/eLwyHtUJ",
-        "sources": "https://github.com/hudsonm62/cobblequest-bridge",
-        "issues": "https://github.com/hudsonm62/cobblequest-bridge/issues"
+        "sources": "https://github.com/hudsonm62/cobblemonquestbridge",
+        "issues": "https://github.com/hudsonm62/cobblemonquestbridge/issues"
     },
     "license": "Apache-2.0",
     "icon": "icon.png",
