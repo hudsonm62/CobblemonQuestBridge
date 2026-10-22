@@ -6,6 +6,11 @@ import earth.terrarium.heracles.api.tasks.QuestTaskType
 import earth.terrarium.heracles.api.tasks.QuestTasks
 import net.minecraft.nbt.NbtElement
 
+/**
+ * Functions to quickly register custom quest tasks to Heracles
+ *
+ * Everything here should be called during initialization.
+ */
 object BridgeTasksRegistry {
 
     /**

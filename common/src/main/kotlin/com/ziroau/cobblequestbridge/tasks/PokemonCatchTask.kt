@@ -44,11 +44,7 @@ data class PokemonCatchTask(
     ): AbstractNbtNumber {
         val caughtMon = input.species.resourceIdentifier.path
 
-        LOGGER.debug(
-            "[CQB] Caught Pokemon: {}, level: {}",
-            caughtMon,
-            input.level.toString(),
-        )
+        // check requirements
         val matchesSpecies: Boolean = species == "any" || caughtMon == species
         if (!matchesSpecies || input.level < minLevel || !matcher.matches(input)) {
             return progress

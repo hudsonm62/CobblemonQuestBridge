@@ -5,6 +5,11 @@ import earth.terrarium.heracles.api.rewards.QuestReward
 import earth.terrarium.heracles.api.rewards.QuestRewardType
 import earth.terrarium.heracles.api.rewards.QuestRewards
 
+/**
+ * Functions to quickly register custom quest rewards to Heracles
+ *
+ * Everything here should be called during initialization.
+ */
 object BridgeRewardsRegistry {
     /**
      * Register a custom quest reward type.
