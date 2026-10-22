@@ -32,7 +32,7 @@ data class BattleWinTask(
             return progress
 
         // ignore wild captures if the task is set to ignore them
-        if(!ignoreWildCaptures && input.wasWildCapture)
+        if(ignoreWildCaptures && input.wasWildCapture)
             return progress
 
         // Increment by 1, capped at the required amount
