@@ -16,7 +16,6 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
-import net.minecraft.util.Identifier
 import org.joml.Quaternionf
 import org.joml.Vector3f
 import kotlin.use
@@ -40,10 +39,10 @@ abstract class AbstractPokemonWidget(
          * Creates a preview [RenderablePokemon] based on the provided species and properties.
          *
          * @param species The species of the Pokémon (e.g., `pikachu`).
-         * @param properties The properties of the Pokémon in string format (i.e. "`shiny=yes gender=female`").
+         * @param attributes The properties of the Pokémon in string format (i.e. "`shiny=yes gender=female`").
          * @return A [RenderablePokemon] if the species is valid, otherwise null/empty.
          */
-        fun createPreviewPokemon(species: String, properties: String): RenderablePokemon? {
+        fun createPreviewPokemon(species: String, attributes: String): RenderablePokemon? {
             val name = species.trim().lowercase()
 
             if (name.isBlank() || name == "any") return null
@@ -52,7 +51,7 @@ abstract class AbstractPokemonWidget(
 
             // Get mon by species and parse props
             val species = PokemonSpecies.getByIdentifier(speciesId) ?: return null
-            val props = PokemonProperties.parse(properties)
+            val props = PokemonProperties.parse(attributes)
 
             // Then set the species in the props and (re)apply aspects
             props.species = species.resourceIdentifier.toString()
@@ -65,9 +64,9 @@ abstract class AbstractPokemonWidget(
             if (input.isBlank() || input.equals("any", ignoreCase = true)) return null
 
             val speciesName = input.substringBefore(" ")
-            val properties = input.substringAfter(" ", "").trim()
+            val attributes = input.substringAfter(" ", "").trim()
 
-            return createPreviewPokemon(speciesName, properties)
+            return createPreviewPokemon(speciesName, attributes)
         }
     }
 
