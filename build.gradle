@@ -3,6 +3,7 @@ plugins {
     id 'architectury-plugin' version '3.5-SNAPSHOT'
     id 'com.gradleup.shadow' version '9.4.3' apply false
     id 'org.jetbrains.kotlin.jvm' version '2.4.0' apply false
+    id 'org.jetbrains.dokka' version '2.2.0' apply false
     id 'idea'
 }
 
@@ -20,6 +21,8 @@ subprojects {
     apply plugin: 'architectury-plugin'
     apply plugin: 'maven-publish'
     apply plugin: 'org.jetbrains.kotlin.jvm'
+    apply plugin: 'org.jetbrains.dokka'
+
 
     base {
         archivesName = rootProject.archives_name
@@ -64,6 +67,19 @@ subprojects {
         targetCompatibility = JavaVersion.VERSION_21
     }
 
+    // bundle common in source jars
+    if (project.name in ["fabric", "neoforge"]) {
+        tasks.named("sourcesJar", Jar) {
+            def commonSources = project(":common").tasks.named("sourcesJar", Jar)
+
+            dependsOn commonSources
+
+            from(commonSources.flatMap { it.archiveFile }.map { zipTree(it) }) {
+                exclude "META-INF/MANIFEST.MF"
+            }
+        }
+    }
+
     kotlin {
         jvmToolchain(21)
     }
@@ -81,11 +97,33 @@ subprojects {
         }
     }
 
+    // dokka javadocs
+    if (project.name in ["fabric", "neoforge"]) {
+        dependencies {
+            dokka project(":common")
+        }
+    }
+    tasks.register("dokkaJavadocJar", Jar) {
+        group = "documentation"
+        description = "Packages Dokka documentation into a Javadoc JAR"
+
+        archiveClassifier.set("javadoc")
+
+        from(tasks.named("dokkaGeneratePublicationHtml").flatMap {
+            it.outputDirectory
+        })
+    }
+
+    tasks.named("assemble") {
+        dependsOn(tasks.named("dokkaJavadocJar"))
+    }
+
     publishing {
         publications {
             mavenJava(MavenPublication) {
                 artifactId = base.archivesName.get()
                 from components.java
+                artifact(tasks.named("dokkaJavadocJar"))
             }
         }
         repositories {}

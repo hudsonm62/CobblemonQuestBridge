@@ -114,8 +114,10 @@ jobs:
           files: |
             fabric/build/libs/*+fabric.jar
             fabric/build/libs/*+fabric-sources.jar
+            fabric/build/libs/*+fabric-javadoc.jar
             neoforge/build/libs/*+neoforge.jar
             neoforge/build/libs/*+neoforge-sources.jar
+            neoforge/build/libs/*+neoforge-javadoc.jar
 
       - name: 🚀 Create NeoForge Modrinth Release
         uses: Kir-Antipov/mc-publish@v3.3
@@ -126,6 +128,7 @@ jobs:
           files: |
             neoforge/build/libs/*+neoforge.jar
             neoforge/build/libs/*+neoforge-sources.jar
+            neoforge/build/libs/*+neoforge-javadoc.jar
           version: ${{ steps.get-version.outputs.version }}+neoforge
           name: ${{ steps.get-tag.outputs.version }}+neoforge
           version-type: ${{ github.event.inputs.version-type }}
@@ -150,6 +153,7 @@ jobs:
           files: |
             fabric/build/libs/*+fabric.jar
             fabric/build/libs/*+fabric-sources.jar
+            fabric/build/libs/*+fabric-javadoc.jar
           version: ${{ steps.get-version.outputs.version }}+fabric
           name: ${{ steps.get-tag.outputs.version }}+fabric
           version-type: ${{ github.event.inputs.version-type }}
