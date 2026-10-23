@@ -5,7 +5,6 @@ import com.teamresourceful.resourcefullib.client.screens.CursorScreen
 import com.teamresourceful.resourcefullib.client.utils.CursorUtils
 import com.teamresourceful.resourcefullib.client.utils.ScreenUtils
 import earth.terrarium.heracles.api.client.theme.QuestScreenTheme
-import earth.terrarium.heracles.api.quests.QuestIcon
 import earth.terrarium.heracles.api.rewards.QuestReward
 import earth.terrarium.heracles.client.handlers.ClientQuests
 import earth.terrarium.heracles.client.ui.quest.AbstractQuestScreen
@@ -36,7 +35,11 @@ abstract class AbstractPokemonRewardWidget : AbstractPokemonWidget() {
         private const val BUTTON_RIGHT_OFFSET = 30
         private const val BUTTON_TOP_OFFSET = 11
 
-        protected val LOOTBAG_TEXTURE: Identifier =
+        /**
+         * The texture used for the claim button in the reward widget.
+         * By default, uses "heracles:textures/item/lootbag.png" which is what the builtin Heracles rewards use.
+         */
+        protected val CLAIM_BUTTON_TEXTURE: Identifier =
             Identifier.of("heracles", "textures/item/lootbag.png")
 
         fun getQuestContext(): Pair<String, QuestProgress?> {
@@ -97,7 +100,7 @@ abstract class AbstractPokemonRewardWidget : AbstractPokemonWidget() {
         )
 
         graphics.drawTexture(
-            LOOTBAG_TEXTURE, buttonX + 2, buttonY + 2,
+            CLAIM_BUTTON_TEXTURE, buttonX + 2, buttonY + 2,
             0f, 0f, 16, 16, 16, 16
         )
 
