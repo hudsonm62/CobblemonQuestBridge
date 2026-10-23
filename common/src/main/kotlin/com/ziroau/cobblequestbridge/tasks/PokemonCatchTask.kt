@@ -1,6 +1,5 @@
 package com.ziroau.cobblequestbridge.tasks
 
-import com.ziroau.cobblequestbridge.CobbleQuestBridge.LOGGER
 import com.cobblemon.mod.common.api.pokemon.PokemonProperties
 import com.cobblemon.mod.common.pokemon.Pokemon
 import com.mojang.serialization.Codec
