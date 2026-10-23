@@ -1,6 +1,5 @@
 package com.ziroau.cobblequestbridge.api.client.settings
 
-import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
 import earth.terrarium.heracles.api.client.settings.Setting
 import earth.terrarium.heracles.api.client.settings.SettingInitializer
 import earth.terrarium.heracles.api.client.settings.base.BooleanSetting
@@ -10,6 +9,8 @@ import earth.terrarium.heracles.api.client.settings.base.TextSetting
 import earth.terrarium.heracles.api.client.settings.base.EnumSetting
 import earth.terrarium.heracles.api.client.settings.base.QuestIconSetting
 import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
+import com.ziroau.cobblequestbridge.api.client.settings.base.StringListSetting
+import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
 import net.minecraft.client.gui.widget.ClickableWidget
 
 /**
@@ -42,6 +43,10 @@ abstract class AbstractSettingInitializer<T> : SettingInitializer<T> {
     @Suppress("UNCHECKED_CAST")
     protected fun doubleSetting(): Setting<Double, ClickableWidget> =
         DoubleSetting.INSTANCE as Setting<Double, ClickableWidget>
+
+    @Suppress("UNCHECKED_CAST")
+    fun stringListSetting(): Setting<List<String>, ClickableWidget> =
+        StringListSetting as Setting<List<String>, ClickableWidget>
 
     @Suppress("UNCHECKED_CAST")
     protected fun questIconSetting(): Setting<ItemQuestIcon, ClickableWidget> =

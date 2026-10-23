@@ -6,7 +6,9 @@ object BridgeRewards {
 
     fun register() {
         BridgeRewardsRegistry.registerAll(
-            RewardPokemon.TYPE
+            RewardPokemon.TYPE,
+            MoLangScriptReward.TYPE,
+            MoLangCommandsReward.TYPE
         )
     }
 }

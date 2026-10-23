@@ -1,0 +1,2 @@
+'// testing script for molang rewards - cobblequestbridge:helloworld';
+q.player.tell('Hello World!');

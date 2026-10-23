@@ -20,6 +20,7 @@
 **/LICENSE       text  eol=lf
 **/CODEOWNERS    text  eol=lf
 *.xml            text  eol=lf
+*.molang         text  eol=lf
 
 ### Gradle
 **/*.gradle      text eol=lf

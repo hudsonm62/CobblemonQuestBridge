@@ -98,6 +98,27 @@ Rewards Pokémon to the player.
 | `species`    | `String` | Species of Pokémon to reward                 |
 | `attributes` | `String` | Cobblemon attributes to apply, i.e. `lvl=42` |
 
+#### MoLang Script Reward
+
+**Reward ID:** `cobblequestbridge:molangscript_reward`
+
+Executes a registered MoLang script when the reward is claimed - Runs in `player` context.
+Automatically prepends `cobblemon:` if a namespace is not provided (e.g. `my_script` becomes `cobblemon:my_script`)
+
+| Property | Type     | Description                                |
+| -------- | -------- | ------------------------------------------ |
+| `script` | `String` | Identifier of the MoLang script to execute |
+
+#### MoLang Commands Reward
+
+**Reward ID:** `cobblequestbridge:molangcommands_reward`
+
+Executes a set of MoLang Commands when the reward is claimed - Runs in `player` context.
+
+| Property   | Type           | Description                          |
+| ---------- | -------------- | ------------------------------------ |
+| `commands` | `List<String>` | A list of MoLang Commands to execute |
+
 ### MoLang Extensions
 
 Cobblemon Quest Bridge extends MoLang with functions for interacting with the quest system:
