@@ -9,6 +9,14 @@
 - MultiLineString Setting Support in Quest Editor
 - Some missing comments to common functions
 
+### Changed
+
+- `BattleTypeEnum.alternateTranslation()` to return `MutableText`
+
+### Removed
+
+- Several now unused imports
+
 [0.0.3]: https://modrinth.com/mod/cobblemon-quest-bridge/version/0.0.3
 
 ## [0.0.2] - 2026-10-22

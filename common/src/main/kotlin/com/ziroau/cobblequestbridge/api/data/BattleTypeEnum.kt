@@ -1,6 +1,7 @@
 package com.ziroau.cobblequestbridge.api.data
 
 import com.cobblemon.mod.common.api.battles.model.PokemonBattle
+import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.StringIdentifiable
 
@@ -39,7 +40,7 @@ enum class BattleTypeEnum : StringIdentifiable {
          * Alternate translation for the battle type, used in certain contexts where a different wording is preferred.
          * For example, "PvW" might be translated instead as "Wild" for nicer display.
          */
-        fun BattleTypeEnum.alternateTranslation(): Text {
+        fun BattleTypeEnum.alternateTranslation(): MutableText {
             return Text.translatable("gui.cobblequestbridge.battletype.${this.name.lowercase()}.alternate")
         }
     }
