@@ -134,8 +134,8 @@ Several interfaces and functions are provided for rapidly adding new Pokémon-th
 ```gradle
 repositories {
     maven {
-        name = "Modrinth"
-        url = "https://api.modrinth.com/maven"
+        name = "ziro's maven"
+        url = "https://maven.ziroau.com"
     }
 }
 dependencies {}

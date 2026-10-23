@@ -168,3 +168,27 @@ jobs:
           fail-mode: fail
           retry-attempts: 2
           retry-delay: 10000
+
+      - name: 🚀 ziro maven (Fabric)
+        uses: hudsonm62/maven/.github/actions/publish-maven@master
+        with:
+          repository: hudsonm62/maven
+          token: ${{ secrets.MAVEN_REPO_PAT }}
+          group-id: com.ziroau
+          artifact-id: cobblemonquestbridge
+          version: ${{ steps.get-version.outputs.version }}+fabric
+          file: fabric/build/libs/cobblemonquestbridge-${{ steps.get-version.outputs.version }}+fabric.jar
+          sources: fabric/build/libs/cobblemonquestbridge-${{ steps.get-version.outputs.version }}+fabric-sources.jar
+          # javadoc: fabric/build/libs/cobblemonquestbridge-${{ steps.get-version.outputs.version }}+fabric-javadoc.jar
+
+      - name: 🚀 ziro maven (NeoForge)
+        uses: hudsonm62/maven/.github/actions/publish-maven@master
+        with:
+          repository: hudsonm62/maven
+          token: ${{ secrets.MAVEN_REPO_PAT }}
+          group-id: com.ziroau
+          artifact-id: cobblemonquestbridge
+          version: ${{ steps.get-version.outputs.version }}+neoforge
+          file: neoforge/build/libs/cobblemonquestbridge-${{ steps.get-version.outputs.version }}+neoforge.jar
+          sources: neoforge/build/libs/cobblemonquestbridge-${{ steps.get-version.outputs.version }}+neoforge-sources.jar
+          # javadoc: neoforge/build/libs/cobblemonquestbridge-${{ steps.get-version.outputs.version }}+neoforge-javadoc.jar
