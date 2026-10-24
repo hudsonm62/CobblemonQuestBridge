@@ -1,6 +1,6 @@
 # Cobblemon Quest Bridge
 
-**Cobblemon integration for Heracles (aka Odyssey Quests), available for Fabric and NeoForge.**
+**Cobblemon integration bridge for Heracles (aka Odyssey Quests) for Fabric and NeoForge.**
 
 Track captures, defeats, and victories through tasks, reward players with Pokémon and interact with quest progression through MoLang extensions.
 
@@ -16,8 +16,6 @@ Track captures, defeats, and victories through tasks, reward players with Pokém
 > Both Cobblemon Quest Bridge and the [Heracles 1.21.1 port](https://github.com/terrarium-earth/Heracles/tree/1.21.1) are actively under development.
 >
 > Expect frequent updates, API changes, and potentially breaking changes.
-
----
 
 ## Tasks & Rewards
 
@@ -129,7 +127,7 @@ TBA
 
 For extending Cobblemon Quest Bridge, see files under [`common/src/main/kotlin/com/ziroau/cobblequestbridge/api`](https://github.com/hudsonm62/cobblemonquestbridge/tree/master/common/src/main/kotlin/com/ziroau/cobblequestbridge/api)
 
-Several interfaces and functions are provided for rapidly adding new Pokémon-themed tasks, rewards and UI elements.
+Several interfaces and functions are provided for rapidly adding new Pokémon-themed tasks, rewards and UI elements to Heracles/Odyssey Quests.
 
 ```gradle
 repositories {
@@ -138,10 +136,10 @@ repositories {
         url = "https://maven.ziroau.com"
     }
 }
-dependencies {}
+dependencies {
+    modImplementation("com.ziroau:cobblemonquestbridge:1.0.0+fabric")
+}
 ```
-
----
 
 ## Permissions & Modpack Usage
 
@@ -157,5 +155,3 @@ All I ask is that you:
   - Please don't re-upload the mod to other platforms.
 - **Respect authorship.**
   - Don't claim the mod or its code as your own.
-
-Thanks for supporting the project! ❤️
