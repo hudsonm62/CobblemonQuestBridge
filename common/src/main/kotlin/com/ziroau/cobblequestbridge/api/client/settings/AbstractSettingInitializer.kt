@@ -45,7 +45,7 @@ abstract class AbstractSettingInitializer<T> : SettingInitializer<T> {
         DoubleSetting.INSTANCE as Setting<Double, ClickableWidget>
 
     @Suppress("UNCHECKED_CAST")
-    fun stringListSetting(): Setting<List<String>, ClickableWidget> =
+    protected fun stringListSetting(): Setting<List<String>, ClickableWidget> =
         StringListSetting as Setting<List<String>, ClickableWidget>
 
     @Suppress("UNCHECKED_CAST")
