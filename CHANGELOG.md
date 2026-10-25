@@ -1,5 +1,19 @@
 # ChangeLog
 
+## [0.0.4] - 2026-10-xx
+
+### Added
+
+- Some MoLang functions
+
+### Changed
+
+- Long Colour conversions when used, instead of on load
+
+### Fixed
+
+- Missing modifier in setting initializer
+
 ## [0.0.3] - 2026-10-23
 
 ### Added
