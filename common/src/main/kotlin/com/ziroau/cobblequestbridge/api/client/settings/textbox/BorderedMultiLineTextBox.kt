@@ -12,15 +12,15 @@ class BorderedMultiLineTextBox(
     old: MultiLineTextBox?, font: TextRenderer,
     width: Int, height: Int,
     highlighter: TextHighlighter,
-    var fillColour: Int = 0xFF202020.toInt(),
-    var borderColour: Int = 0xFF555555.toInt(),
-    var borderColourFocused: Int = 0xFFFFFFFF.toInt()
+    var fillColour: Long = 0xFF202020,
+    var borderColour: Long = 0xFF555555,
+    var borderColourFocused: Long = 0xFFFFFFFF
 ) : MultiLineTextBox(old, font, width, height, highlighter) {
     override fun drawBox(context: DrawContext) {
         context.fill(
             x, y,
             x + width, y + height,
-            fillColour
+            fillColour.toInt()
         )
 
         val borderColourResult = if (isFocused)
@@ -28,6 +28,6 @@ class BorderedMultiLineTextBox(
         else
             borderColour
 
-        context.drawBorder(x, y, width, height, borderColourResult)
+        context.drawBorder(x, y, width, height, borderColourResult.toInt())
     }
 }
