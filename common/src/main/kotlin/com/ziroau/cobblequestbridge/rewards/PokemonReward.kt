@@ -9,7 +9,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.ziroau.cobblequestbridge.CobbleQuestBridge
 import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
-import com.ziroau.cobblequestbridge.tasks.PokemonCatchTask
 import earth.terrarium.heracles.api.quests.QuestIcon
 import earth.terrarium.heracles.api.quests.QuestIcons
 import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
@@ -28,7 +27,7 @@ import java.util.stream.Stream
  * The properties are parsed separately for each Pokémon, so unforced values
  * (IVs, gender, shininess, etc.) are rolled independently.
  */
-data class RewardPokemon(
+data class PokemonReward(
     private val rewardId: String,
     val species: String = "pikachu",
     val attributes: String = "",
@@ -37,10 +36,10 @@ data class RewardPokemon(
     val descriptionOverride: String,
     val pokemonIconOverride: String,
     val iconOverride: QuestIcon<*> = ItemQuestIcon.AIR
-) : QuestReward<RewardPokemon>, CustomizableQuestElement {
+) : QuestReward<PokemonReward>, CustomizableQuestElement {
 
     override fun id(): String = rewardId
-    override fun type(): QuestRewardType<RewardPokemon> = TYPE
+    override fun type(): QuestRewardType<PokemonReward> = TYPE
 
     override fun title(): String = titleOverride
     override fun description(): String = descriptionOverride
@@ -90,40 +89,40 @@ data class RewardPokemon(
 
     companion object {
         @JvmField
-        val TYPE: QuestRewardType<RewardPokemon> = Type()
+        val TYPE: QuestRewardType<PokemonReward> = Type()
     }
 
-    private class Type : QuestRewardType<RewardPokemon> {
+    private class Type : QuestRewardType<PokemonReward> {
         override fun id(): Identifier = Identifier.of(CobbleQuestBridge.MOD_ID, "pokemon_reward")
 
-        override fun codec(id: String): MapCodec<RewardPokemon> =
+        override fun codec(id: String): MapCodec<PokemonReward> =
             RecordCodecBuilder.mapCodec { instance ->
                 instance.group(
-                    RecordCodecBuilder.point<RewardPokemon, String>(id),
+                    RecordCodecBuilder.point<PokemonReward, String>(id),
                     Codec.STRING.fieldOf("species")
-                        .forGetter(RewardPokemon::species),
+                        .forGetter(PokemonReward::species),
 
                     Codec.STRING.optionalFieldOf("attributes", "")
-                        .forGetter(RewardPokemon::attributes),
+                        .forGetter(PokemonReward::attributes),
 
                     Codec.INT.optionalFieldOf("amount", 1)
-                        .forGetter(RewardPokemon::amount),
+                        .forGetter(PokemonReward::amount),
 
                     Codec.STRING.optionalFieldOf("title", "")
-                        .forGetter(RewardPokemon::titleOverride),
+                        .forGetter(PokemonReward::titleOverride),
 
                     Codec.STRING.optionalFieldOf("description", "")
-                        .forGetter(RewardPokemon::descriptionOverride),
+                        .forGetter(PokemonReward::descriptionOverride),
 
                     Codec.STRING.optionalFieldOf("pokemonIcon", "")
-                        .forGetter(RewardPokemon::pokemonIconOverride),
+                        .forGetter(PokemonReward::pokemonIconOverride),
 
                     QuestIcons.CODEC
                         .lenientOptionalFieldOf("icon", ItemQuestIcon.AIR)
-                        .forGetter(RewardPokemon::iconOverride)
+                        .forGetter(PokemonReward::iconOverride)
 
                 ).apply(instance) { rewardId, species, attributes, amount, title, description, pokemonIcon, icon ->
-                    RewardPokemon(rewardId, species, attributes, amount, title, description, pokemonIcon, icon)
+                    PokemonReward(rewardId, species, attributes, amount, title, description, pokemonIcon, icon)
                 }
             }
     }

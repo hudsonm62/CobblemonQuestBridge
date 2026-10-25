@@ -2,20 +2,20 @@ package com.ziroau.cobblequestbridge.client.rewards.widgets
 
 import com.cobblemon.mod.common.pokemon.RenderablePokemon
 import com.ziroau.cobblequestbridge.api.client.widgets.AbstractPokemonRewardWidget
-import com.ziroau.cobblequestbridge.rewards.RewardPokemon
+import com.ziroau.cobblequestbridge.rewards.PokemonReward
 import earth.terrarium.heracles.api.quests.QuestIcon
 import earth.terrarium.heracles.common.handlers.progress.QuestProgress
 import net.minecraft.text.Text
 
 class PokemonRewardWidget private constructor(
-    override val reward: RewardPokemon,
+    override val reward: PokemonReward,
     override val questId: String,
     override val progress: QuestProgress?,
     override val interactive: Boolean
 ) : AbstractPokemonRewardWidget() {
     companion object {
         @JvmStatic
-        fun of(reward: RewardPokemon, interactive: Boolean): PokemonRewardWidget {
+        fun of(reward: PokemonReward, interactive: Boolean): PokemonRewardWidget {
             val (questId, progress) = getQuestContext()
             return PokemonRewardWidget(
                 reward, questId, progress, interactive

@@ -9,12 +9,12 @@ import com.ziroau.cobblequestbridge.client.rewards.widgets.MoLangScriptRewardWid
 import com.ziroau.cobblequestbridge.client.rewards.widgets.PokemonRewardWidget
 import com.ziroau.cobblequestbridge.rewards.MoLangCommandsReward
 import com.ziroau.cobblequestbridge.rewards.MoLangScriptReward
-import com.ziroau.cobblequestbridge.rewards.RewardPokemon
+import com.ziroau.cobblequestbridge.rewards.PokemonReward
 
 object BridgeRewardsClient {
     fun register() {
         BridgeRewardsClientRegistry.register(
-            RewardPokemon.TYPE,
+            PokemonReward.TYPE,
             PokemonRewardSettings.INSTANCE,
             PokemonRewardWidget::of
         )

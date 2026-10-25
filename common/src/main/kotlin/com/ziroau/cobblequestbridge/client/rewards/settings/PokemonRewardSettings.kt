@@ -1,17 +1,17 @@
 package com.ziroau.cobblequestbridge.client.rewards.settings
 
 import com.ziroau.cobblequestbridge.api.client.settings.AbstractSettingInitializer
-import com.ziroau.cobblequestbridge.rewards.RewardPokemon
+import com.ziroau.cobblequestbridge.rewards.PokemonReward
 import earth.terrarium.heracles.api.client.settings.SettingInitializer
 import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
 
-class PokemonRewardSettings private constructor() : AbstractSettingInitializer<RewardPokemon>() {
+class PokemonRewardSettings private constructor() : AbstractSettingInitializer<PokemonReward>() {
     companion object {
         @JvmField
         val INSTANCE = PokemonRewardSettings()
     }
 
-    override fun create(reward: RewardPokemon?): SettingInitializer.CreationData {
+    override fun create(reward: PokemonReward?): SettingInitializer.CreationData {
         val settings = SettingInitializer.CreationData()
         settings.put("species", textSetting(), reward?.species ?: "pikachu")
         settings.put("attributes", textSetting(), reward?.attributes ?: "")
@@ -24,9 +24,9 @@ class PokemonRewardSettings private constructor() : AbstractSettingInitializer<R
     }
 
     override fun create(
-        id: String, reward: RewardPokemon?, data: SettingInitializer.Data
-    ): RewardPokemon {
-        return RewardPokemon(
+        id: String, reward: PokemonReward?, data: SettingInitializer.Data
+    ): PokemonReward {
+        return PokemonReward(
             id,
             data.get("species", textSetting()).orElse(reward?.species ?: "pikachu"),
             data.get("attributes", textSetting()).orElse(reward?.attributes ?: ""),
