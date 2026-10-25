@@ -38,17 +38,6 @@ object PlayerFunctions : AbstractMoLangFunctionHolder<Player>() {
 
         return hashMapOf(
             // Tasks (a single objective, in any quest)
-            "complete_dummy_task" to func1 { player, dummyId ->
-                /// Completes a dummy task for all quests that have it, regardless of the quest
-
-                val progress = QuestProgressHandler.getProgress(
-                    player.server, player.uuid
-                )
-                progress.testAndProgressTaskType(
-                    player, dummyId, DummyTask.TYPE
-                )
-                DoubleValue.ONE
-            },
 
             "complete_quest_task" to func2 { player, questId, taskId ->
                 /// Completes a specific task in a specific quest, regardless of the task type
@@ -60,11 +49,11 @@ object PlayerFunctions : AbstractMoLangFunctionHolder<Player>() {
                 val task = quest.tasks()[taskId]
                     ?: return@func2 DoubleValue.ZERO
 
-                val progress = QuestProgressHandler.getProgress(
+                val questsProgress = QuestProgressHandler.getProgress(
                     player.server, player.uuid
                 )
 
-                val questProgress = progress.getProgress(questId)
+                val questProgress = questsProgress.getProgress(questId)
                 val taskProgress = questProgress.getTask(task)
 
                 if (taskProgress.isComplete) {
@@ -80,19 +69,46 @@ object PlayerFunctions : AbstractMoLangFunctionHolder<Player>() {
                 )
 
                 // Recalculate quest completion, unlocks and team progress
-                progress.sendOutQuestChanged(
+                questsProgress.sendOutQuestChanged(
                     questId, quest, questProgress, player
                 )
 
                 // Sync updated progress to the client
                 QuestProgressHandler.sync(player, listOf(questId))
 
-                DoubleValue.ONE
+                // sanity return
+                if(taskProgress.isComplete)
+                    return@func2 DoubleValue.ONE
+
+                DoubleValue.ZERO
+            },
+            "has_completed_quest_task" to func2 { player, questId, taskId ->
+                /// Checks if a specific task in a specific quest is completed
+                val questsProgress = QuestProgressHandler.getProgress(player.server, player.uuid)
+                val questProgress = questsProgress.getProgress(questId)
+                val task = QuestHandler.get(questId)?.tasks()?.get(taskId) ?: return@func2 DoubleValue.ZERO
+
+                val taskProgress = questProgress?.getTask(task)
+
+                if (taskProgress != null && taskProgress.isComplete)
+                    return@func2 DoubleValue.ONE
+
+                DoubleValue.ZERO
             },
 
+            // Rewards (collection of rewards in a quest once tasks are marked completed)
+            "claim_quest_reward" to func2 { player, questId, rewardId ->
+                /// Claims a single reward for a specific quest, if all tasks are completed
+                val questObj = QuestHandler.get(questId) ?: return@func2 DoubleValue.ZERO
+                questObj.claimAllowedReward(player, questId, rewardId)
+            },
+            "claim_quest_rewards" to func1 { player, questId ->
+                /// Claims all rewards for a specific quest, if all tasks are completed
+                val questObj = QuestHandler.get(questId) ?: return@func1 DoubleValue.ZERO
+                questObj.claimAllowedRewards(player, questId)
+            },
 
-
-            // Quests (a container of tasks)
+            // Quests (a container of tasks & rewards)
             "complete_quest" to func1 { player, questId ->
                 /// Forcefully Completes a quest
                 //// Warning: This ignores tasks requirements
@@ -103,17 +119,17 @@ object PlayerFunctions : AbstractMoLangFunctionHolder<Player>() {
 
             "has_completed_quest" to func1 { player, questId ->
                 /// Checks if the player has completed a quest
-                val progress = QuestProgressHandler.getProgress(player.server, player.uuid)
-                if (progress.isComplete(questId))
+                val questsProgress = QuestProgressHandler.getProgress(player.server, player.uuid)
+                if (questsProgress.isComplete(questId))
                     return@func1 DoubleValue.ONE
 
                 DoubleValue.ZERO
             },
 
-            "has_active_quest" to func1 { player, questId ->
+            "is_active_quest" to func1 { player, questId ->
                 /// Checks if a quest is active for the player (not completed and started)
-                val progress = QuestProgressHandler.getProgress(player.server, player.uuid)
-                val questProgress = progress.progress()[questId]
+                val questsProgress = QuestProgressHandler.getProgress(player.server, player.uuid)
+                val questProgress = questsProgress.getProgress(questId)
 
                 if (questProgress != null && !questProgress.isComplete)
                     return@func1 DoubleValue.ONE

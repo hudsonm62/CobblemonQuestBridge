@@ -23,13 +23,13 @@ The Cobblemon Quest Bridge adds several new task and reward types to quests.
 
 The following properties are shared by nearly everything to customise its appearance in the Quest Viewer:
 
-| Property      | Type        | Description                                                             |
-| ------------- | ----------- | ----------------------------------------------------------------------- |
-| `amount`      | `Int`       | Number required to complete / reward amount                             |
-| `title`       | `String`    | Override Title / Translation key                                        |
-| `description` | `String`    | Override Description / translation key                                  |
-| `pokemonIcon` | `String`    | Pokémon to display as the icon - Supports attributes (i.e. `shiny=yes`) |
-| `icon`        | `QuestIcon` | Custom item icon override                                               |
+| Property      | Description                                                             |
+| ------------- | ----------------------------------------------------------------------- |
+| `amount`      | Number required to complete / reward amount                             |
+| `title`       | Override Title / Translation key                                        |
+| `description` | Override Description / translation key                                  |
+| `pokemonIcon` | Pokémon to display as the icon - Supports attributes (i.e. `shiny=yes`) |
+| `icon`        | Custom item icon override                                               |
 
 When title or description overrides are not provided, some generic info will be generated instead.
 You can also pass through translation keys to use your own translations.
@@ -51,11 +51,11 @@ Cobblemon Quest Bridge introduces several task types that can be used in quests.
 
 Track Pokémon caught by a player, with optional filters for species, attributes, and minimum level.
 
-| Property     | Type     | Description                                      |
-| ------------ | -------- | ------------------------------------------------ |
-| `species`    | `String` | Species of Pokémon to catch                      |
-| `attributes` | `String` | Cobblemon attribute filters, such as `shiny=yes` |
-| `minLevel`   | `Int`    | Minimum level of the Pokémon                     |
+| Property     | Description                                      |
+| ------------ | ------------------------------------------------ |
+| `species`    | Species of Pokémon to catch                      |
+| `attributes` | Cobblemon attribute filters, such as `shiny=yes` |
+| `minLevel`   | Minimum level of the Pokémon                     |
 
 #### Defeat Pokémon
 
@@ -63,12 +63,12 @@ Track Pokémon caught by a player, with optional filters for species, attributes
 
 Track Pokémon KO'd in battle, with filters for species, attributes, level, and battle type.
 
-| Property     | Type     | Description                                |
-| ------------ | -------- | ------------------------------------------ |
-| `species`    | `String` | Species of Pokémon to defeat               |
-| `attributes` | `String` | Cobblemon attribute filters                |
-| `minLevel`   | `Int`    | Minimum level of the Pokémon               |
-| `battleType` | `Enum`   | Battle type: `ANY`, `PVW`, `PVP`, or `PVN` |
+| Property     | Description                                |
+| ------------ | ------------------------------------------ |
+| `species`    | Species of Pokémon to defeat               |
+| `attributes` | Cobblemon attribute filters                |
+| `minLevel`   | Minimum level of the Pokémon               |
+| `battleType` | Battle type: `ANY`, `PVW`, `PVP`, or `PVN` |
 
 #### Battle Victory
 
@@ -76,10 +76,10 @@ Track Pokémon KO'd in battle, with filters for species, attributes, level, and 
 
 Track battles won by a player, with restrictions on battle type and victory by capture.
 
-| Property             | Type      | Description                                                      |
-| -------------------- | --------- | ---------------------------------------------------------------- |
-| `battleType`         | `Enum`    | Battle type: `ANY`, `PVW`, `PVP`, or `PVN`                       |
-| `ignoreWildCaptures` | `Boolean` | Whether wild Pokémon captures should be ignored (default=`true`) |
+| Property             | Description                                                      |
+| -------------------- | ---------------------------------------------------------------- |
+| `battleType`         | Battle type: `ANY`, `PVW`, `PVP`, or `PVN`                       |
+| `ignoreWildCaptures` | Whether wild Pokémon captures should be ignored (default=`true`) |
 
 ### Reward Types
 
@@ -91,10 +91,10 @@ Reward players when they complete quests.
 
 Rewards Pokémon to the player.
 
-| Property     | Type     | Description                                  |
-| ------------ | -------- | -------------------------------------------- |
-| `species`    | `String` | Species of Pokémon to reward                 |
-| `attributes` | `String` | Cobblemon attributes to apply, i.e. `lvl=42` |
+| Property     | Description                                  |
+| ------------ | -------------------------------------------- |
+| `species`    | Species of Pokémon to reward                 |
+| `attributes` | Cobblemon attributes to apply, i.e. `lvl=42` |
 
 #### MoLang Script Reward
 
@@ -103,9 +103,9 @@ Rewards Pokémon to the player.
 Executes a registered MoLang script when the reward is claimed - Runs in `player` context.
 Automatically prepends `cobblemon:` if a namespace is not provided (e.g. `my_script` becomes `cobblemon:my_script`)
 
-| Property | Type     | Description                                |
-| -------- | -------- | ------------------------------------------ |
-| `script` | `String` | Identifier of the MoLang script to execute |
+| Property | Description                                |
+| -------- | ------------------------------------------ |
+| `script` | Identifier of the MoLang script to execute |
 
 #### MoLang Commands Reward
 
@@ -113,21 +113,33 @@ Automatically prepends `cobblemon:` if a namespace is not provided (e.g. `my_scr
 
 Executes a set of MoLang Commands when the reward is claimed - Runs in `player` context.
 
-| Property   | Type           | Description                          |
-| ---------- | -------------- | ------------------------------------ |
-| `commands` | `List<String>` | A list of MoLang Commands to execute |
+| Property   | Description                          |
+| ---------- | ------------------------------------ |
+| `commands` | A list of MoLang Commands to execute |
 
 ### MoLang Extensions
 
 Cobblemon Quest Bridge extends MoLang with functions for interacting with the quest system:
 
-TBA
+#### Player Functions
+
+`q.player.<function_name>(<args>)`
+
+| Function                                        | Description                                              |
+| ----------------------------------------------- | -------------------------------------------------------- |
+| `complete_quest_task("questId", "taskId")`      | Marks a task as completed                                |
+| `has_completed_quest_task("questId", "taskId")` | Checks if a task has been completed                      |
+| `claim_quest_reward("questId", "rewardId")`     | Claims a completed quest reward                          |
+| `claim_quest_rewards("questId")`                | Claims all rewards in a completed quest                  |
+| `complete_quest("questId")`                     | Forcefully completes a quest                             |
+| `has_completed_quest("questId")`                | Checks if a quest has been completed                     |
+| `is_active_quest("questId")`                    | Checks if a quest is active (not completed, but started) |
 
 ## Developer Info
 
 For extending Cobblemon Quest Bridge, see files under [`common/src/main/kotlin/com/ziroau/cobblequestbridge/api`](https://github.com/hudsonm62/cobblemonquestbridge/tree/master/common/src/main/kotlin/com/ziroau/cobblequestbridge/api)
 
-Several interfaces and functions are provided for rapidly adding new Pokémon-themed tasks, rewards and UI elements to Heracles/Odyssey Quests.
+Several interfaces and functions are provided for rapidly adding new Cobblemon-themed tasks, rewards and UI elements to Heracles/Odyssey Quests.
 
 ```gradle
 repositories {
