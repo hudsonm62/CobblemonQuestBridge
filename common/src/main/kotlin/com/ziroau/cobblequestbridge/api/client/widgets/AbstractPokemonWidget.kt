@@ -200,16 +200,11 @@ abstract class AbstractPokemonWidget : DisplayWidget {
             size, size
         ).use {
             matrices.push()
+            // TODO: look into a dynamic solution for better visibility for smaller & ginormous mons
             try {
-                matrices.translate(
-                    x + size / 2.0,
-                    y + 1.0,
-                    100.0
-                )
-
-                // Scale the model to fit within the icon size
-                // TODO: Need to play with the scaling more
-                matrices.scale(2.6F, 2.6F, 1F)
+                // Model Translation and scale to icon size
+                matrices.translate(x + size / 2.0, y - 4.0, 100.0)
+                matrices.scale(4.0F, 4.0F, 1F)
 
                 // Render the pokemon model with a slight rotation for visibility
                 drawProfilePokemon(
