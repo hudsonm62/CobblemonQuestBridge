@@ -13,7 +13,7 @@ import earth.terrarium.heracles.api.tasks.QuestTaskType
 import net.minecraft.util.Identifier
 
 class PokemonEvolutionTask(
-    private val taskId: String,
+    override val taskId: String,
     val fromSpecies: String = "any",
     val fromAttributes: String = "",
     val toSpecies: String = "any",
@@ -22,9 +22,6 @@ class PokemonEvolutionTask(
     override val amount: Int = 1,
     override val appearance: QuestAppearance
 ) : CountedQuestTask<EvolutionCompleteEvent, PokemonEvolutionTask>, CustomizableQuestElement {
-    override fun id(): String = taskId
-    override fun type(): QuestTaskType<PokemonEvolutionTask> = TYPE
-
     override fun matches(input: EvolutionCompleteEvent): Boolean {
         val fromMon = input.sourcePokemon
         val toMon = input.pokemon
@@ -47,6 +44,7 @@ class PokemonEvolutionTask(
         @JvmField
         val TYPE: QuestTaskType<PokemonEvolutionTask> = Type()
     }
+    override fun type(): QuestTaskType<PokemonEvolutionTask> = TYPE
 
     private class Type : QuestTaskType<PokemonEvolutionTask> {
         override fun id(): Identifier =

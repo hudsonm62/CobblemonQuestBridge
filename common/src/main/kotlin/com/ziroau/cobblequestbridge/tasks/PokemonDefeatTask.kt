@@ -15,7 +15,7 @@ import earth.terrarium.heracles.api.tasks.QuestTaskType
 import net.minecraft.util.Identifier
 
 data class PokemonDefeatTask (
-    private val taskId: String,
+    override val taskId: String,
     val species: String = "any",
     val attributes: String = "",
     val minLevel: Int = 1,
@@ -23,9 +23,6 @@ data class PokemonDefeatTask (
     override val amount: Int = 1,
     override val appearance: QuestAppearance
 ) : CountedQuestTask<BattleFaintedEvent, PokemonDefeatTask>, CustomizableQuestElement {
-    override fun id(): String = taskId
-    override fun type(): QuestTaskType<PokemonDefeatTask> = TYPE
-
     override fun matches(input: BattleFaintedEvent): Boolean {
         if (battleType != BattleTypeEnum.ANY && battleType != BattleTypeEnum.fromBattle(input.battle)) return false
 
@@ -47,6 +44,7 @@ data class PokemonDefeatTask (
         @JvmField
         val TYPE: QuestTaskType<PokemonDefeatTask> = Type()
     }
+    override fun type(): QuestTaskType<PokemonDefeatTask> = TYPE
 
     private class Type : QuestTaskType<PokemonDefeatTask> {
         override fun id(): Identifier =

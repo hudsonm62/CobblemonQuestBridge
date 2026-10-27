@@ -4,6 +4,7 @@
 
 ### Added
 
+- `AbstractQuestTask` & `AbstractQuestReward` for quicker quest element creation
 - `CountedQuestTask` interface for tasks that "count" progression
 - `QuestAppearance` data class for storing common appearance data for tasks/rewards
 - Emojis to Task/Reward Titles (like how Heracles does theirs)

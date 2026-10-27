@@ -4,10 +4,9 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.ziroau.cobblequestbridge.CobbleQuestBridge
-import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.data.QuestAppearance
 import com.ziroau.cobblequestbridge.api.molang.MoLangExecutor
-import earth.terrarium.heracles.api.rewards.QuestReward
+import com.ziroau.cobblequestbridge.api.rewards.AbstractQuestReward
 import earth.terrarium.heracles.api.rewards.QuestRewardType
 import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
@@ -15,14 +14,10 @@ import net.minecraft.util.Identifier
 import java.util.stream.Stream
 
 class MoLangCommandsReward(
-    private val rewardId: String,
+    override val rewardId: String,
     val commands: List<String>,
     override val appearance: QuestAppearance
-) : QuestReward<MoLangCommandsReward>, CustomizableQuestElement {
-
-    override fun id(): String = rewardId
-    override fun type(): QuestRewardType<MoLangCommandsReward> = TYPE
-
+) : AbstractQuestReward<MoLangCommandsReward> {
     override fun reward(player: ServerPlayerEntity): Stream<ItemStack?> {
         if (commands.all { it.isBlank() }) {
             // No commands to execute, return an empty stream
@@ -37,6 +32,7 @@ class MoLangCommandsReward(
         @JvmField
         val TYPE: QuestRewardType<MoLangCommandsReward> = Type()
     }
+    override fun type(): QuestRewardType<MoLangCommandsReward> = TYPE
 
     private class Type : QuestRewardType<MoLangCommandsReward> {
         override fun id(): Identifier = Identifier.of(CobbleQuestBridge.MOD_ID, "molangcommands_reward")

@@ -16,15 +16,13 @@ import net.minecraft.util.Identifier
  * [CountedQuestTask] for catching a Pokémon with optional requirements for species, attributes, and minimum level.
  */
 data class PokemonCatchTask(
-    private val taskId: String,
+    override val taskId: String,
     val species: String = "any",
     val attributes: String = "",
     val minLevel: Int = 1,
     override val amount: Int = 1,
     override val appearance: QuestAppearance
 ) : CountedQuestTask<Pokemon, PokemonCatchTask>, CustomizableQuestElement {
-    override fun id(): String = taskId
-    override fun type(): QuestTaskType<PokemonCatchTask> = TYPE
 
     override fun matches(input: Pokemon): Boolean {
         val caughtMon = input.species.resourceIdentifier
@@ -37,6 +35,7 @@ data class PokemonCatchTask(
         @JvmField
         val TYPE: QuestTaskType<PokemonCatchTask> = Type()
     }
+    override fun type(): QuestTaskType<PokemonCatchTask> = TYPE
 
     private class Type : QuestTaskType<PokemonCatchTask> {
         override fun id(): Identifier =

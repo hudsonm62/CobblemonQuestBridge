@@ -11,9 +11,7 @@ import net.minecraft.nbt.AbstractNbtNumber
  * @param I The type of input this task processes (e.g., an event or action)
  * @param T This type of the subclass of task itself, extending [QuestTask]
  */
-interface CountedQuestTask<I, T : QuestTask<I, AbstractNbtNumber, T>> :
-    QuestTask<I, AbstractNbtNumber, T> {
-
+interface CountedQuestTask<I, T : CountedQuestTask<I, T>> : AbstractQuestTask<I, AbstractNbtNumber, T> {
     val amount: Int
 
     /**

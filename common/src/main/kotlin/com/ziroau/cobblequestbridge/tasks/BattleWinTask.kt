@@ -13,15 +13,12 @@ import earth.terrarium.heracles.api.tasks.QuestTaskType
 import net.minecraft.util.Identifier
 
 data class BattleWinTask(
-    private val taskId: String,
+    override val taskId: String,
     val battleType: BattleTypeEnum = BattleTypeEnum.ANY,
     val ignoreWildCaptures: Boolean,
     override val amount: Int = 1,
     override val appearance: QuestAppearance = DEFAULT_APPEARANCE
 ): CountedQuestTask<BattleVictoryEvent, BattleWinTask>, CustomizableQuestElement {
-    override fun id(): String = taskId
-    override fun type(): QuestTaskType<BattleWinTask> = TYPE
-
     override fun matches(input: BattleVictoryEvent): Boolean {
         if (battleType != BattleTypeEnum.ANY && battleType != BattleTypeEnum.fromBattle(input.battle)) return false
         if (ignoreWildCaptures && input.wasWildCapture) return false
@@ -35,6 +32,7 @@ data class BattleWinTask(
         @JvmField
         val TYPE: QuestTaskType<BattleWinTask> = Type()
     }
+    override fun type(): QuestTaskType<BattleWinTask> = TYPE
 
     private class Type : QuestTaskType<BattleWinTask> {
         override fun id(): Identifier =
