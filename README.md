@@ -61,7 +61,7 @@ Track Pokémon caught by a player, with optional filters for species, attributes
 
 **Task ID:** `cobblequestbridge:pokemon_defeat`
 
-Track Pokémon KO'd in battle, with filters for species, attributes, level, and battle type.
+Track Pokémon KO'd in battle, with optional filters for species, attributes, level, and battle type.
 
 | Property     | Description                                |
 | ------------ | ------------------------------------------ |
@@ -69,6 +69,19 @@ Track Pokémon KO'd in battle, with filters for species, attributes, level, and 
 | `attributes` | Cobblemon attribute filters                |
 | `minLevel`   | Minimum level of the Pokémon               |
 | `battleType` | Battle type: `ANY`, `PVW`, `PVP`, or `PVN` |
+
+#### Evolve Pokémon
+
+**Task ID:** `cobblequestbridge:pokemon_evolution`
+
+Track Pokémon evolutions, with optional filters for species, attributes, and minimum level.
+
+| Property      | Description                       |
+| ------------- | --------------------------------- |
+| `fromSpecies` | Species of Pokémon to evolve      |
+| `toSpecies`   | Species of Pokémon to evolve into |
+| `attributes`  | Cobblemon attribute filters       |
+| `minLevel`    | Minimum level of the Pokémon      |
 
 #### Battle Victory
 

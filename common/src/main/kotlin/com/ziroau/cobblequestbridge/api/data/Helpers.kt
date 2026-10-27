@@ -11,6 +11,7 @@ object Helpers {
      * @return An [Identifier] representing the species, or null if the input is invalid.
      */
     fun parseSpeciesId(species: String): Identifier? {
+        val species = species.trim().lowercase()
         return Identifier.tryParse(
             if (":" in species) {
                 species

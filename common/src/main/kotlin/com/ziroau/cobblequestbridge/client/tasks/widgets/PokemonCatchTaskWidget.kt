@@ -27,8 +27,8 @@ class PokemonCatchTaskWidget(
             pluralizedTranslationText(
                 "",
                 task.amount,
-                getPokemonName(task.species),
-                "tasks.cobblequestbridge.pokemon_catch.title"
+                "tasks.cobblequestbridge.pokemon_catch.title",
+                getPokemonName(task.species)
             )
         )
 
@@ -37,8 +37,8 @@ class PokemonCatchTaskWidget(
             pluralizedTranslationText(
                 task.descriptionOverride,
                 task.amount,
-                getPokemonName(task.species),
-                "tasks.cobblequestbridge.pokemon_catch.description"
+                "tasks.cobblequestbridge.pokemon_catch.description",
+                getPokemonName(task.species)
             )
         )
 }

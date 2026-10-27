@@ -27,8 +27,8 @@ class PokemonDefeatTaskWidget(
             pluralizedTranslationText(
                 task.titleOverride,
                 task.amount,
-                getPokemonName(task.species),
-                "tasks.cobblequestbridge.pokemon_defeat.title"
+                "tasks.cobblequestbridge.pokemon_defeat.title",
+                getPokemonName(task.species)
             )
         )
 
@@ -37,8 +37,8 @@ class PokemonDefeatTaskWidget(
             pluralizedTranslationText(
                 task.descriptionOverride,
                 task.amount,
-                getPokemonName(task.species),
-                "tasks.cobblequestbridge.pokemon_defeat.description"
+                "tasks.cobblequestbridge.pokemon_defeat.description",
+                getPokemonName(task.species)
             )
         )
 }

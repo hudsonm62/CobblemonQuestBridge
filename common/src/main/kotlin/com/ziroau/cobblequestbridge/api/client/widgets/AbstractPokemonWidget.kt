@@ -12,7 +12,6 @@ import com.teamresourceful.resourcefullib.client.utils.RenderUtils
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
 import earth.terrarium.heracles.api.client.DisplayWidget
 import earth.terrarium.heracles.api.quests.QuestIcon
-import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
@@ -139,14 +138,14 @@ abstract class AbstractPokemonWidget : DisplayWidget {
     protected fun pluralizedTranslationText(
         custom: String?,
         amount: Int,
-        name: Any,
-        translationKey: String
+        translationKey: String,
+        vararg args: Any
     ): Text = when {
         custom?.isNotEmpty() ?: false -> Text.literal(custom)
         amount > 1 -> Text.translatable(
-            "$translationKey.plural", amount, name
+            "$translationKey.plural", amount, *args
         )
-        else -> Text.translatable(translationKey, name)
+        else -> Text.translatable(translationKey, *args)
     }
 
     /**
@@ -159,11 +158,10 @@ abstract class AbstractPokemonWidget : DisplayWidget {
      * @return The translated name of the Pokémon species, or a fallback string if not found.
      */
     protected fun getPokemonName(species: String): String {
+        val species = species.trim().lowercase()
         if (species.equals("any", ignoreCase = true)) return "Pokémon"
 
-        val speciesId = parseSpeciesId(species)
-
-        return speciesId
+        return parseSpeciesId(species)
             ?.let { PokemonSpecies.getByIdentifier(it) }
             ?.translatedName?.string
             ?: species.replaceFirstChar { it.uppercase() }

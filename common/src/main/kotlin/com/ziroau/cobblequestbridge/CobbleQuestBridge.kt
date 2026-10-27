@@ -6,6 +6,7 @@ import com.ziroau.cobblequestbridge.tasks.BridgeTasks
 import com.ziroau.cobblequestbridge.rewards.BridgeRewards
 import com.ziroau.cobblequestbridge.events.PokemonCatchHandler
 import com.ziroau.cobblequestbridge.events.PokemonDefeatHandler
+import com.ziroau.cobblequestbridge.events.PokemonEvolutionHandler
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -24,6 +25,7 @@ object CobbleQuestBridge {
     private fun registerEvents() {
         PokemonCatchHandler.register()
         PokemonDefeatHandler.register()
+        PokemonEvolutionHandler.register()
         BattleWinHandler.register()
     }
 }

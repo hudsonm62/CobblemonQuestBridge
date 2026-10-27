@@ -37,8 +37,8 @@ class PokemonRewardWidget private constructor(
             pluralizedTranslationText(
                 reward.titleOverride,
                 reward.amount.coerceAtLeast(1),
+                "rewards.cobblequestbridge.pokemon_reward.title",
                 getPokemonName(reward.species),
-                "rewards.cobblequestbridge.pokemon_reward.title"
             )
         )
 
@@ -47,8 +47,8 @@ class PokemonRewardWidget private constructor(
             pluralizedTranslationText(
                 reward.descriptionOverride,
                 reward.amount.coerceAtLeast(1),
-                getPokemonName(reward.species),
-                "rewards.cobblequestbridge.pokemon_reward.description"
+                "rewards.cobblequestbridge.pokemon_reward.description",
+                getPokemonName(reward.species)
             )
         )
 }

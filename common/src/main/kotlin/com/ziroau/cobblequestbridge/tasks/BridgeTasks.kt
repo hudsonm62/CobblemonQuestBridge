@@ -7,6 +7,7 @@ object BridgeTasks {
         BridgeTasksRegistry.registerAll(
             PokemonCatchTask.TYPE,
             PokemonDefeatTask.TYPE,
+            PokemonEvolutionTask.TYPE,
             BattleWinTask.TYPE
         )
     }

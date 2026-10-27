@@ -4,12 +4,15 @@ import com.ziroau.cobblequestbridge.api.client.registry.BridgeTasksClientRegistr
 import com.ziroau.cobblequestbridge.client.tasks.settings.BattleWinTaskSettings
 import com.ziroau.cobblequestbridge.client.tasks.settings.PokemonCatchTaskSettings
 import com.ziroau.cobblequestbridge.client.tasks.settings.PokemonDefeatTaskSettings
+import com.ziroau.cobblequestbridge.client.tasks.settings.PokemonEvolutionTaskSettings
 import com.ziroau.cobblequestbridge.client.tasks.widgets.BattleWinTaskWidget
 import com.ziroau.cobblequestbridge.client.tasks.widgets.PokemonCatchTaskWidget
 import com.ziroau.cobblequestbridge.client.tasks.widgets.PokemonDefeatTaskWidget
+import com.ziroau.cobblequestbridge.client.tasks.widgets.PokemonEvolutionTaskWidget
 import com.ziroau.cobblequestbridge.tasks.BattleWinTask
 import com.ziroau.cobblequestbridge.tasks.PokemonCatchTask
 import com.ziroau.cobblequestbridge.tasks.PokemonDefeatTask
+import com.ziroau.cobblequestbridge.tasks.PokemonEvolutionTask
 
 object BridgeTasksClient {
     fun register() {
@@ -29,6 +32,15 @@ object BridgeTasksClient {
         ) { progress, task ->
             val defeated = task.storage().readInt(progress.progress()).coerceAtLeast(0)
             "$defeated/${task.amount.coerceAtLeast(1)}"
+        }
+
+        BridgeTasksClientRegistry.register(
+            PokemonEvolutionTask.TYPE,
+            PokemonEvolutionTaskSettings.INSTANCE,
+            ::PokemonEvolutionTaskWidget
+        ) { progress, task ->
+            val evolutions = task.storage().readInt(progress.progress()).coerceAtLeast(0)
+            "$evolutions/${task.amount.coerceAtLeast(1)}"
         }
 
         BridgeTasksClientRegistry.register(
