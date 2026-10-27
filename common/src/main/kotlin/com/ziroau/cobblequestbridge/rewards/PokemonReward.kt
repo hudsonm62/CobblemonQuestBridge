@@ -13,6 +13,8 @@ import com.ziroau.cobblequestbridge.api.rewards.AbstractQuestReward
 import earth.terrarium.heracles.api.rewards.QuestRewardType
 import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.text.Text
+import net.minecraft.util.Formatting
 import net.minecraft.util.Identifier
 import java.util.stream.Stream
 
@@ -29,6 +31,7 @@ data class PokemonReward(
     val species: String = "pikachu",
     val attributes: String = "",
     val amount: Int = 1,
+    val unclaimOnFail: Boolean = true,
     override val appearance: QuestAppearance
 ) : AbstractQuestReward<PokemonReward> {
     override fun reward(player: ServerPlayerEntity): Stream<ItemStack> {
@@ -41,31 +44,47 @@ data class PokemonReward(
                 "[CQB] Cannot claim Pokémon Reward from '{}' for '{}': Invalid species '{}'",
                 rewardId, player.gameProfile.name, species
             )
+            if (unclaimOnFail)
+                markUnclaimed(player)
             return Stream.empty()
         }
 
-        // TODO: Validate party/pc space before generating Pokémon, to avoid wasting them.
-
         val party = Cobblemon.storage.getParty(player)
+        val pc = Cobblemon.storage.getPC(player)
         val count = amount.coerceAtLeast(1)
 
-        for (index in 0 until count) {
-            // Reparse for each iteration: every awarded Pokémon is distinct.
+        // Check combined party and PC capacity.
+        if(unclaimOnFail) {
+            val partySpace = party.size() - party.occupied()
+            val pcSpace = pc.boxes.sumOf { it.unoccupiedSlots }
+            val availableSpace = partySpace + pcSpace
+            if (availableSpace < count) {
+                CobbleQuestBridge.LOGGER.warn(
+                    "[CQB] Cannot deliver Pokémon reward '{}' to '{}': Insufficient storage (required: {} | available: {})",
+                    rewardId, player.gameProfile.name, count, availableSpace
+                )
+                markUnclaimed(player)
+                player.sendMessage(
+                    Text.translatable("chat.cobblequestbridge.pokemon_reward.insufficient_space", count, pokemonSpecies.translatedName)
+                        .formatted(Formatting.RED)
+                )
+                player.sendMessage(
+                    Text.translatable("chat.cobblequestbridge.pokemon_reward.insufficient_space.hint")
+                        .formatted(Formatting.RED)
+                )
+                player.closeHandledScreen()
+                return Stream.empty()
+            }
+        }
+
+        repeat(count) {
+            // Reparse for each iteration: every awarded Pokémon is distinct
             val props = PokemonProperties.parse(attributes)
             // Species field takes precedence over a species embedded in properties.
             props.species = pokemonSpecies.resourceIdentifier.toString()
             props.updateAspects()
-
             val pokemon = props.create(player)
-            // PlayerPartyStore.add() automatically tries the PC when party is full.
-            if (!party.add(pokemon)) {
-                CobbleQuestBridge.LOGGER.error(
-                    "[CQB] Cannot deliver Pokémon reward {} to {}: " +
-                        "party and PC are full (delivered {}/{})",
-                    rewardId, player.gameProfile.name, index, count
-                )
-                break
-            }
+            party.add(pokemon)
         }
 
         // Heracles expects a stream of items for the toast for display purposes
@@ -93,6 +112,9 @@ data class PokemonReward(
 
                     Codec.INT.optionalFieldOf("amount", 1)
                         .forGetter(PokemonReward::amount),
+
+                    Codec.BOOL.optionalFieldOf("unclaimOnFail", true)
+                        .forGetter(PokemonReward::unclaimOnFail),
 
                     QuestAppearance.CODEC
                         .forGetter(PokemonReward::appearance)

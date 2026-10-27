@@ -98,5 +98,8 @@
     "gui.cobblequestbridge.battletype.any.alternate": "Any",
     "gui.cobblequestbridge.battletype.pvp.alternate": "Player",
     "gui.cobblequestbridge.battletype.pvn.alternate": "Trainer",
-    "gui.cobblequestbridge.battletype.pvw.alternate": "Wild"
+    "gui.cobblequestbridge.battletype.pvw.alternate": "Wild",
+
+    "chat.cobblequestbridge.pokemon_reward.insufficient_space": "You don't have enough space in your Party & PC!",
+    "chat.cobblequestbridge.pokemon_reward.insufficient_space.hint": "Make some space, then try claiming this reward again."
 }

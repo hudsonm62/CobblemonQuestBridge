@@ -104,10 +104,14 @@ Reward players when they complete quests.
 
 Rewards Pokémon to the player.
 
-| Property     | Description                                  |
-| ------------ | -------------------------------------------- |
-| `species`    | Species of Pokémon to reward                 |
-| `attributes` | Cobblemon attributes to apply, i.e. `lvl=42` |
+| Property        | Description                                                            |
+| --------------- | ---------------------------------------------------------------------- |
+| `species`       | Species of Pokémon to reward                                           |
+| `attributes`    | Cobblemon attributes to apply, i.e. `lvl=42`                           |
+| `unclaimOnFail` | Marks reward as unclaimed, if claiming failed (i.e. PC/Party was full) |
+
+**Warning**: If you use `unclaimOnFail`, ensure you don't have automatic reward claiming and repeatable quests enabled with this reward.
+Handling for this may be improved in the future.
 
 #### MoLang Script Reward
 
