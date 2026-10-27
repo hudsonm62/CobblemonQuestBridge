@@ -18,7 +18,6 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 import org.joml.Quaternionf
 import org.joml.Vector3f
-import kotlin.use
 
 /**
  * Base class for most Pokémon-related widgets.

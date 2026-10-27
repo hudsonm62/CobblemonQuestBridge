@@ -1,12 +1,12 @@
 package com.ziroau.cobblequestbridge.api.client.widgets
 
+import com.cobblemon.mod.common.pokemon.Pokemon
 import com.cobblemon.mod.common.pokemon.RenderablePokemon
 import earth.terrarium.heracles.api.client.WidgetUtils
 import earth.terrarium.heracles.api.client.theme.QuestScreenTheme
 import earth.terrarium.heracles.api.tasks.QuestTask
 import earth.terrarium.heracles.common.handlers.progress.TaskProgress
 import net.minecraft.client.gui.DrawContext
-import com.cobblemon.mod.common.pokemon.Pokemon
 import net.minecraft.nbt.AbstractNbtNumber
 
 /**
