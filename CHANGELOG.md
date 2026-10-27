@@ -4,6 +4,7 @@
 
 ### Added
 
+- `CountedQuestTask` interface for tasks that "count" progression
 - Emojis to Task/Reward Titles (like how Heracles does theirs)
 
 [0.0.5]: https://github.com/hudsonm62/CobblemonQuestBridge/compare/v0.0.4...master

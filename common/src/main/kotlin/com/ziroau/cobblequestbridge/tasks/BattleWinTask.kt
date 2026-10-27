@@ -7,62 +7,36 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.teamresourceful.resourcefullib.common.codecs.EnumCodec
 import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
 import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
+import com.ziroau.cobblequestbridge.api.tasks.CountedQuestTask
 import earth.terrarium.heracles.api.quests.QuestIcon
 import earth.terrarium.heracles.api.quests.QuestIcons
 import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
-import earth.terrarium.heracles.api.tasks.QuestTask
 import earth.terrarium.heracles.api.tasks.QuestTaskType
-import earth.terrarium.heracles.api.tasks.storage.defaults.IntegerTaskStorage
-import net.minecraft.nbt.AbstractNbtNumber
 import net.minecraft.util.Identifier
 
 data class BattleWinTask(
     private val taskId: String,
     val battleType: BattleTypeEnum = BattleTypeEnum.ANY,
     val ignoreWildCaptures: Boolean,
-    val amount: Int = 1,
+    override val amount: Int = 1,
     val titleOverride: String,
     val descriptionOverride: String,
     val pokemonIconOverride: String,
     val iconOverride: QuestIcon<*> = ItemQuestIcon.AIR
-): QuestTask<BattleVictoryEvent, AbstractNbtNumber, BattleWinTask>, CustomizableQuestElement {
+): CountedQuestTask<BattleVictoryEvent, BattleWinTask>, CustomizableQuestElement {
     override fun id(): String = taskId
-
-    override fun test(
-        type: QuestTaskType<*>,
-        progress: AbstractNbtNumber,
-        input: BattleVictoryEvent
-    ): AbstractNbtNumber {
-        if (battleType != BattleTypeEnum.ANY && battleType != BattleTypeEnum.fromBattle(input.battle))
-            return progress
-
-        // ignore wild captures if the task is set to ignore them
-        if(ignoreWildCaptures && input.wasWildCapture)
-            return progress
-
-        // Increment by 1, capped at the required amount
-        val current = storage().readInt(progress)
-        val target = amount.coerceAtLeast(1)
-        return storage().set(
-            (current + 1).coerceAtMost(target)
-        )
-    }
-
-    override fun getProgress(progress: AbstractNbtNumber): Float {
-        val current = storage().readInt(progress)
-        return (current.toFloat() / amount.coerceAtLeast(1))
-            .coerceIn(0f, 1f)
-    }
-
-    override fun storage(): IntegerTaskStorage = IntegerTaskStorage.INSTANCE
-
-    override fun type(): QuestTaskType<BattleWinTask> = TYPE
-
     override fun title(): String = titleOverride
     override fun description(): String = descriptionOverride
     override fun pokemonIcon(): String = pokemonIconOverride
     override fun icon(): QuestIcon<*> = iconOverride
+    override fun type(): QuestTaskType<BattleWinTask> = TYPE
 
+    override fun matches(input: BattleVictoryEvent): Boolean {
+        if (battleType != BattleTypeEnum.ANY && battleType != BattleTypeEnum.fromBattle(input.battle)) return false
+        if (ignoreWildCaptures && input.wasWildCapture) return false
+
+        return true
+    }
 
     companion object {
         @JvmField
@@ -103,10 +77,7 @@ data class BattleWinTask(
                         .lenientOptionalFieldOf("icon", ItemQuestIcon.AIR)
                         .forGetter(BattleWinTask::iconOverride)
 
-                ).apply(instance) {
-                    taskId, battleType, ignoreWildCaptures, amount, title, description, pokemonIcon, icon ->
-                    BattleWinTask(taskId, battleType, ignoreWildCaptures, amount, title, description, pokemonIcon, icon)
-                }
+                ).apply(instance, ::BattleWinTask)
 
         }
     }

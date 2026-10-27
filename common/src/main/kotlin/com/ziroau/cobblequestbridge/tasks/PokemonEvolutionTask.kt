@@ -1,21 +1,17 @@
 package com.ziroau.cobblequestbridge.tasks
 
 import com.cobblemon.mod.common.api.events.pokemon.evolution.EvolutionCompleteEvent
-import com.cobblemon.mod.common.api.pokemon.PokemonProperties
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
-import com.ziroau.cobblequestbridge.CobbleQuestBridge.LOGGER
 import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.data.Helpers.attributeMatcher
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
+import com.ziroau.cobblequestbridge.api.tasks.CountedQuestTask
 import earth.terrarium.heracles.api.quests.QuestIcon
 import earth.terrarium.heracles.api.quests.QuestIcons
 import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
-import earth.terrarium.heracles.api.tasks.QuestTask
 import earth.terrarium.heracles.api.tasks.QuestTaskType
-import earth.terrarium.heracles.api.tasks.storage.defaults.IntegerTaskStorage
-import net.minecraft.nbt.AbstractNbtNumber
 import net.minecraft.util.Identifier
 
 class PokemonEvolutionTask(
@@ -25,19 +21,20 @@ class PokemonEvolutionTask(
     val toSpecies: String = "any",
     val toAttributes: String = "",
     val minLevel: Int = 1,
-    val amount: Int = 1,
+    override val amount: Int = 1,
     val titleOverride: String,
     val descriptionOverride: String,
     val pokemonIconOverride: String,
     val iconOverride: QuestIcon<*> = ItemQuestIcon.AIR
-) : QuestTask<EvolutionCompleteEvent, AbstractNbtNumber, PokemonEvolutionTask>, CustomizableQuestElement {
+) : CountedQuestTask<EvolutionCompleteEvent, PokemonEvolutionTask>, CustomizableQuestElement {
     override fun id(): String = taskId
+    override fun title(): String = titleOverride
+    override fun description(): String = descriptionOverride
+    override fun pokemonIcon(): String = pokemonIconOverride
+    override fun icon(): QuestIcon<*> = iconOverride
+    override fun type(): QuestTaskType<PokemonEvolutionTask> = TYPE
 
-    override fun test(
-        type: QuestTaskType<*>,
-        progress: AbstractNbtNumber,
-        input: EvolutionCompleteEvent
-    ): AbstractNbtNumber {
+    override fun matches(input: EvolutionCompleteEvent): Boolean {
         val fromMon = input.sourcePokemon
         val toMon = input.pokemon
 
@@ -50,35 +47,10 @@ class PokemonEvolutionTask(
         val matchesToAttributes: Boolean = attributeMatcher(toAttributes).matches(toMon)
 
         // validate against criteria
-        if(
-            !matchesFromSpecies ||
-            !matchesFromAttributes ||
-            !matchesToSpecies ||
-            !matchesToAttributes ||
-            fromMon.level < minLevel
-            ) return progress
-
-        // Increment by 1, capped at the required amount
-        val current = storage().readInt(progress)
-        val target = amount.coerceAtLeast(1)
-        return storage().set(
-            (current + 1).coerceAtMost(target)
-        )
+        return matchesFromSpecies && matchesFromAttributes &&
+            matchesToSpecies && matchesToAttributes &&
+            fromMon.level >= minLevel
     }
-
-    override fun getProgress(progress: AbstractNbtNumber): Float {
-        val current = storage().readInt(progress)
-        return (current.toFloat() / amount.coerceAtLeast(1))
-            .coerceIn(0f, 1f)
-    }
-
-    override fun storage(): IntegerTaskStorage = IntegerTaskStorage.INSTANCE
-    override fun type(): QuestTaskType<PokemonEvolutionTask> = TYPE
-
-    override fun title(): String = titleOverride
-    override fun description(): String = descriptionOverride
-    override fun pokemonIcon(): String = pokemonIconOverride
-    override fun icon(): QuestIcon<*> = iconOverride
 
     companion object {
         @JvmField
@@ -136,10 +108,7 @@ class PokemonEvolutionTask(
                         .optionalFieldOf("icon", ItemQuestIcon.AIR)
                         .forGetter(PokemonEvolutionTask::iconOverride)
 
-                ).apply(instance) {
-                    id, fromSpecies, fromAttributes, toSpecies, toAttributes, minLevel, amount, title, description, pokemonIcon, icon ->
-                    PokemonEvolutionTask(id, fromSpecies, fromAttributes, toSpecies, toAttributes, minLevel, amount, title, description, pokemonIcon, icon)
-                }
+                ).apply(instance, ::PokemonEvolutionTask)
             }
     }
 }
