@@ -9,13 +9,9 @@ import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
 import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.data.Helpers.attributeMatcher
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
+import com.ziroau.cobblequestbridge.api.data.QuestAppearance
 import com.ziroau.cobblequestbridge.api.tasks.CountedQuestTask
-import earth.terrarium.heracles.api.quests.QuestIcon
-import earth.terrarium.heracles.api.quests.QuestIcons
-import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
 import earth.terrarium.heracles.api.tasks.QuestTaskType
-import earth.terrarium.heracles.api.tasks.storage.defaults.IntegerTaskStorage
-import net.minecraft.nbt.AbstractNbtNumber
 import net.minecraft.util.Identifier
 
 data class PokemonDefeatTask (
@@ -25,16 +21,9 @@ data class PokemonDefeatTask (
     val minLevel: Int = 1,
     val battleType: BattleTypeEnum = BattleTypeEnum.ANY,
     override val amount: Int = 1,
-    val titleOverride: String,
-    val descriptionOverride: String,
-    val pokemonIconOverride: String,
-    val iconOverride: QuestIcon<*> = ItemQuestIcon.AIR
+    override val appearance: QuestAppearance
 ) : CountedQuestTask<BattleFaintedEvent, PokemonDefeatTask>, CustomizableQuestElement {
     override fun id(): String = taskId
-    override fun title(): String = titleOverride
-    override fun description(): String = descriptionOverride
-    override fun pokemonIcon(): String = pokemonIconOverride
-    override fun icon(): QuestIcon<*> = iconOverride
     override fun type(): QuestTaskType<PokemonDefeatTask> = TYPE
 
     override fun matches(input: BattleFaintedEvent): Boolean {
@@ -90,21 +79,8 @@ data class PokemonDefeatTask (
                         .optionalFieldOf("amount", 1)
                         .forGetter(PokemonDefeatTask::amount),
 
-                    Codec.STRING
-                        .optionalFieldOf("title", "")
-                        .forGetter(PokemonDefeatTask::titleOverride),
-
-                    Codec.STRING
-                        .optionalFieldOf("description", "")
-                        .forGetter(PokemonDefeatTask::descriptionOverride),
-
-                    Codec.STRING
-                        .optionalFieldOf("pokemonIcon", "")
-                        .forGetter(PokemonDefeatTask::pokemonIconOverride),
-
-                    QuestIcons.CODEC
-                        .lenientOptionalFieldOf("icon", ItemQuestIcon.AIR)
-                        .forGetter(PokemonDefeatTask::iconOverride)
+                    QuestAppearance.CODEC
+                        .forGetter(PokemonDefeatTask::appearance)
 
                 ).apply(instance, ::PokemonDefeatTask)
             }

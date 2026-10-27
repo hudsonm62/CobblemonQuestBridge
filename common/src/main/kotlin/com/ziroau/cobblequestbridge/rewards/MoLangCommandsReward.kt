@@ -5,10 +5,8 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.ziroau.cobblequestbridge.CobbleQuestBridge
 import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
+import com.ziroau.cobblequestbridge.api.data.QuestAppearance
 import com.ziroau.cobblequestbridge.api.molang.MoLangExecutor
-import earth.terrarium.heracles.api.quests.QuestIcon
-import earth.terrarium.heracles.api.quests.QuestIcons
-import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
 import earth.terrarium.heracles.api.rewards.QuestReward
 import earth.terrarium.heracles.api.rewards.QuestRewardType
 import net.minecraft.item.ItemStack
@@ -19,19 +17,11 @@ import java.util.stream.Stream
 class MoLangCommandsReward(
     private val rewardId: String,
     val commands: List<String>,
-    val titleOverride: String,
-    val descriptionOverride: String,
-    val pokemonIconOverride: String,
-    val iconOverride: QuestIcon<*> = ItemQuestIcon.AIR
+    override val appearance: QuestAppearance
 ) : QuestReward<MoLangCommandsReward>, CustomizableQuestElement {
 
     override fun id(): String = rewardId
     override fun type(): QuestRewardType<MoLangCommandsReward> = TYPE
-
-    override fun title(): String = titleOverride
-    override fun description(): String = descriptionOverride
-    override fun pokemonIcon(): String = pokemonIconOverride
-    override fun icon(): QuestIcon<*> = iconOverride
 
     override fun reward(player: ServerPlayerEntity): Stream<ItemStack?> {
         if (commands.all { it.isBlank() }) {
@@ -60,22 +50,10 @@ class MoLangCommandsReward(
                         .optionalFieldOf("commands", emptyList())
                         .forGetter(MoLangCommandsReward::commands),
 
-                    Codec.STRING.optionalFieldOf("title", "")
-                        .forGetter(MoLangCommandsReward::titleOverride),
+                    QuestAppearance.CODEC
+                        .forGetter(MoLangCommandsReward::appearance)
 
-                    Codec.STRING.optionalFieldOf("description", "")
-                        .forGetter(MoLangCommandsReward::descriptionOverride),
-
-                    Codec.STRING.optionalFieldOf("pokemonIcon", "")
-                        .forGetter(MoLangCommandsReward::pokemonIconOverride),
-
-                    QuestIcons.CODEC
-                        .lenientOptionalFieldOf("icon", ItemQuestIcon.AIR)
-                        .forGetter(MoLangCommandsReward::iconOverride)
-
-                ).apply(instance) { rewardId, commands, titleOverride, descriptionOverride, pokemonIconOverride, iconOverride ->
-                    MoLangCommandsReward(rewardId, commands, titleOverride, descriptionOverride, pokemonIconOverride, iconOverride)
-                }
+                ).apply(instance, ::MoLangCommandsReward)
             }
     }
 }

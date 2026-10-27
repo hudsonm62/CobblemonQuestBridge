@@ -9,9 +9,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.ziroau.cobblequestbridge.CobbleQuestBridge
 import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
-import earth.terrarium.heracles.api.quests.QuestIcon
-import earth.terrarium.heracles.api.quests.QuestIcons
-import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
+import com.ziroau.cobblequestbridge.api.data.QuestAppearance
 import earth.terrarium.heracles.api.rewards.QuestReward
 import earth.terrarium.heracles.api.rewards.QuestRewardType
 import net.minecraft.item.ItemStack
@@ -32,19 +30,10 @@ data class PokemonReward(
     val species: String = "pikachu",
     val attributes: String = "",
     val amount: Int = 1,
-    val titleOverride: String,
-    val descriptionOverride: String,
-    val pokemonIconOverride: String,
-    val iconOverride: QuestIcon<*> = ItemQuestIcon.AIR
+    override val appearance: QuestAppearance
 ) : QuestReward<PokemonReward>, CustomizableQuestElement {
-
     override fun id(): String = rewardId
     override fun type(): QuestRewardType<PokemonReward> = TYPE
-
-    override fun title(): String = titleOverride
-    override fun description(): String = descriptionOverride
-    override fun pokemonIcon(): String = pokemonIconOverride
-    override fun icon(): QuestIcon<*> = iconOverride
 
     override fun reward(player: ServerPlayerEntity): Stream<ItemStack> {
         val speciesId = parseSpeciesId(species) ?: return Stream.empty()
@@ -108,22 +97,10 @@ data class PokemonReward(
                     Codec.INT.optionalFieldOf("amount", 1)
                         .forGetter(PokemonReward::amount),
 
-                    Codec.STRING.optionalFieldOf("title", "")
-                        .forGetter(PokemonReward::titleOverride),
+                    QuestAppearance.CODEC
+                        .forGetter(PokemonReward::appearance)
 
-                    Codec.STRING.optionalFieldOf("description", "")
-                        .forGetter(PokemonReward::descriptionOverride),
-
-                    Codec.STRING.optionalFieldOf("pokemonIcon", "")
-                        .forGetter(PokemonReward::pokemonIconOverride),
-
-                    QuestIcons.CODEC
-                        .lenientOptionalFieldOf("icon", ItemQuestIcon.AIR)
-                        .forGetter(PokemonReward::iconOverride)
-
-                ).apply(instance) { rewardId, species, attributes, amount, title, description, pokemonIcon, icon ->
-                    PokemonReward(rewardId, species, attributes, amount, title, description, pokemonIcon, icon)
-                }
+                ).apply(instance, ::PokemonReward)
             }
     }
 }

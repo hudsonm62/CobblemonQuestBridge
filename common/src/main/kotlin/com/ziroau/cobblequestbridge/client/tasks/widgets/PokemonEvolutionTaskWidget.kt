@@ -20,7 +20,7 @@ class PokemonEvolutionTaskWidget(
 
     override val widgetTitle: Text = task.titleOr(
         pluralizedTranslationText(
-            task.titleOverride,
+            task.appearance.titleOverride,
             task.amount,
             "tasks.cobblequestbridge.pokemon_evolution.title",
             getPokemonName(task.fromSpecies), getPokemonName(task.toSpecies)
@@ -29,7 +29,7 @@ class PokemonEvolutionTaskWidget(
 
     override val widgetDescription: Text = task.descriptionOr(
         pluralizedTranslationText(
-            task.descriptionOverride,
+            task.appearance.descriptionOverride,
             task.amount,
             "tasks.cobblequestbridge.pokemon_evolution.description",
             getPokemonName(task.fromSpecies), getPokemonName(task.toSpecies),

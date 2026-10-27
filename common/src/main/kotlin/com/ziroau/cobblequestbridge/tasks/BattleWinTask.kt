@@ -7,10 +7,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.teamresourceful.resourcefullib.common.codecs.EnumCodec
 import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
 import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
+import com.ziroau.cobblequestbridge.api.data.QuestAppearance
 import com.ziroau.cobblequestbridge.api.tasks.CountedQuestTask
-import earth.terrarium.heracles.api.quests.QuestIcon
-import earth.terrarium.heracles.api.quests.QuestIcons
-import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
 import earth.terrarium.heracles.api.tasks.QuestTaskType
 import net.minecraft.util.Identifier
 
@@ -19,16 +17,9 @@ data class BattleWinTask(
     val battleType: BattleTypeEnum = BattleTypeEnum.ANY,
     val ignoreWildCaptures: Boolean,
     override val amount: Int = 1,
-    val titleOverride: String,
-    val descriptionOverride: String,
-    val pokemonIconOverride: String,
-    val iconOverride: QuestIcon<*> = ItemQuestIcon.AIR
+    override val appearance: QuestAppearance = DEFAULT_APPEARANCE
 ): CountedQuestTask<BattleVictoryEvent, BattleWinTask>, CustomizableQuestElement {
     override fun id(): String = taskId
-    override fun title(): String = titleOverride
-    override fun description(): String = descriptionOverride
-    override fun pokemonIcon(): String = pokemonIconOverride
-    override fun icon(): QuestIcon<*> = iconOverride
     override fun type(): QuestTaskType<BattleWinTask> = TYPE
 
     override fun matches(input: BattleVictoryEvent): Boolean {
@@ -39,6 +30,8 @@ data class BattleWinTask(
     }
 
     companion object {
+        val DEFAULT_APPEARANCE = QuestAppearance(pokemonIconOverride = "pikachu")
+
         @JvmField
         val TYPE: QuestTaskType<BattleWinTask> = Type()
     }
@@ -64,18 +57,9 @@ data class BattleWinTask(
                     Codec.INT.optionalFieldOf("amount", 1)
                         .forGetter(BattleWinTask::amount),
 
-                    Codec.STRING.optionalFieldOf("title", "")
-                        .forGetter(BattleWinTask::titleOverride),
-
-                    Codec.STRING.optionalFieldOf("description", "")
-                        .forGetter(BattleWinTask::descriptionOverride),
-
-                    Codec.STRING.optionalFieldOf("pokemonIcon", "pikachu")
-                        .forGetter(BattleWinTask::pokemonIconOverride),
-
-                    QuestIcons.CODEC
-                        .lenientOptionalFieldOf("icon", ItemQuestIcon.AIR)
-                        .forGetter(BattleWinTask::iconOverride)
+                    QuestAppearance
+                        .codec(DEFAULT_APPEARANCE)
+                        .forGetter(BattleWinTask::appearance)
 
                 ).apply(instance, ::BattleWinTask)
 

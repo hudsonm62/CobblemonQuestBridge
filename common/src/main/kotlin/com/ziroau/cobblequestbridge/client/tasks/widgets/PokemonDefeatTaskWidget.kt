@@ -25,7 +25,7 @@ class PokemonDefeatTaskWidget(
     override val widgetTitle: Text
         get() = task.titleOr(
             pluralizedTranslationText(
-                task.titleOverride,
+                task.appearance.titleOverride,
                 task.amount,
                 "tasks.cobblequestbridge.pokemon_defeat.title",
                 getPokemonName(task.species)
@@ -35,7 +35,7 @@ class PokemonDefeatTaskWidget(
     override val widgetDescription: Text
         get() = task.descriptionOr(
             pluralizedTranslationText(
-                task.descriptionOverride,
+                task.appearance.descriptionOverride,
                 task.amount,
                 "tasks.cobblequestbridge.pokemon_defeat.description",
                 getPokemonName(task.species)

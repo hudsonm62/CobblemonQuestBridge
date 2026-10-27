@@ -6,10 +6,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.ziroau.cobblequestbridge.CobbleQuestBridge
 import com.ziroau.cobblequestbridge.CobbleQuestBridge.LOGGER
 import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
+import com.ziroau.cobblequestbridge.api.data.QuestAppearance
 import com.ziroau.cobblequestbridge.api.molang.MoLangExecutor
-import earth.terrarium.heracles.api.quests.QuestIcon
-import earth.terrarium.heracles.api.quests.QuestIcons
-import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
 import earth.terrarium.heracles.api.rewards.QuestReward
 import earth.terrarium.heracles.api.rewards.QuestRewardType
 import net.minecraft.item.ItemStack
@@ -20,19 +18,10 @@ import java.util.stream.Stream
 class MoLangScriptReward(
     private val rewardId: String,
     val script: String,
-    val titleOverride: String,
-    val descriptionOverride: String,
-    val pokemonIconOverride: String,
-    val iconOverride: QuestIcon<*> = ItemQuestIcon.AIR
+    override val appearance: QuestAppearance
 ) : QuestReward<MoLangScriptReward>, CustomizableQuestElement {
-
     override fun id(): String = rewardId
     override fun type(): QuestRewardType<MoLangScriptReward> = TYPE
-
-    override fun title(): String = titleOverride
-    override fun description(): String = descriptionOverride
-    override fun pokemonIcon(): String = pokemonIconOverride
-    override fun icon(): QuestIcon<*> = iconOverride
 
     override fun reward(player: ServerPlayerEntity): Stream<ItemStack?>? {
         val scriptId = Identifier.tryParse(
@@ -65,22 +54,10 @@ class MoLangScriptReward(
                     Codec.STRING.fieldOf("script")
                         .forGetter(MoLangScriptReward::script),
 
-                    Codec.STRING.optionalFieldOf("title", "")
-                        .forGetter(MoLangScriptReward::titleOverride),
+                    QuestAppearance.CODEC
+                        .forGetter(MoLangScriptReward::appearance)
 
-                    Codec.STRING.optionalFieldOf("description", "")
-                        .forGetter(MoLangScriptReward::descriptionOverride),
-
-                    Codec.STRING.optionalFieldOf("pokemonIcon", "")
-                        .forGetter(MoLangScriptReward::pokemonIconOverride),
-
-                    QuestIcons.CODEC
-                        .lenientOptionalFieldOf("icon", ItemQuestIcon.AIR)
-                        .forGetter(MoLangScriptReward::iconOverride)
-
-                ).apply(instance) { rewardId, script, title, description, pokemonIcon, icon ->
-                    MoLangScriptReward(rewardId, script, title, description, pokemonIcon, icon)
-                }
+                ).apply(instance, ::MoLangScriptReward)
             }
     }
 }

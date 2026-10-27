@@ -35,7 +35,7 @@ class PokemonRewardWidget private constructor(
     override val widgetTitle: Text
         get() = reward.titleOr(
             pluralizedTranslationText(
-                reward.titleOverride,
+                reward.appearance.titleOverride,
                 reward.amount.coerceAtLeast(1),
                 "rewards.cobblequestbridge.pokemon_reward.title",
                 getPokemonName(reward.species),
@@ -45,7 +45,7 @@ class PokemonRewardWidget private constructor(
     override val widgetDescription: Text
         get() = reward.descriptionOr(
             pluralizedTranslationText(
-                reward.descriptionOverride,
+                reward.appearance.descriptionOverride,
                 reward.amount.coerceAtLeast(1),
                 "rewards.cobblequestbridge.pokemon_reward.description",
                 getPokemonName(reward.species)

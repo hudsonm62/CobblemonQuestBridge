@@ -25,7 +25,7 @@ class PokemonCatchTaskWidget(
     override val widgetTitle: Text
         get() = task.titleOr(
             pluralizedTranslationText(
-                "",
+                task.appearance.titleOverride,
                 task.amount,
                 "tasks.cobblequestbridge.pokemon_catch.title",
                 getPokemonName(task.species)
@@ -35,7 +35,7 @@ class PokemonCatchTaskWidget(
     override val widgetDescription: Text
         get() = task.descriptionOr(
             pluralizedTranslationText(
-                task.descriptionOverride,
+                task.appearance.descriptionOverride,
                 task.amount,
                 "tasks.cobblequestbridge.pokemon_catch.description",
                 getPokemonName(task.species)

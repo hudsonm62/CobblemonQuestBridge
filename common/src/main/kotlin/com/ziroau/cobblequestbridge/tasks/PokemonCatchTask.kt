@@ -9,9 +9,6 @@ import com.ziroau.cobblequestbridge.api.data.Helpers.attributeMatcher
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
 import com.ziroau.cobblequestbridge.api.data.QuestAppearance
 import com.ziroau.cobblequestbridge.api.tasks.CountedQuestTask
-import earth.terrarium.heracles.api.quests.QuestIcon
-import earth.terrarium.heracles.api.quests.QuestIcons
-import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
 import earth.terrarium.heracles.api.tasks.QuestTaskType
 import net.minecraft.util.Identifier
 
@@ -24,16 +21,9 @@ data class PokemonCatchTask(
     val attributes: String = "",
     val minLevel: Int = 1,
     override val amount: Int = 1,
-    val titleOverride: String,
-    val descriptionOverride: String,
-    val pokemonIconOverride: String,
-    val iconOverride: QuestIcon<*> = ItemQuestIcon.AIR,
+    override val appearance: QuestAppearance
 ) : CountedQuestTask<Pokemon, PokemonCatchTask>, CustomizableQuestElement {
     override fun id(): String = taskId
-    override fun title(): String = titleOverride
-    override fun description(): String = descriptionOverride
-    override fun pokemonIcon(): String = pokemonIconOverride
-    override fun icon(): QuestIcon<*> = iconOverride
     override fun type(): QuestTaskType<PokemonCatchTask> = TYPE
 
     override fun matches(input: Pokemon): Boolean {
@@ -75,21 +65,8 @@ data class PokemonCatchTask(
                         .optionalFieldOf("amount", 1)
                         .forGetter(PokemonCatchTask::amount),
 
-                    Codec.STRING
-                        .optionalFieldOf("title", "")
-                        .forGetter(PokemonCatchTask::titleOverride),
-
-                    Codec.STRING
-                        .optionalFieldOf("description", "")
-                        .forGetter(PokemonCatchTask::descriptionOverride),
-
-                    Codec.STRING
-                        .optionalFieldOf("pokemonIcon", "")
-                        .forGetter(PokemonCatchTask::pokemonIconOverride),
-
-                    QuestIcons.CODEC
-                        .lenientOptionalFieldOf("icon", ItemQuestIcon.AIR)
-                        .forGetter(PokemonCatchTask::iconOverride)
+                    QuestAppearance.CODEC
+                        .forGetter(PokemonCatchTask::appearance)
                 ).apply(instance, ::PokemonCatchTask)
             }
     }

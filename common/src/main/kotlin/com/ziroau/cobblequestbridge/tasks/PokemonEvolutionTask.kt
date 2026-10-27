@@ -7,10 +7,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.data.Helpers.attributeMatcher
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
+import com.ziroau.cobblequestbridge.api.data.QuestAppearance
 import com.ziroau.cobblequestbridge.api.tasks.CountedQuestTask
-import earth.terrarium.heracles.api.quests.QuestIcon
-import earth.terrarium.heracles.api.quests.QuestIcons
-import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
 import earth.terrarium.heracles.api.tasks.QuestTaskType
 import net.minecraft.util.Identifier
 
@@ -22,16 +20,9 @@ class PokemonEvolutionTask(
     val toAttributes: String = "",
     val minLevel: Int = 1,
     override val amount: Int = 1,
-    val titleOverride: String,
-    val descriptionOverride: String,
-    val pokemonIconOverride: String,
-    val iconOverride: QuestIcon<*> = ItemQuestIcon.AIR
+    override val appearance: QuestAppearance
 ) : CountedQuestTask<EvolutionCompleteEvent, PokemonEvolutionTask>, CustomizableQuestElement {
     override fun id(): String = taskId
-    override fun title(): String = titleOverride
-    override fun description(): String = descriptionOverride
-    override fun pokemonIcon(): String = pokemonIconOverride
-    override fun icon(): QuestIcon<*> = iconOverride
     override fun type(): QuestTaskType<PokemonEvolutionTask> = TYPE
 
     override fun matches(input: EvolutionCompleteEvent): Boolean {
@@ -92,21 +83,8 @@ class PokemonEvolutionTask(
                         .optionalFieldOf("amount", 1)
                         .forGetter(PokemonEvolutionTask::amount),
 
-                    Codec.STRING
-                        .optionalFieldOf("title", "")
-                        .forGetter(PokemonEvolutionTask::titleOverride),
-
-                    Codec.STRING
-                        .optionalFieldOf("description", "")
-                        .forGetter(PokemonEvolutionTask::descriptionOverride),
-
-                    Codec.STRING
-                        .optionalFieldOf("pokemonIcon", "")
-                        .forGetter(PokemonEvolutionTask::pokemonIconOverride),
-
-                    QuestIcons.CODEC
-                        .optionalFieldOf("icon", ItemQuestIcon.AIR)
-                        .forGetter(PokemonEvolutionTask::iconOverride)
+                    QuestAppearance.CODEC
+                        .forGetter(PokemonEvolutionTask::appearance)
 
                 ).apply(instance, ::PokemonEvolutionTask)
             }
