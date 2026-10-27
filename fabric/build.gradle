@@ -32,11 +32,13 @@ dependencies {
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 
     // Cobblemon Fabric
-    modImplementation "com.cobblemon:fabric:${rootProject.cobblemon_version}"
+    modImplementation ("com.cobblemon:fabric:${rootProject.cobblemon_version}")
+
     // Heracles
     modImplementation ("earth.terrarium.heracles:heracles-fabric-1.21.1:${heracles_version}")
     modImplementation ("com.teamresourceful.resourcefullib:resourcefullib-fabric-1.21:${resourcefullib_version}")
     modImplementation ("earth.terrarium.hermes:hermes-fabric-1.21.1:${hermes_version}"){ transitive = false }
+    modImplementation ("earth.terrarium.olympus:olympus-fabric-1.21:${olympus_version}")
 }
 
 processResources {
