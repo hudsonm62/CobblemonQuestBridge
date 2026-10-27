@@ -6,6 +6,7 @@
 
 - Evolution Task
 - Some MoLang functions
+- `attributeMatcher()` helper function for matching Pokémon attribute properties
 
 ### Changed
 
@@ -13,6 +14,7 @@
 
 ### Fixed
 
+- Potential issues with namespacing/species names
 - Missing modifier in setting initializer
 
 ## [0.0.3] - 2026-10-23

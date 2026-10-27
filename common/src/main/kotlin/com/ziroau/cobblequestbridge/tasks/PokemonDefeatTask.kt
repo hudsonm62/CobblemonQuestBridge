@@ -8,6 +8,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.teamresourceful.resourcefullib.common.codecs.EnumCodec
 import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
 import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
+import com.ziroau.cobblequestbridge.api.data.Helpers.attributeMatcher
+import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
 import earth.terrarium.heracles.api.quests.QuestIcon
 import earth.terrarium.heracles.api.quests.QuestIcons
 import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
@@ -31,11 +33,6 @@ data class PokemonDefeatTask (
 ) : QuestTask<BattleFaintedEvent, AbstractNbtNumber, PokemonDefeatTask>, CustomizableQuestElement {
     override fun id(): String = taskId
 
-    // Property Parser
-    private val matcher: PokemonProperties by lazy {
-        PokemonProperties.parse(attributes)
-    }
-
     override fun test(
         type: QuestTaskType<*>,
         progress: AbstractNbtNumber,
@@ -51,11 +48,13 @@ data class PokemonDefeatTask (
         if (defeatedBattlePkm.actor.getSide() == sourceBattlePkm.actor.getSide()) return progress
 
         val defeatedMon = defeatedBattlePkm.effectedPokemon
-        val defeatedSpecies = defeatedMon.species.resourceIdentifier.path
+        val defeatedSpecies = defeatedMon.species.resourceIdentifier
 
-        val matchesSpecies: Boolean = species == "any" || defeatedSpecies == species
+        val matchesSpecies: Boolean = species == "any" || defeatedSpecies == parseSpeciesId(species)
 
-        if (!matchesSpecies || defeatedMon.level < minLevel || !matcher.matches(defeatedMon)) return progress
+        if (!matchesSpecies || defeatedMon.level < minLevel ||
+            !attributeMatcher(attributes).matches(defeatedMon)
+            ) return progress
 
         // Increment by 1, capped at the required amount
         val current = storage().readInt(progress)

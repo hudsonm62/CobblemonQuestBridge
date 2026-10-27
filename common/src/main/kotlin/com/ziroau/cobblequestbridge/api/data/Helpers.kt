@@ -1,5 +1,6 @@
 package com.ziroau.cobblequestbridge.api.data
 
+import com.cobblemon.mod.common.api.pokemon.PokemonProperties
 import net.minecraft.util.Identifier
 
 object Helpers {
@@ -20,4 +21,13 @@ object Helpers {
             }
         )
     }
+
+    /**
+     * Parses a string of Pokémon attributes into a [PokemonProperties] object.
+     * The input string should be in the Cobblemon Attributes format (e.g., "`gender=male shiny=true`").
+     *
+     * @param attributes The attributes string to parse (gets trimmed and lowercased).
+     * @return A [PokemonProperties] object representing the parsed attributes, which you can use `matches()` on to check against a Pokémon.
+     */
+    fun attributeMatcher(attributes: String): PokemonProperties = PokemonProperties.parse(attributes.trim().lowercase())
 }

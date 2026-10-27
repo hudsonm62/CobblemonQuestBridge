@@ -47,9 +47,9 @@ data class PokemonReward(
     override fun icon(): QuestIcon<*> = iconOverride
 
     override fun reward(player: ServerPlayerEntity): Stream<ItemStack> {
-        val name = species.trim().lowercase()
-        val speciesId = parseSpeciesId(name)
-        val pokemonSpecies = speciesId?.let(PokemonSpecies::getByIdentifier)
+        val speciesId = parseSpeciesId(species) ?: return Stream.empty()
+        val pokemonSpecies = speciesId.let(PokemonSpecies::getByIdentifier)
+        val name = speciesId.path
 
         if (name.isBlank() || name == "any" || pokemonSpecies == null) {
             CobbleQuestBridge.LOGGER.error(

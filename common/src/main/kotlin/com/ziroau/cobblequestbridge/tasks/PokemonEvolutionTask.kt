@@ -7,6 +7,7 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.ziroau.cobblequestbridge.CobbleQuestBridge.LOGGER
 import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
+import com.ziroau.cobblequestbridge.api.data.Helpers.attributeMatcher
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
 import earth.terrarium.heracles.api.quests.QuestIcon
 import earth.terrarium.heracles.api.quests.QuestIcons
@@ -32,9 +33,6 @@ class PokemonEvolutionTask(
 ) : QuestTask<EvolutionCompleteEvent, AbstractNbtNumber, PokemonEvolutionTask>, CustomizableQuestElement {
     override fun id(): String = taskId
 
-    // Property Parser
-    private fun matcher(attributes: String): PokemonProperties = PokemonProperties.parse(attributes)
-
     override fun test(
         type: QuestTaskType<*>,
         progress: AbstractNbtNumber,
@@ -44,12 +42,12 @@ class PokemonEvolutionTask(
         val toMon = input.pokemon
 
         val matchesFromSpecies: Boolean =
-            fromSpecies == "any" || fromMon.species.resourceIdentifier.path == parseSpeciesId(fromSpecies)?.path
-        val matchesFromAttributes: Boolean = matcher(fromAttributes).matches(fromMon)
+            fromSpecies == "any" || fromMon.species.resourceIdentifier == parseSpeciesId(fromSpecies)
+        val matchesFromAttributes: Boolean = attributeMatcher(fromAttributes).matches(fromMon)
 
         val matchesToSpecies: Boolean =
-            toSpecies == "any" || toMon.species.resourceIdentifier.path == parseSpeciesId(toSpecies)?.path
-        val matchesToAttributes: Boolean = matcher(toAttributes).matches(toMon)
+            toSpecies == "any" || toMon.species.resourceIdentifier == parseSpeciesId(toSpecies)
+        val matchesToAttributes: Boolean = attributeMatcher(toAttributes).matches(toMon)
 
         // validate against criteria
         if(

@@ -6,6 +6,8 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
+import com.ziroau.cobblequestbridge.api.data.Helpers.attributeMatcher
+import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
 import earth.terrarium.heracles.api.quests.QuestIcon
 import earth.terrarium.heracles.api.quests.QuestIcons
 import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
@@ -31,21 +33,16 @@ data class PokemonCatchTask(
 ) : QuestTask<Pokemon, AbstractNbtNumber, PokemonCatchTask>, CustomizableQuestElement {
     override fun id(): String = taskId
 
-    // Attribute Parser
-    private val matcher: PokemonProperties by lazy {
-        PokemonProperties.parse(attributes)
-    }
-
     override fun test(
         type: QuestTaskType<*>,
         progress: AbstractNbtNumber,
         input: Pokemon
     ): AbstractNbtNumber {
-        val caughtMon = input.species.resourceIdentifier.path
+        val caughtMon = input.species.resourceIdentifier
 
         // check requirements
-        val matchesSpecies: Boolean = species == "any" || caughtMon == species
-        if (!matchesSpecies || input.level < minLevel || !matcher.matches(input)) {
+        val matchesSpecies: Boolean = species == "any" || caughtMon == parseSpeciesId(species)
+        if (!matchesSpecies || input.level < minLevel || !attributeMatcher(attributes).matches(input)) {
             return progress
         }
 
