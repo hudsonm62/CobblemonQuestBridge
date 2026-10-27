@@ -25,20 +25,28 @@ enum class BattleTypeEnum : StringIdentifiable {
     }
 
     companion object {
+        /**
+         * Returns the corresponding [BattleTypeEnum] for a given [PokemonBattle] instance.
+         * If the battle type does not match any known types, it defaults to [ANY].
+         *
+         * @param battle The [PokemonBattle] instance to evaluate.
+         * @return The corresponding [BattleTypeEnum].
+         */
         fun fromBattle(battle: PokemonBattle): BattleTypeEnum {
-            return if(battle.isPvP)
-                PVP
-            else if(battle.isPvN)
-                PVN
-            else if(battle.isPvW)
-                PVW
-            else
-                ANY
+            return when {
+                battle.isPvP -> PVP
+                battle.isPvN -> PVN
+                battle.isPvW -> PVW
+                else -> ANY
+            }
         }
 
         /**
          * Alternate translation for the battle type, used in certain contexts where a different wording is preferred.
          * For example, "PvW" might be translated instead as "Wild" for nicer display.
+         *
+         * @receiver The [BattleTypeEnum] instance to translate.
+         * @return The alternate translation as a [MutableText].
          */
         fun BattleTypeEnum.alternateTranslation(): MutableText {
             return Text.translatable("gui.cobblequestbridge.battletype.${this.name.lowercase()}.alternate")
