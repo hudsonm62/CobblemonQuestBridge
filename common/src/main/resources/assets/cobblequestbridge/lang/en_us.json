@@ -1,5 +1,5 @@
 {
-    "tasks.cobblequestbridge.pokemon_catch": "Catch Pokémon",
+    "tasks.cobblequestbridge.pokemon_catch": "🎯 Catch Pokémon",
     "tasks.cobblequestbridge.pokemon_catch.title": "Catch: %s",
     "tasks.cobblequestbridge.pokemon_catch.title.plural": "Catch: %s %s",
     "tasks.cobblequestbridge.pokemon_catch.description": "Catch %s",
@@ -13,7 +13,7 @@
     "setting.cobblequestbridge.pokemon_catch.pokemonIcon": "Pokémon Task Icon Override",
     "setting.cobblequestbridge.pokemon_catch.icon": "Item Task Icon Override",
 
-    "tasks.cobblequestbridge.pokemon_defeat": "Defeat Pokémon",
+    "tasks.cobblequestbridge.pokemon_defeat": "⚔ Defeat Pokémon",
     "tasks.cobblequestbridge.pokemon_defeat.title": "Defeat: %s",
     "tasks.cobblequestbridge.pokemon_defeat.title.plural": "Defeat: %s %s",
     "tasks.cobblequestbridge.pokemon_defeat.description": "Defeat %s",
@@ -28,7 +28,7 @@
     "setting.cobblequestbridge.pokemon_defeat.pokemonIcon": "Pokémon Task Icon Override",
     "setting.cobblequestbridge.pokemon_defeat.icon": "Item Task Icon Override",
 
-    "tasks.cobblequestbridge.battle_win": "Battle Victory",
+    "tasks.cobblequestbridge.battle_win": "🏆 Battle Victory",
     "tasks.cobblequestbridge.battle_win.title": "Win: %s Battle",
     "tasks.cobblequestbridge.battle_win.title.plural": "Win: %s %s Battles",
     "tasks.cobblequestbridge.battle_win.title.any": "Win: Any Battle",
@@ -45,7 +45,7 @@
     "setting.cobblequestbridge.battle_win.pokemonIcon": "Pokémon Task Icon",
     "setting.cobblequestbridge.battle_win.icon": "Item Task Icon Override",
 
-    "tasks.cobblequestbridge.pokemon_evolution": "Evolve Pokémon",
+    "tasks.cobblequestbridge.pokemon_evolution": "🔄 Evolve Pokémon",
     "tasks.cobblequestbridge.pokemon_evolution.title": "Evolve: %s to %s",
     "tasks.cobblequestbridge.pokemon_evolution.description": "Evolve %s to %s",
     "tasks.cobblequestbridge.pokemon_evolution.description.plural": "Evolve %sx %s to %s",
@@ -60,7 +60,7 @@
     "setting.cobblequestbridge.pokemon_evolution.pokemonIcon": "Pokémon Task Icon Override",
     "setting.cobblequestbridge.pokemon_evolution.icon": "Item Task Icon Override",
 
-    "rewards.cobblequestbridge.pokemon_reward": "Receive Pokémon",
+    "rewards.cobblequestbridge.pokemon_reward": "🎁 Receive Pokémon",
     "rewards.cobblequestbridge.pokemon_reward.title": "Receive: %s",
     "rewards.cobblequestbridge.pokemon_reward.title.plural": "Receive: %sx %s",
     "rewards.cobblequestbridge.pokemon_reward.description": "Receive %s",
@@ -73,7 +73,7 @@
     "setting.cobblequestbridge.pokemon_reward.pokemonIcon": "Pokémon Reward Icon Override",
     "setting.cobblequestbridge.pokemon_reward.icon": "Item Reward Icon Override",
 
-    "rewards.cobblequestbridge.molangscript_reward": "MoLang Script",
+    "rewards.cobblequestbridge.molangscript_reward": "📜 MoLang Script",
     "rewards.cobblequestbridge.molangscript_reward.title": "Execute: '%s'",
     "rewards.cobblequestbridge.molangscript_reward.description": "Executes '%s' Script",
     "setting.cobblequestbridge.molangscript_reward.script": "MoLang Script ID",
@@ -82,7 +82,7 @@
     "setting.cobblequestbridge.molangscript_reward.pokemonIcon": "Pokémon Reward Icon Override",
     "setting.cobblequestbridge.molangscript_reward.icon": "Item Reward Icon Override",
 
-    "rewards.cobblequestbridge.molangcommands_reward": "MoLang Commands",
+    "rewards.cobblequestbridge.molangcommands_reward": "💻 MoLang Commands",
     "rewards.cobblequestbridge.molangcommands_reward.title": "Execute: MoLang Commands",
     "rewards.cobblequestbridge.molangcommands_reward.description": "Executes a set of MoLang Commands",
     "setting.cobblequestbridge.molangcommands_reward.commands": "Commands",
