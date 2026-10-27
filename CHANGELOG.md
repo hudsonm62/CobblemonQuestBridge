@@ -1,6 +1,6 @@
 # ChangeLog
 
-## [0.0.4] - 2026-10-xx
+## [0.0.4] - 2026-10-27
 
 ### Added
 
@@ -16,6 +16,8 @@
 
 - Potential issues with namespacing/species names
 - Missing modifier in setting initializer
+
+[0.0.4]: https://modrinth.com/mod/cobblemon-quest-bridge/version/0.0.4
 
 ## [0.0.3] - 2026-10-23
 
