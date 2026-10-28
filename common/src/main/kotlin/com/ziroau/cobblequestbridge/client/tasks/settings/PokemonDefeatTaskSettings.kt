@@ -14,7 +14,7 @@ class PokemonDefeatTaskSettings private constructor() : AbstractSettingInitializ
     override fun create(task: PokemonDefeatTask?): SettingInitializer.CreationData {
         val settings = SettingInitializer.CreationData()
 
-        settings.put("species", textSetting(), task?.species ?: "any")
+        settings.put("species", anySpeciesSetting(), task?.species ?: "any")
         settings.put("attributes", textSetting(), task?.attributes ?: "")
         settings.put("minLevel", intSetting(), task?.minLevel ?: 1)
         settings.put("battleType", battleTypeSetting(), task?.battleType ?: BattleTypeEnum.ANY)
@@ -28,7 +28,7 @@ class PokemonDefeatTaskSettings private constructor() : AbstractSettingInitializ
     ): PokemonDefeatTask {
         return PokemonDefeatTask(
             id,
-            data.get("species", textSetting()).orElse(task?.species ?: "any"),
+            data.get("species", anySpeciesSetting()).orElse(task?.species ?: "any"),
             data.get("attributes", textSetting()).orElse(task?.attributes ?: ""),
             data.get("minLevel", intSetting()).orElse(task?.minLevel ?: 1),
             data.get("battleType", battleTypeSetting()).orElse(task?.battleType ?: BattleTypeEnum.ANY),

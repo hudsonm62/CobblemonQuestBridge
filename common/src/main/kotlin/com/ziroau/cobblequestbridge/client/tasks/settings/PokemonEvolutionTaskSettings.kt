@@ -13,9 +13,9 @@ class PokemonEvolutionTaskSettings private constructor() : AbstractSettingInitia
     override fun create(task: PokemonEvolutionTask?): SettingInitializer.CreationData {
         val settings = SettingInitializer.CreationData()
 
-        settings.put("fromSpecies", textSetting(), task?.fromSpecies ?: "any")
+        settings.put("fromSpecies", anySpeciesSetting(), task?.fromSpecies ?: "any")
         settings.put("fromAttributes", textSetting(), task?.fromAttributes ?: "")
-        settings.put("toSpecies", textSetting(), task?.toSpecies ?: "any")
+        settings.put("toSpecies", anySpeciesSetting(), task?.toSpecies ?: "any")
         settings.put("toAttributes", textSetting(), task?.toAttributes ?: "")
         settings.put("minLevel", intSetting(), task?.minLevel ?: 1)
         settings.put("amount", intSetting(), task?.amount ?: 1)
@@ -28,9 +28,9 @@ class PokemonEvolutionTaskSettings private constructor() : AbstractSettingInitia
     ): PokemonEvolutionTask {
         return PokemonEvolutionTask(
             id,
-            data.get("fromSpecies", textSetting()).orElse(task?.fromSpecies ?: "any"),
+            data.get("fromSpecies", anySpeciesSetting()).orElse(task?.fromSpecies ?: "any"),
             data.get("fromAttributes", textSetting()).orElse(task?.fromAttributes ?: ""),
-            data.get("toSpecies", textSetting()).orElse(task?.toSpecies ?: "any"),
+            data.get("toSpecies", anySpeciesSetting()).orElse(task?.toSpecies ?: "any"),
             data.get("toAttributes", textSetting()).orElse(task?.toAttributes ?: ""),
             data.get("minLevel", intSetting()).orElse(task?.minLevel ?: 1),
             data.get("amount", intSetting()).orElse(task?.amount ?: 1).coerceAtLeast(1),

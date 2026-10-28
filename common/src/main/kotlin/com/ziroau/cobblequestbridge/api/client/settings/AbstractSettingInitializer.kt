@@ -1,5 +1,6 @@
 package com.ziroau.cobblequestbridge.api.client.settings
 
+import com.ziroau.cobblequestbridge.api.client.settings.base.PokemonSpeciesAutocompleteSetting
 import com.ziroau.cobblequestbridge.api.client.settings.base.StringListSetting
 import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
 import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
@@ -55,6 +56,14 @@ abstract class AbstractSettingInitializer<T> : SettingInitializer<T> {
     @Suppress("UNCHECKED_CAST")
     protected fun questIconSetting(): Setting<ItemQuestIcon, ClickableWidget> =
         QuestIconSetting.INSTANCE as Setting<ItemQuestIcon, ClickableWidget>
+
+    @Suppress("UNCHECKED_CAST")
+    protected fun anySpeciesSetting(): Setting<String, ClickableWidget> =
+        PokemonSpeciesAutocompleteSetting.WITH_ANY as Setting<String, ClickableWidget>
+
+    @Suppress("UNCHECKED_CAST")
+    protected fun speciesSetting(): Setting<String, ClickableWidget> =
+        PokemonSpeciesAutocompleteSetting.REQUIRED as Setting<String, ClickableWidget>
 
     // ENUMS
     @Suppress("UNCHECKED_CAST")
