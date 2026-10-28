@@ -10,6 +10,7 @@
 - Emojis to Task/Reward Titles (like how Heracles does theirs)
 - Checks + reward unclaim in `PokemonReward` if the player doesn't have enough space in their Party & PC
 - Auto Complete to most `species` fields in the Quest Editor
+- Pokedex Progress Task
 
 [0.0.5]: https://github.com/hudsonm62/CobblemonQuestBridge/compare/v0.0.4...master
 

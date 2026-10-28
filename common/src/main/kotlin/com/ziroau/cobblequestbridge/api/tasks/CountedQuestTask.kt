@@ -15,7 +15,8 @@ interface CountedQuestTask<I, T : CountedQuestTask<I, T>> : AbstractQuestTask<I,
     val amount: Int
 
     /**
-     * Determines if the given input matches the task's requirements
+     * Determines if the given input matches the task's requirements, and increments progress by 1 if it does.
+     * If you need to increment (or set/decrement) by a different amount, override [test] instead of this.
      *
      * @param input The input to check against the task's requirements, as defined by the implementation of this method
      * @return true if the input matches the requirements, therefore incrementing progress, false otherwise

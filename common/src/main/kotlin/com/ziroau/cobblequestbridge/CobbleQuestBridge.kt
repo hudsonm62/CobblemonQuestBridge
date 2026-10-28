@@ -1,6 +1,7 @@
 package com.ziroau.cobblequestbridge
 
 import com.ziroau.cobblequestbridge.events.BattleWinHandler
+import com.ziroau.cobblequestbridge.events.DexHandler
 import com.ziroau.cobblequestbridge.events.PokemonCatchHandler
 import com.ziroau.cobblequestbridge.events.PokemonDefeatHandler
 import com.ziroau.cobblequestbridge.events.PokemonEvolutionHandler
@@ -27,5 +28,6 @@ object CobbleQuestBridge {
         PokemonDefeatHandler.register()
         PokemonEvolutionHandler.register()
         BattleWinHandler.register()
+        DexHandler.register()
     }
 }

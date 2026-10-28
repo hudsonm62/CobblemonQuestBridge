@@ -94,6 +94,20 @@ Track battles won by a player, with restrictions on battle type and victory by c
 | `battleType`         | Battle type: `ANY`, `PVW`, `PVP`, or `PVN`                       |
 | `ignoreWildCaptures` | Whether wild Pokémon captures should be ignored (default=`true`) |
 
+#### Pokedéx Progress
+
+**Task ID:** `cobblequestbridge:pokedex_progress`
+
+Track Pokédex progress for a player, with optional filters for dex region type and whether to count only caught Pokémon.
+
+| Property     | Description                                                     |
+| ------------ | --------------------------------------------------------------- |
+| `dex`        | Pokédex region type to track progress for, (default=`national`) |
+| `caughtOnly` | Whether to count only caught Pokémon (default=`false`)          |
+
+Pokédex region types can be specified by their identifier, such as `cobblemon:alola` or `fakemonmod:dex`.
+If no region is specified or is invalid, it defaults to the National Pokédex.
+
 ### Reward Types
 
 Reward players when they complete quests.
