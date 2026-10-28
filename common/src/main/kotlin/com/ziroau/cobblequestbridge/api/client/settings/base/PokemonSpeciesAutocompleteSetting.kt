@@ -2,11 +2,10 @@ package com.ziroau.cobblequestbridge.api.client.settings.base
 
 import com.cobblemon.mod.common.api.pokemon.PokemonSpecies
 import earth.terrarium.heracles.api.client.settings.Setting
-import earth.terrarium.heracles.api.client.settings.base.AutocompleteTextSetting
 import earth.terrarium.olympus.client.components.textbox.autocomplete.AutocompleteTextBox
 
 /**
- * Provides a [AutocompleteTextSetting] for Pokémon species,
+ * Provides a [AutocompleteTextBox] for Pokémon species,
  * with an option to allow "any" as a valid value for elements that don't require a specific species.
  */
 object PokemonSpeciesAutocompleteSetting {
