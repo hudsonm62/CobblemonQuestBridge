@@ -14,7 +14,7 @@ import earth.terrarium.heracles.api.tasks.QuestTaskType
 import net.minecraft.nbt.AbstractNbtNumber
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Identifier
-import java.util.UUID
+import java.util.*
 
 /**
  * [PokedexProgressTask] tracks Pokédex Completion (not new entries from task unlock like other tasks).

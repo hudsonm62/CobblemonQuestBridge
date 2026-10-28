@@ -1,7 +1,10 @@
 package com.ziroau.cobblequestbridge.api.data
 
 import com.cobblemon.mod.common.api.pokemon.PokemonProperties
+import com.cobblemon.mod.common.util.server
+import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Identifier
+import java.util.*
 
 object Helpers {
     /**
@@ -30,4 +33,14 @@ object Helpers {
      * @return A [PokemonProperties] object representing the parsed attributes, which you can use `matches()` on to check against a Pokémon.
      */
     fun attributeMatcher(attributes: String): PokemonProperties = PokemonProperties.parse(attributes.trim().lowercase())
+
+    /**
+     * Attempts to retrieve a [ServerPlayerEntity] from the server using the provided UUID string.
+     * Uses Cobblemon's [server] utility function internally to access the [net.minecraft.server.MinecraftServer] instance.
+     *
+     * @param uuid The UUID string of the player to retrieve.
+     * @return The [ServerPlayerEntity] if found, or null
+     */
+    fun playerFromUUID(uuid: UUID): ServerPlayerEntity? = server()?.playerManager?.getPlayer(uuid)
+    fun playerFromUUID(uuid: String): ServerPlayerEntity? = server()?.playerManager?.getPlayer(UUID.fromString(uuid))
 }

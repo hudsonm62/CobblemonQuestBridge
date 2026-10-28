@@ -108,6 +108,21 @@ Track Pokédex progress for a player, with optional filters for dex region type 
 Pokédex region types can be specified by their identifier, such as `cobblemon:alola` or `fakemonmod:dex`.
 If no region is specified or is invalid, it defaults to the National Pokédex.
 
+#### Trade Pokémon
+
+**Task ID:** `cobblequestbridge:pokemon_trade`
+
+Track Pokémon traded both ways, with optional filters for species, attributes, and minimum level.
+
+| Property             | Description                                             |
+| -------------------- | ------------------------------------------------------- |
+| `speciesSent`        | Species of Pokémon to send (default=`any`)              |
+| `attributesSent`     | Cobblemon attributes to filter for the sent Pokémon     |
+| `minLevelSent`       | Minimum level of the sent Pokémon                       |
+| `speciesReceived`    | Species of Pokémon to receive (default=`any`)           |
+| `attributesReceived` | Cobblemon attributes to filter for the received Pokémon |
+| `minLevelReceived`   | Minimum level of the received Pokémon                   |
+
 ### Reward Types
 
 Reward players when they complete quests.

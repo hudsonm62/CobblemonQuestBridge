@@ -5,6 +5,7 @@ import com.ziroau.cobblequestbridge.events.DexHandler
 import com.ziroau.cobblequestbridge.events.PokemonCatchHandler
 import com.ziroau.cobblequestbridge.events.PokemonDefeatHandler
 import com.ziroau.cobblequestbridge.events.PokemonEvolutionHandler
+import com.ziroau.cobblequestbridge.events.PokemonTradeHandler
 import com.ziroau.cobblequestbridge.molang.MoLangFunctions
 import com.ziroau.cobblequestbridge.rewards.BridgeRewards
 import com.ziroau.cobblequestbridge.tasks.BridgeTasks
@@ -29,5 +30,6 @@ object CobbleQuestBridge {
         PokemonEvolutionHandler.register()
         BattleWinHandler.register()
         DexHandler.register()
+        PokemonTradeHandler.register()
     }
 }

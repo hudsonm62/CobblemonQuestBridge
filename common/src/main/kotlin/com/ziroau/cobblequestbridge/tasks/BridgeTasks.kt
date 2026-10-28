@@ -9,7 +9,8 @@ object BridgeTasks {
             PokemonDefeatTask.TYPE,
             PokemonEvolutionTask.TYPE,
             BattleWinTask.TYPE,
-            PokedexProgressTask.TYPE
+            PokedexProgressTask.TYPE,
+            PokemonTradeTask.TYPE
         )
     }
 }
