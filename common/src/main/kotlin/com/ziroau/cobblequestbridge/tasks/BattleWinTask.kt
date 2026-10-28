@@ -6,7 +6,6 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.teamresourceful.resourcefullib.common.codecs.EnumCodec
 import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
-import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.data.QuestAppearance
 import com.ziroau.cobblequestbridge.api.tasks.CountedQuestTask
 import earth.terrarium.heracles.api.tasks.QuestTaskType
@@ -18,7 +17,7 @@ data class BattleWinTask(
     val ignoreWildCaptures: Boolean,
     override val amount: Int = 1,
     override val appearance: QuestAppearance = DEFAULT_APPEARANCE
-): CountedQuestTask<BattleVictoryEvent, BattleWinTask>, CustomizableQuestElement {
+): CountedQuestTask<BattleVictoryEvent, BattleWinTask> {
     override fun matches(input: BattleVictoryEvent): Boolean {
         if (battleType != BattleTypeEnum.ANY && battleType != BattleTypeEnum.fromBattle(input.battle)) return false
         if (ignoreWildCaptures && input.wasWildCapture) return false
