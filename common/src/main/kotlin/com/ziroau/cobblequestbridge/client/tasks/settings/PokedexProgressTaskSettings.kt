@@ -13,7 +13,7 @@ class PokedexProgressTaskSettings private constructor() : AbstractSettingInitial
     override fun create(task: PokedexProgressTask?): SettingInitializer.CreationData {
         val settings = SettingInitializer.CreationData()
 
-        settings.put("dex", textSetting(), task?.dex ?: "national")
+        settings.put("dex", dexSetting(), task?.dex ?: "cobblemon:national")
         settings.put("caughtOnly", boolFalseSetting(), task?.caughtOnly ?: false)
         settings.put("amount", intSetting(), task?.amount ?: 100)
         settings.putAppearance(task, PokedexProgressTask.DEFAULT_APPEARANCE)
@@ -26,7 +26,7 @@ class PokedexProgressTaskSettings private constructor() : AbstractSettingInitial
     ): PokedexProgressTask {
         return PokedexProgressTask(
             id,
-            data.get("dex", textSetting()).orElse(task?.dex ?: "national"),
+            data.get("dex", dexSetting()).orElse(task?.dex ?: "cobblemon:national"),
             data.get("caughtOnly", boolFalseSetting()).orElse(task?.caughtOnly ?: false),
             data.get("amount", intSetting()).orElse(task?.amount ?: 100).coerceAtLeast(1),
             data.getAppearance(task, PokedexProgressTask.DEFAULT_APPEARANCE)

@@ -100,13 +100,13 @@ Track battles won by a player, with restrictions on battle type and victory by c
 
 Track Pokédex progress for a player, with optional filters for dex region type and whether to count only caught Pokémon.
 
-| Property     | Description                                                     |
-| ------------ | --------------------------------------------------------------- |
-| `dex`        | Pokédex region type to track progress for, (default=`national`) |
-| `caughtOnly` | Whether to count only caught Pokémon (default=`false`)          |
+| Property     | Description                                                               |
+| ------------ | ------------------------------------------------------------------------- |
+| `dex`        | Pokédex region type to track progress for, (default=`cobblemon:national`) |
+| `caughtOnly` | Whether to count only caught Pokémon (default=`false`)                    |
 
-Pokédex region types can be specified by their identifier, such as `cobblemon:alola` or `fakemonmod:dex`.
-If no region is specified or is invalid, it defaults to the National Pokédex.
+Pokédex region types are specified by a registered identifier, such as `cobblemon:alola` or `fakemonmod:dex`.
+If no region is specified or identifier is invalid, automatically defaults to the National Pokédex.
 
 #### Trade Pokémon
 

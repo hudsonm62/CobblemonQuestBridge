@@ -27,7 +27,7 @@ import java.util.*
  */
 class PokedexProgressTask(
     override val taskId: String,
-    val dex: String = "national",
+    val dex: String = "cobblemon:national",
     val caughtOnly: Boolean = false,
     override val amount: Int = 100,
     override val appearance: QuestAppearance
@@ -36,7 +36,7 @@ class PokedexProgressTask(
     override fun matches(input: PokedexDataChangedEvent): Boolean = true
 
     fun parseDexIdentifier(): Identifier? {
-        val dexVal = if(dex.isEmpty()) "national" else dex.trim().lowercase()
+        val dexVal = if(dex.isEmpty()) "cobblemon:national" else dex.trim().lowercase()
         val dexName = if (':' in dexVal) dexVal else "cobblemon:$dexVal"
         return Identifier.tryParse(dexName)
     }
@@ -106,7 +106,7 @@ class PokedexProgressTask(
                     RecordCodecBuilder.point<PokedexProgressTask, String>(id),
 
                     Codec.STRING
-                        .optionalFieldOf("dex", "national")
+                        .optionalFieldOf("dex", "cobblemon:national")
                         .forGetter(PokedexProgressTask::dex),
 
                     Codec.BOOL

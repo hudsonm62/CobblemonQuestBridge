@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- `PokedexAutocompleteSetting` for Pokédex Region Autocomplete in Quest Editor
+
 [Unreleased]: https://github.com/hudsonm62/CobblemonQuestBridge/compare/v0.0.5...master
 
 ## [0.0.5] - 2026-10-28
