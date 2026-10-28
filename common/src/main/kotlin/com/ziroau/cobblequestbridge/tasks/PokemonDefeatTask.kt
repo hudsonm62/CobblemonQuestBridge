@@ -6,7 +6,6 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.teamresourceful.resourcefullib.common.codecs.EnumCodec
 import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
-import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.data.Helpers.attributeMatcher
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
 import com.ziroau.cobblequestbridge.api.data.QuestAppearance
@@ -22,7 +21,7 @@ data class PokemonDefeatTask (
     val battleType: BattleTypeEnum = BattleTypeEnum.ANY,
     override val amount: Int = 1,
     override val appearance: QuestAppearance
-) : CountedQuestTask<BattleFaintedEvent, PokemonDefeatTask>, CustomizableQuestElement {
+) : CountedQuestTask<BattleFaintedEvent, PokemonDefeatTask> {
     override fun matches(input: BattleFaintedEvent): Boolean {
         if (battleType != BattleTypeEnum.ANY && battleType != BattleTypeEnum.fromBattle(input.battle)) return false
 

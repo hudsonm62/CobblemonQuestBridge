@@ -4,7 +4,6 @@ import com.cobblemon.mod.common.api.events.pokemon.evolution.EvolutionCompleteEv
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
-import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.data.Helpers.attributeMatcher
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
 import com.ziroau.cobblequestbridge.api.data.QuestAppearance
@@ -21,7 +20,7 @@ class PokemonEvolutionTask(
     val minLevel: Int = 1,
     override val amount: Int = 1,
     override val appearance: QuestAppearance
-) : CountedQuestTask<EvolutionCompleteEvent, PokemonEvolutionTask>, CustomizableQuestElement {
+) : CountedQuestTask<EvolutionCompleteEvent, PokemonEvolutionTask> {
     override fun matches(input: EvolutionCompleteEvent): Boolean {
         val fromMon = input.sourcePokemon
         val toMon = input.pokemon

@@ -4,7 +4,6 @@ import com.cobblemon.mod.common.pokemon.Pokemon
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
-import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.data.Helpers.attributeMatcher
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
 import com.ziroau.cobblequestbridge.api.data.QuestAppearance
@@ -22,7 +21,7 @@ data class PokemonCatchTask(
     val minLevel: Int = 1,
     override val amount: Int = 1,
     override val appearance: QuestAppearance
-) : CountedQuestTask<Pokemon, PokemonCatchTask>, CustomizableQuestElement {
+) : CountedQuestTask<Pokemon, PokemonCatchTask> {
 
     override fun matches(input: Pokemon): Boolean {
         val caughtMon = input.species.resourceIdentifier
