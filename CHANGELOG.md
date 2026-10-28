@@ -12,6 +12,7 @@
 - Auto Complete to most `species` fields in the Quest Editor
 - Pokedex Progress Task
 - Pokemon Trade Task
+- Fossil Restore Task
 
 [0.0.5]: https://github.com/hudsonm62/CobblemonQuestBridge/compare/v0.0.4...master
 

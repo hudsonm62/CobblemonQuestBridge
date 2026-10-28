@@ -123,6 +123,15 @@ Track Pokémon traded both ways, with optional filters for species, attributes, 
 | `attributesReceived` | Cobblemon attributes to filter for the received Pokémon |
 | `minLevelReceived`   | Minimum level of the received Pokémon                   |
 
+#### Restore Fossil
+
+**Task ID:** `cobblequestbridge:fossil_restore`
+
+| Property     | Description                                                     |
+| ------------ | --------------------------------------------------------------- |
+| `species`    | Species of Pokémon to restore from a fossil                     |
+| `attributes` | Attributes required for the restored Pokémon (i.e. `shiny=yes`) |
+
 ### Reward Types
 
 Reward players when they complete quests.
