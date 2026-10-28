@@ -1,6 +1,10 @@
 # ChangeLog
 
-## [0.0.5] - 2026-10-xx
+## [Unreleased]
+
+[Unreleased]: https://github.com/hudsonm62/CobblemonQuestBridge/compare/v0.0.5...master
+
+## [0.0.5] - 2026-10-28
 
 ### Added
 
@@ -14,7 +18,7 @@
 - Pokemon Trade Task
 - Fossil Restore Task
 
-[0.0.5]: https://github.com/hudsonm62/CobblemonQuestBridge/compare/v0.0.4...master
+[0.0.5]: https://modrinth.com/mod/cobblemon-quest-bridge/version/0.0.5
 
 ## [0.0.4] - 2026-10-27
 
