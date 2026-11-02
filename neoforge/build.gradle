@@ -57,12 +57,22 @@ dependencies {
 
 processResources {
     inputs.property 'version', project.version
+    inputs.property 'mod_id', rootProject.mod_id
+    inputs.property 'description', rootProject.description
+    inputs.property 'homepage', rootProject.homepage
+    inputs.property 'issue_tracker', rootProject.issue_tracker
+    inputs.property 'icon_path', rootProject.icon_path
     inputs.property 'iolaus_version', rootProject.iolaus_version
 
     filesMatching('META-INF/neoforge.mods.toml') {
         expand(
             version: inputs.properties.version,
-            iolaus_version: rootProject.iolaus_version
+            mod_id: inputs.properties.mod_id,
+            description: inputs.properties.description,
+            homepage: inputs.properties.homepage,
+            issue_tracker: inputs.properties.issue_tracker,
+            icon_path: inputs.properties.icon_path,
+            iolaus_version: inputs.properties.iolaus_version
         )
     }
 }
