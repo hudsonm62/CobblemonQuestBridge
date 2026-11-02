@@ -3,11 +3,12 @@ package com.ziroau.cobblequestbridge.tasks
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
+import com.ziroau.cobblequestbridge.api.data.CobblemonQuestElementDisplay
+import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.data.Helpers.attributeMatcher
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
 import com.ziroau.cobblequestbridge.api.data.PokemonTradeEventWrapper
-import com.ziroau.cobblequestbridge.api.data.QuestAppearance
-import com.ziroau.cobblequestbridge.api.tasks.CountedQuestTask
+import com.ziroau.iolaus.api.tasks.CountedQuestTask
 import earth.terrarium.heracles.api.tasks.QuestTaskType
 import net.minecraft.util.Identifier
 
@@ -20,8 +21,8 @@ class PokemonTradeTask(
     val attributesReceived: String = "",
     val minLevelReceived: Int = 1,
     override val amount: Int = 1,
-    override val appearance: QuestAppearance
-) : CountedQuestTask<PokemonTradeEventWrapper, PokemonTradeTask> {
+    override val display: CobblemonQuestElementDisplay
+) : CountedQuestTask<PokemonTradeEventWrapper, PokemonTradeTask>, CustomizableQuestElement {
     override fun matches(input: PokemonTradeEventWrapper): Boolean {
         val sentMon = input.playerPokemon
         val receivedMon = input.partnerPokemon
@@ -85,8 +86,8 @@ class PokemonTradeTask(
                         .optionalFieldOf("amount", 1)
                         .forGetter(PokemonTradeTask::amount),
 
-                    QuestAppearance.CODEC
-                        .forGetter(PokemonTradeTask::appearance)
+                    CobblemonQuestElementDisplay.CODEC
+                        .forGetter(PokemonTradeTask::display)
                 ).apply(instance, ::PokemonTradeTask)
             }
     }

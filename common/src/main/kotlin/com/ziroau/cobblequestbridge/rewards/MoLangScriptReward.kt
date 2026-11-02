@@ -5,9 +5,10 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.ziroau.cobblequestbridge.CobbleQuestBridge
 import com.ziroau.cobblequestbridge.CobbleQuestBridge.LOGGER
-import com.ziroau.cobblequestbridge.api.data.QuestAppearance
+import com.ziroau.cobblequestbridge.api.data.CobblemonQuestElementDisplay
+import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.molang.MoLangExecutor
-import com.ziroau.cobblequestbridge.api.rewards.AbstractQuestReward
+import com.ziroau.iolaus.api.rewards.BaseQuestReward
 import earth.terrarium.heracles.api.rewards.QuestRewardType
 import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
@@ -17,8 +18,8 @@ import java.util.stream.Stream
 class MoLangScriptReward(
     override val rewardId: String,
     val script: String,
-    override val appearance: QuestAppearance
-) : AbstractQuestReward<MoLangScriptReward> {
+    override val display: CobblemonQuestElementDisplay
+) : BaseQuestReward<MoLangScriptReward>, CustomizableQuestElement {
     override fun reward(player: ServerPlayerEntity): Stream<ItemStack?>? {
         val scriptId = Identifier.tryParse(
             // Prepends Cobblemon namespace, if it does not contain a namespace already
@@ -51,8 +52,8 @@ class MoLangScriptReward(
                     Codec.STRING.fieldOf("script")
                         .forGetter(MoLangScriptReward::script),
 
-                    QuestAppearance.CODEC
-                        .forGetter(MoLangScriptReward::appearance)
+                    CobblemonQuestElementDisplay.CODEC
+                        .forGetter(MoLangScriptReward::display)
 
                 ).apply(instance, ::MoLangScriptReward)
             }

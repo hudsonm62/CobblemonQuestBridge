@@ -44,6 +44,6 @@ side = "BOTH"
 [[dependencies.cobblequestbridge]]
 modId = "iolaus"
 type = "required"
-versionRange = "[0.0.3,)"
+versionRange = "[${iolaus_version},)"
 ordering = "AFTER"
 side = "BOTH"

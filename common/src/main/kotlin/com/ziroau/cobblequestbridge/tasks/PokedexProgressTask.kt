@@ -8,8 +8,9 @@ import com.cobblemon.mod.common.api.pokedex.SeenCount
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
-import com.ziroau.cobblequestbridge.api.data.QuestAppearance
-import com.ziroau.cobblequestbridge.api.tasks.CountedQuestTask
+import com.ziroau.cobblequestbridge.api.data.CobblemonQuestElementDisplay
+import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
+import com.ziroau.iolaus.api.tasks.CountedQuestTask
 import earth.terrarium.heracles.api.tasks.QuestTaskType
 import net.minecraft.nbt.AbstractNbtNumber
 import net.minecraft.server.network.ServerPlayerEntity
@@ -30,8 +31,8 @@ class PokedexProgressTask(
     val dex: String = "cobblemon:national",
     val caughtOnly: Boolean = false,
     override val amount: Int = 100,
-    override val appearance: QuestAppearance
-) : CountedQuestTask<PokedexDataChangedEvent, PokedexProgressTask> {
+    override val display: CobblemonQuestElementDisplay
+) : CountedQuestTask<PokedexDataChangedEvent, PokedexProgressTask>, CustomizableQuestElement {
     // not using matches() here because we want to count all dex changes, not individual event fires
     override fun matches(input: PokedexDataChangedEvent): Boolean = true
 
@@ -89,7 +90,7 @@ class PokedexProgressTask(
     }
 
     companion object {
-        val DEFAULT_APPEARANCE = QuestAppearance(pokemonIconOverride = "pikachu")
+        val DEFAULT_APPEARANCE = CobblemonQuestElementDisplay(pokemonIconOverride = "pikachu")
 
         @JvmField
         val TYPE: QuestTaskType<PokedexProgressTask> = Type()
@@ -117,9 +118,9 @@ class PokedexProgressTask(
                         .optionalFieldOf("amount", 100)
                         .forGetter(PokedexProgressTask::amount),
 
-                    QuestAppearance
+                    CobblemonQuestElementDisplay
                         .codec(DEFAULT_APPEARANCE)
-                        .forGetter(PokedexProgressTask::appearance)
+                        .forGetter(PokedexProgressTask::display)
                 ).apply(instance, ::PokedexProgressTask)
             }
     }

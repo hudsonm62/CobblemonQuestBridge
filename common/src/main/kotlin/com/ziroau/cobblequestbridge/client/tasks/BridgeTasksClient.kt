@@ -1,6 +1,5 @@
 package com.ziroau.cobblequestbridge.client.tasks
 
-import com.ziroau.cobblequestbridge.api.client.registry.BridgeTasksClientRegistry
 import com.ziroau.cobblequestbridge.client.tasks.settings.BattleWinTaskSettings
 import com.ziroau.cobblequestbridge.client.tasks.settings.FossilRestoreTaskSettings
 import com.ziroau.cobblequestbridge.client.tasks.settings.PokedexProgressTaskSettings
@@ -22,10 +21,11 @@ import com.ziroau.cobblequestbridge.tasks.PokemonCatchTask
 import com.ziroau.cobblequestbridge.tasks.PokemonDefeatTask
 import com.ziroau.cobblequestbridge.tasks.PokemonEvolutionTask
 import com.ziroau.cobblequestbridge.tasks.PokemonTradeTask
+import com.ziroau.iolaus.api.client.registry.TasksClientRegistry
 
 object BridgeTasksClient {
     fun register() {
-        BridgeTasksClientRegistry.register(
+        TasksClientRegistry.register(
             PokemonCatchTask.TYPE,
             PokemonCatchTaskSettings.INSTANCE,
             ::PokemonCatchTaskWidget
@@ -34,7 +34,7 @@ object BridgeTasksClient {
             "$caught/${task.amount.coerceAtLeast(1)}"
         }
 
-        BridgeTasksClientRegistry.register(
+        TasksClientRegistry.register(
             PokemonDefeatTask.TYPE,
             PokemonDefeatTaskSettings.INSTANCE,
             ::PokemonDefeatTaskWidget
@@ -43,7 +43,7 @@ object BridgeTasksClient {
             "$defeated/${task.amount.coerceAtLeast(1)}"
         }
 
-        BridgeTasksClientRegistry.register(
+        TasksClientRegistry.register(
             PokemonEvolutionTask.TYPE,
             PokemonEvolutionTaskSettings.INSTANCE,
             ::PokemonEvolutionTaskWidget
@@ -52,7 +52,7 @@ object BridgeTasksClient {
             "$evolutions/${task.amount.coerceAtLeast(1)}"
         }
 
-        BridgeTasksClientRegistry.register(
+        TasksClientRegistry.register(
             BattleWinTask.TYPE,
             BattleWinTaskSettings.INSTANCE,
             ::BattleWinTaskWidget
@@ -61,7 +61,7 @@ object BridgeTasksClient {
             "$wins/${task.amount.coerceAtLeast(1)}"
         }
 
-        BridgeTasksClientRegistry.register(
+        TasksClientRegistry.register(
             PokedexProgressTask.TYPE,
             PokedexProgressTaskSettings.INSTANCE,
             ::PokedexProgressTaskWidget
@@ -70,7 +70,7 @@ object BridgeTasksClient {
             "$current/${task.amount.coerceAtLeast(1)}"
         }
 
-        BridgeTasksClientRegistry.register(
+        TasksClientRegistry.register(
             PokemonTradeTask.TYPE,
             PokemonTradeTaskSettings.INSTANCE,
             ::PokemonTradeTaskWidget
@@ -79,7 +79,7 @@ object BridgeTasksClient {
             "$trades/${task.amount.coerceAtLeast(1)}"
         }
 
-        BridgeTasksClientRegistry.register(
+        TasksClientRegistry.register(
             FossilRestoreTask.TYPE,
             FossilRestoreTaskSettings.INSTANCE,
             ::FossilRestoreTaskWidget

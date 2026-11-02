@@ -2,15 +2,13 @@ package com.ziroau.cobblequestbridge.api.rewards
 
 import com.ziroau.cobblequestbridge.CobbleQuestBridge
 import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
-import earth.terrarium.heracles.api.rewards.QuestReward
+import com.ziroau.iolaus.api.rewards.BaseQuestReward
 import earth.terrarium.heracles.common.handlers.progress.QuestProgressHandler
 import earth.terrarium.heracles.common.handlers.quests.QuestHandler
 import net.minecraft.server.network.ServerPlayerEntity
 
-interface AbstractQuestReward<T : AbstractQuestReward<T>> : QuestReward<T>, CustomizableQuestElement {
-    val rewardId: String
-    override fun id(): String = rewardId
-
+@Deprecated("Move to BaseQuestReward instead")
+interface AbstractQuestReward<T : AbstractQuestReward<T>> : BaseQuestReward<T>, CustomizableQuestElement {
     /**
      * Marks this reward as unclaimed for the given [player].
      * Note that this does not nicely handle automatically claimed rewards and repeated quests, so it may not be appropriate to call this in all cases.
@@ -19,6 +17,7 @@ interface AbstractQuestReward<T : AbstractQuestReward<T>> : QuestReward<T>, Cust
      *
      * @param player The player for whom the reward should be marked as unclaimed.
      */
+    @Deprecated("Need to migrate off this method before release?")
     fun markUnclaimed(player: ServerPlayerEntity) {
         val entry = QuestHandler.quests().entries.firstOrNull { (_, quest) ->
             quest.rewards()[rewardId] === this

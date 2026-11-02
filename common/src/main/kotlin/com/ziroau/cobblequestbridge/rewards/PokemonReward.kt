@@ -7,8 +7,8 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.ziroau.cobblequestbridge.CobbleQuestBridge
+import com.ziroau.cobblequestbridge.api.data.CobblemonQuestElementDisplay
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
-import com.ziroau.cobblequestbridge.api.data.QuestAppearance
 import com.ziroau.cobblequestbridge.api.rewards.AbstractQuestReward
 import earth.terrarium.heracles.api.rewards.QuestRewardType
 import net.minecraft.item.ItemStack
@@ -32,8 +32,8 @@ data class PokemonReward(
     val attributes: String = "",
     val amount: Int = 1,
     val unclaimOnFail: Boolean = true,
-    override val appearance: QuestAppearance
-) : AbstractQuestReward<PokemonReward> {
+    override val display: CobblemonQuestElementDisplay
+) : AbstractQuestReward<PokemonReward> /*, CustomizableQuestElement (uncomment when moved off abstractquestreward) **/ {
     override fun reward(player: ServerPlayerEntity): Stream<ItemStack> {
         val speciesId = parseSpeciesId(species) ?: return Stream.empty()
         val pokemonSpecies = speciesId.let(PokemonSpecies::getByIdentifier)
@@ -116,8 +116,8 @@ data class PokemonReward(
                     Codec.BOOL.optionalFieldOf("unclaimOnFail", true)
                         .forGetter(PokemonReward::unclaimOnFail),
 
-                    QuestAppearance.CODEC
-                        .forGetter(PokemonReward::appearance)
+                    CobblemonQuestElementDisplay.CODEC
+                        .forGetter(PokemonReward::display)
 
                 ).apply(instance, ::PokemonReward)
             }

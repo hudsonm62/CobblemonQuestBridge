@@ -1,10 +1,11 @@
 package com.ziroau.cobblequestbridge.tasks
 
-import com.ziroau.cobblequestbridge.api.registry.BridgeTasksRegistry
+import com.ziroau.cobblequestbridge.CobbleQuestBridge.LOGGER
+import com.ziroau.iolaus.api.registry.TasksRegistry
 
 object BridgeTasks {
     fun register() {
-        BridgeTasksRegistry.registerAll(
+        TasksRegistry.registerAll(
             PokemonCatchTask.TYPE,
             PokemonDefeatTask.TYPE,
             PokemonEvolutionTask.TYPE,
@@ -13,5 +14,6 @@ object BridgeTasks {
             PokemonTradeTask.TYPE,
             FossilRestoreTask.TYPE
         )
+        LOGGER.info("Registered {} CQB Quest Tasks", 7)
     }
 }

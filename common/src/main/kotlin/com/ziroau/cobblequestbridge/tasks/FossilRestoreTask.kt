@@ -4,10 +4,11 @@ import com.cobblemon.mod.common.api.events.pokemon.FossilRevivedEvent
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
+import com.ziroau.cobblequestbridge.api.data.CobblemonQuestElementDisplay
+import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.data.Helpers.attributeMatcher
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
-import com.ziroau.cobblequestbridge.api.data.QuestAppearance
-import com.ziroau.cobblequestbridge.api.tasks.CountedQuestTask
+import com.ziroau.iolaus.api.tasks.CountedQuestTask
 import earth.terrarium.heracles.api.tasks.QuestTaskType
 import net.minecraft.util.Identifier
 
@@ -16,8 +17,8 @@ class FossilRestoreTask(
     val species: String,
     val attributes: String = "",
     override val amount: Int = 1,
-    override val appearance: QuestAppearance
-) : CountedQuestTask<FossilRevivedEvent, FossilRestoreTask> {
+    override val display: CobblemonQuestElementDisplay
+) : CountedQuestTask<FossilRevivedEvent, FossilRestoreTask>, CustomizableQuestElement {
     override fun matches(input: FossilRevivedEvent): Boolean {
         val matchesSpecies: Boolean =
             species == "any" || input.pokemon.species.resourceIdentifier == parseSpeciesId(species)
@@ -28,7 +29,7 @@ class FossilRestoreTask(
     }
 
     companion object {
-        val DEFAULT_APPEARANCE = QuestAppearance(pokemonIconOverride = "kabutops")
+        val DEFAULT_APPEARANCE = CobblemonQuestElementDisplay(pokemonIconOverride = "kabutops")
 
         @JvmField
         val TYPE: QuestTaskType<FossilRestoreTask> = Type()
@@ -56,9 +57,9 @@ class FossilRestoreTask(
                         .optionalFieldOf("amount", 1)
                         .forGetter(FossilRestoreTask::amount),
 
-                    QuestAppearance
+                    CobblemonQuestElementDisplay
                         .codec(DEFAULT_APPEARANCE)
-                        .forGetter(FossilRestoreTask::appearance)
+                        .forGetter(FossilRestoreTask::display)
 
                 ).apply(instance, ::FossilRestoreTask)
             }

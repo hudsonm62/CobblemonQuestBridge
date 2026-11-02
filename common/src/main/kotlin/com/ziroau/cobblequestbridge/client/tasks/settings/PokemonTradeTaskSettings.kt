@@ -4,7 +4,7 @@ import com.ziroau.cobblequestbridge.api.client.settings.AbstractSettingInitializ
 import com.ziroau.cobblequestbridge.tasks.PokemonTradeTask
 import earth.terrarium.heracles.api.client.settings.SettingInitializer
 
-class PokemonTradeTaskSettings private constructor() : AbstractSettingInitializer<PokemonTradeTask>() {
+class PokemonTradeTaskSettings : AbstractSettingInitializer<PokemonTradeTask>() {
     companion object {
         @JvmField
         val INSTANCE = PokemonTradeTaskSettings()
