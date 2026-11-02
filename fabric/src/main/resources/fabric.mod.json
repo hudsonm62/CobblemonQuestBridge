@@ -25,6 +25,7 @@
         "java": ">=21",
         "fabric-api": "*",
         "cobblemon": ">=1.8.0",
-        "heracles": ">=2.0.0"
+        "heracles": ">=2.0.0",
+        "iolaus": "*"
     }
 }

@@ -7,6 +7,7 @@ Track captures, defeats, and victories through tasks, reward players with Pokém
 ## Requirements
 
 - [Heracles 2.0+](https://modrinth.com/project/lo90fZoB)
+- [Iolaus](https://modrinth.com/project/BxQzS0ON)
 - [Cobblemon 1.8+](https://modrinth.com/project/MdwFAVRL)
 - Fabric or NeoForge
 
@@ -176,8 +177,6 @@ Executes a set of MoLang Commands when the reward is claimed - Runs in `player` 
 
 Cobblemon Quest Bridge extends MoLang with functions for interacting with the quest system:
 
-#### Player Functions
-
 `q.player.<function_name>(<args>)`
 
 | Function                                        | Description                                              |
@@ -205,6 +204,7 @@ repositories {
 }
 dependencies {
     modImplementation("com.ziroau:cobblemonquestbridge:1.0.0+fabric")
+    modImplementation("com.ziroau:iolaus:1.0.0+fabric") // Heracles Extensions Library API
 }
 ```
 

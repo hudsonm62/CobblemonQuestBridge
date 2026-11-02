@@ -40,3 +40,10 @@ type = "required"
 versionRange = "[2.0.0,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.cobblequestbridge]]
+modId = "iolaus"
+type = "required"
+versionRange = "[0.0.3,)"
+ordering = "AFTER"
+side = "BOTH"
