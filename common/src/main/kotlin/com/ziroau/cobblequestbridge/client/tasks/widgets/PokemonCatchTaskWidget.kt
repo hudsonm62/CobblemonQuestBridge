@@ -18,7 +18,9 @@ class PokemonCatchTaskWidget(
     override val widgetItemIcon: QuestIcon<*>
         get() = task.icon()
 
-    override val iconRenderer = PokemonIconRenderer.preferred(task.pokemonIcon())
+    override val iconRenderer = PokemonIconRenderer.preferred(
+        task.pokemonIcon(), task.species, task.attributes
+    )
 
     override val widgetTitle: Text
         get() = task.titleOr(

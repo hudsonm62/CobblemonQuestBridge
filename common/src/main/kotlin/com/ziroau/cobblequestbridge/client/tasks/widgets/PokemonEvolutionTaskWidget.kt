@@ -16,7 +16,9 @@ class PokemonEvolutionTaskWidget(
 ) : AbstractProgressTaskWidget<EvolutionCompleteEvent, AbstractNbtNumber, PokemonEvolutionTask>() {
     override val widgetItemIcon = task.icon()
 
-    override val iconRenderer = PokemonIconRenderer.preferred(task.pokemonIcon(), task.toSpecies, task.toAttributes)
+    override val iconRenderer = PokemonIconRenderer.preferred(
+        task.pokemonIcon(), task.toSpecies, task.toAttributes
+    )
 
     override val widgetTitle: Text = task.titleOr(
         pluralizedTranslationText(

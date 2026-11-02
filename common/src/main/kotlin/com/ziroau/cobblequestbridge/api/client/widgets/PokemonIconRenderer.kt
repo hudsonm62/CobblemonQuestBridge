@@ -61,7 +61,7 @@ class PokemonIconRenderer private constructor(private val pokemon: RenderablePok
             return PokemonIconRenderer(RenderablePokemon(pokemonSpecies, props.aspects))
         }
 
-        /** Handles the existing quest JSON format: `pokemonIcon: "vaporeon shiny=yes"`. */
+        /** Handles species name + attributes: `pokemonIcon: "vaporeon shiny=yes"`. */
         fun parse(propertyString: String): PokemonIconRenderer? {
             val input = propertyString.trim().lowercase()
             if (input.isBlank() || input == "any") return null

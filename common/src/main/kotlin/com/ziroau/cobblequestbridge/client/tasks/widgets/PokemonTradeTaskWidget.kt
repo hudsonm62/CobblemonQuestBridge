@@ -15,7 +15,9 @@ class PokemonTradeTaskWidget(
     override val progress: TaskProgress<AbstractNbtNumber>,
 ) : AbstractProgressTaskWidget<PokemonTradeEventWrapper, AbstractNbtNumber, PokemonTradeTask>() {
     override val widgetItemIcon = task.icon()
-    override val iconRenderer = PokemonIconRenderer.preferred(task.pokemonIcon(), task.speciesReceived, task.attributesReceived)
+    override val iconRenderer = PokemonIconRenderer.preferred(
+        task.pokemonIcon(), task.speciesReceived, task.attributesReceived
+    )
 
     override val widgetTitle: Text = task.titleOr(getThisText("title", task.display.titleOverride))
     override val widgetDescription: Text = task.descriptionOr(getThisText("description", task.display.descriptionOverride))
