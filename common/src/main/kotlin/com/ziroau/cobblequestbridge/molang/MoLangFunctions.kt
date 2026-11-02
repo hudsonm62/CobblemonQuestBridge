@@ -1,7 +1,6 @@
 package com.ziroau.cobblequestbridge.molang
 
 import com.cobblemon.mod.common.api.molang.function.PlayerMoLangFunctions
-import com.ziroau.cobblequestbridge.CobbleQuestBridge.LOGGER
 import com.ziroau.cobblequestbridge.molang.functions.PlayerFunctions
 
 // TODO: Make this work in Cobblemon 1.7?
@@ -11,6 +10,5 @@ object MoLangFunctions {
         PlayerMoLangFunctions.custom.add { player ->
             PlayerFunctions.attach(player)
         }
-        LOGGER.info("Registered MoLang Quests functions")
     }
 }
