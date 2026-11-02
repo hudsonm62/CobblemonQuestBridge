@@ -1,9 +1,9 @@
 package com.ziroau.cobblequestbridge.client.tasks.widgets
 
 import com.cobblemon.mod.common.api.events.pokemon.PokedexDataChangedEvent
-import com.cobblemon.mod.common.pokemon.RenderablePokemon
-import com.ziroau.cobblequestbridge.api.client.widgets.AbstractPokemonProgressTaskWidget
+import com.ziroau.cobblequestbridge.api.client.widgets.PokemonIconRenderer
 import com.ziroau.cobblequestbridge.tasks.PokedexProgressTask
+import com.ziroau.iolaus.api.client.widgets.AbstractProgressTaskWidget
 import earth.terrarium.heracles.api.quests.QuestIcon
 import earth.terrarium.heracles.common.handlers.progress.TaskProgress
 import net.minecraft.nbt.AbstractNbtNumber
@@ -13,14 +13,11 @@ import net.minecraft.util.Identifier
 class PokedexProgressTaskWidget(
     override val task: PokedexProgressTask,
     override val progress: TaskProgress<AbstractNbtNumber>
-) : AbstractPokemonProgressTaskWidget<PokedexDataChangedEvent, AbstractNbtNumber, PokedexProgressTask>() {
+) : AbstractProgressTaskWidget<PokedexDataChangedEvent, AbstractNbtNumber, PokedexProgressTask>() {
     override val widgetItemIcon: QuestIcon<*>
         get() = task.icon()
 
-    override val pokemonIcon: RenderablePokemon?
-        get() = if(task.pokemonIcon().isNotEmpty())
-            createPokemonIcon(task.pokemonIcon())
-        else null
+    override val iconRenderer = PokemonIconRenderer.preferred(task.pokemonIcon())
 
     private fun getTitleText(): Text {
         val translationKey = "tasks.cobblequestbridge.pokedex_progress.title.seen" + if (task.caughtOnly) ".caught" else ""

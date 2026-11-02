@@ -5,7 +5,7 @@ import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
 import com.ziroau.cobblequestbridge.tasks.BattleWinTask
 import earth.terrarium.heracles.api.client.settings.SettingInitializer
 
-class BattleWinTaskSettings private constructor() : AbstractSettingInitializer<BattleWinTask>() {
+class BattleWinTaskSettings : AbstractSettingInitializer<BattleWinTask>() {
     companion object {
         @JvmField
         val INSTANCE = BattleWinTaskSettings()

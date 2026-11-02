@@ -4,7 +4,7 @@ import com.ziroau.cobblequestbridge.api.client.settings.AbstractSettingInitializ
 import com.ziroau.cobblequestbridge.rewards.MoLangScriptReward
 import earth.terrarium.heracles.api.client.settings.SettingInitializer
 
-class MoLangScriptRewardSettings private constructor() : AbstractSettingInitializer<MoLangScriptReward>() {
+class MoLangScriptRewardSettings : AbstractSettingInitializer<MoLangScriptReward>() {
     companion object {
         @JvmField
         val INSTANCE = MoLangScriptRewardSettings()

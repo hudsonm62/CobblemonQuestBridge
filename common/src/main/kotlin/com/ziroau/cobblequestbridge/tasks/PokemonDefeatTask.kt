@@ -6,10 +6,11 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.teamresourceful.resourcefullib.common.codecs.EnumCodec
 import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
+import com.ziroau.cobblequestbridge.api.data.CobblemonQuestElementDisplay
+import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.data.Helpers.attributeMatcher
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
-import com.ziroau.cobblequestbridge.api.data.QuestAppearance
-import com.ziroau.cobblequestbridge.api.tasks.CountedQuestTask
+import com.ziroau.iolaus.api.tasks.CountedQuestTask
 import earth.terrarium.heracles.api.tasks.QuestTaskType
 import net.minecraft.util.Identifier
 
@@ -20,8 +21,8 @@ data class PokemonDefeatTask (
     val minLevel: Int = 1,
     val battleType: BattleTypeEnum = BattleTypeEnum.ANY,
     override val amount: Int = 1,
-    override val appearance: QuestAppearance
-) : CountedQuestTask<BattleFaintedEvent, PokemonDefeatTask> {
+    override val display: CobblemonQuestElementDisplay
+) : CountedQuestTask<BattleFaintedEvent, PokemonDefeatTask>, CustomizableQuestElement {
     override fun matches(input: BattleFaintedEvent): Boolean {
         if (battleType != BattleTypeEnum.ANY && battleType != BattleTypeEnum.fromBattle(input.battle)) return false
 
@@ -76,8 +77,8 @@ data class PokemonDefeatTask (
                         .optionalFieldOf("amount", 1)
                         .forGetter(PokemonDefeatTask::amount),
 
-                    QuestAppearance.CODEC
-                        .forGetter(PokemonDefeatTask::appearance)
+                    CobblemonQuestElementDisplay.CODEC
+                        .forGetter(PokemonDefeatTask::display)
 
                 ).apply(instance, ::PokemonDefeatTask)
             }

@@ -4,10 +4,11 @@ import com.cobblemon.mod.common.pokemon.Pokemon
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
+import com.ziroau.cobblequestbridge.api.data.CobblemonQuestElementDisplay
+import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.data.Helpers.attributeMatcher
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
-import com.ziroau.cobblequestbridge.api.data.QuestAppearance
-import com.ziroau.cobblequestbridge.api.tasks.CountedQuestTask
+import com.ziroau.iolaus.api.tasks.CountedQuestTask
 import earth.terrarium.heracles.api.tasks.QuestTaskType
 import net.minecraft.util.Identifier
 
@@ -20,8 +21,8 @@ data class PokemonCatchTask(
     val attributes: String = "",
     val minLevel: Int = 1,
     override val amount: Int = 1,
-    override val appearance: QuestAppearance
-) : CountedQuestTask<Pokemon, PokemonCatchTask> {
+    override val display: CobblemonQuestElementDisplay
+) : CountedQuestTask<Pokemon, PokemonCatchTask>, CustomizableQuestElement {
 
     override fun matches(input: Pokemon): Boolean {
         val caughtMon = input.species.resourceIdentifier
@@ -63,8 +64,8 @@ data class PokemonCatchTask(
                         .optionalFieldOf("amount", 1)
                         .forGetter(PokemonCatchTask::amount),
 
-                    QuestAppearance.CODEC
-                        .forGetter(PokemonCatchTask::appearance)
+                    CobblemonQuestElementDisplay.CODEC
+                        .forGetter(PokemonCatchTask::display)
                 ).apply(instance, ::PokemonCatchTask)
             }
     }

@@ -6,8 +6,9 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.teamresourceful.resourcefullib.common.codecs.EnumCodec
 import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
-import com.ziroau.cobblequestbridge.api.data.QuestAppearance
-import com.ziroau.cobblequestbridge.api.tasks.CountedQuestTask
+import com.ziroau.cobblequestbridge.api.data.CobblemonQuestElementDisplay
+import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
+import com.ziroau.iolaus.api.tasks.CountedQuestTask
 import earth.terrarium.heracles.api.tasks.QuestTaskType
 import net.minecraft.util.Identifier
 
@@ -16,8 +17,8 @@ data class BattleWinTask(
     val battleType: BattleTypeEnum = BattleTypeEnum.ANY,
     val ignoreWildCaptures: Boolean,
     override val amount: Int = 1,
-    override val appearance: QuestAppearance = DEFAULT_APPEARANCE
-): CountedQuestTask<BattleVictoryEvent, BattleWinTask> {
+    override val display: CobblemonQuestElementDisplay = DEFAULT_APPEARANCE
+): CountedQuestTask<BattleVictoryEvent, BattleWinTask>, CustomizableQuestElement {
     override fun matches(input: BattleVictoryEvent): Boolean {
         if (battleType != BattleTypeEnum.ANY && battleType != BattleTypeEnum.fromBattle(input.battle)) return false
         if (ignoreWildCaptures && input.wasWildCapture) return false
@@ -26,7 +27,7 @@ data class BattleWinTask(
     }
 
     companion object {
-        val DEFAULT_APPEARANCE = QuestAppearance(pokemonIconOverride = "pikachu")
+        val DEFAULT_APPEARANCE = CobblemonQuestElementDisplay(pokemonIconOverride = "pikachu")
 
         @JvmField
         val TYPE: QuestTaskType<BattleWinTask> = Type()
@@ -54,9 +55,9 @@ data class BattleWinTask(
                     Codec.INT.optionalFieldOf("amount", 1)
                         .forGetter(BattleWinTask::amount),
 
-                    QuestAppearance
+                    CobblemonQuestElementDisplay
                         .codec(DEFAULT_APPEARANCE)
-                        .forGetter(BattleWinTask::appearance)
+                        .forGetter(BattleWinTask::display)
 
                 ).apply(instance, ::BattleWinTask)
 

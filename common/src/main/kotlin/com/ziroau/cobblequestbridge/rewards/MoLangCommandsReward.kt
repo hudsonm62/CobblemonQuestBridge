@@ -4,9 +4,10 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.ziroau.cobblequestbridge.CobbleQuestBridge
-import com.ziroau.cobblequestbridge.api.data.QuestAppearance
+import com.ziroau.cobblequestbridge.api.data.CobblemonQuestElementDisplay
+import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.molang.MoLangExecutor
-import com.ziroau.cobblequestbridge.api.rewards.AbstractQuestReward
+import com.ziroau.iolaus.api.rewards.BaseQuestReward
 import earth.terrarium.heracles.api.rewards.QuestRewardType
 import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
@@ -16,8 +17,8 @@ import java.util.stream.Stream
 class MoLangCommandsReward(
     override val rewardId: String,
     val commands: List<String>,
-    override val appearance: QuestAppearance
-) : AbstractQuestReward<MoLangCommandsReward> {
+    override val display: CobblemonQuestElementDisplay
+) : BaseQuestReward<MoLangCommandsReward>, CustomizableQuestElement {
     override fun reward(player: ServerPlayerEntity): Stream<ItemStack?> {
         if (commands.all { it.isBlank() }) {
             // No commands to execute, return an empty stream
@@ -46,8 +47,8 @@ class MoLangCommandsReward(
                         .optionalFieldOf("commands", emptyList())
                         .forGetter(MoLangCommandsReward::commands),
 
-                    QuestAppearance.CODEC
-                        .forGetter(MoLangCommandsReward::appearance)
+                    CobblemonQuestElementDisplay.CODEC
+                        .forGetter(MoLangCommandsReward::display)
 
                 ).apply(instance, ::MoLangCommandsReward)
             }

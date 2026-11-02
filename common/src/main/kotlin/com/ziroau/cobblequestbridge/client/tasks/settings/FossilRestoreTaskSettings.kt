@@ -4,7 +4,7 @@ import com.ziroau.cobblequestbridge.api.client.settings.AbstractSettingInitializ
 import com.ziroau.cobblequestbridge.tasks.FossilRestoreTask
 import earth.terrarium.heracles.api.client.settings.SettingInitializer
 
-class FossilRestoreTaskSettings private constructor() : AbstractSettingInitializer<FossilRestoreTask>() {
+class FossilRestoreTaskSettings : AbstractSettingInitializer<FossilRestoreTask>() {
     companion object {
         @JvmField
         val INSTANCE = FossilRestoreTaskSettings()

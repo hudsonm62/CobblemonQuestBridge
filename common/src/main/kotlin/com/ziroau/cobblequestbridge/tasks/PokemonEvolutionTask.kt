@@ -4,10 +4,11 @@ import com.cobblemon.mod.common.api.events.pokemon.evolution.EvolutionCompleteEv
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
+import com.ziroau.cobblequestbridge.api.data.CobblemonQuestElementDisplay
+import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.data.Helpers.attributeMatcher
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
-import com.ziroau.cobblequestbridge.api.data.QuestAppearance
-import com.ziroau.cobblequestbridge.api.tasks.CountedQuestTask
+import com.ziroau.iolaus.api.tasks.CountedQuestTask
 import earth.terrarium.heracles.api.tasks.QuestTaskType
 import net.minecraft.util.Identifier
 
@@ -19,8 +20,8 @@ class PokemonEvolutionTask(
     val toAttributes: String = "",
     val minLevel: Int = 1,
     override val amount: Int = 1,
-    override val appearance: QuestAppearance
-) : CountedQuestTask<EvolutionCompleteEvent, PokemonEvolutionTask> {
+    override val display: CobblemonQuestElementDisplay
+) : CountedQuestTask<EvolutionCompleteEvent, PokemonEvolutionTask>, CustomizableQuestElement {
     override fun matches(input: EvolutionCompleteEvent): Boolean {
         val fromMon = input.sourcePokemon
         val toMon = input.pokemon
@@ -80,8 +81,8 @@ class PokemonEvolutionTask(
                         .optionalFieldOf("amount", 1)
                         .forGetter(PokemonEvolutionTask::amount),
 
-                    QuestAppearance.CODEC
-                        .forGetter(PokemonEvolutionTask::appearance)
+                    CobblemonQuestElementDisplay.CODEC
+                        .forGetter(PokemonEvolutionTask::display)
 
                 ).apply(instance, ::PokemonEvolutionTask)
             }

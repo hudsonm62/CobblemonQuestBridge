@@ -4,7 +4,7 @@ import com.ziroau.cobblequestbridge.api.client.settings.AbstractSettingInitializ
 import com.ziroau.cobblequestbridge.rewards.PokemonReward
 import earth.terrarium.heracles.api.client.settings.SettingInitializer
 
-class PokemonRewardSettings private constructor() : AbstractSettingInitializer<PokemonReward>() {
+class PokemonRewardSettings : AbstractSettingInitializer<PokemonReward>() {
     companion object {
         @JvmField
         val INSTANCE = PokemonRewardSettings()

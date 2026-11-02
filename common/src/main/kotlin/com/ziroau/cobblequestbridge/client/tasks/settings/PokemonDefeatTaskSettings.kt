@@ -5,7 +5,7 @@ import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
 import com.ziroau.cobblequestbridge.tasks.PokemonDefeatTask
 import earth.terrarium.heracles.api.client.settings.SettingInitializer
 
-class PokemonDefeatTaskSettings private constructor() : AbstractSettingInitializer<PokemonDefeatTask>() {
+class PokemonDefeatTaskSettings : AbstractSettingInitializer<PokemonDefeatTask>() {
     companion object {
         @JvmField
         val INSTANCE = PokemonDefeatTaskSettings()

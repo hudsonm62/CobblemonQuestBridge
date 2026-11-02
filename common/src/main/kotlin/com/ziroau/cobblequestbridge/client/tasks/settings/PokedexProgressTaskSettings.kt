@@ -4,7 +4,7 @@ import com.ziroau.cobblequestbridge.api.client.settings.AbstractSettingInitializ
 import com.ziroau.cobblequestbridge.tasks.PokedexProgressTask
 import earth.terrarium.heracles.api.client.settings.SettingInitializer
 
-class PokedexProgressTaskSettings private constructor() : AbstractSettingInitializer<PokedexProgressTask>() {
+class PokedexProgressTaskSettings : AbstractSettingInitializer<PokedexProgressTask>() {
     companion object {
         @JvmField
         val INSTANCE = PokedexProgressTaskSettings()

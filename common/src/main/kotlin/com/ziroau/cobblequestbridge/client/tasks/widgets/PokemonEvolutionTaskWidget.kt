@@ -1,8 +1,11 @@
 package com.ziroau.cobblequestbridge.client.tasks.widgets
 
 import com.cobblemon.mod.common.api.events.pokemon.evolution.EvolutionCompleteEvent
-import com.ziroau.cobblequestbridge.api.client.widgets.AbstractPokemonProgressTaskWidget
+import com.ziroau.cobblequestbridge.api.client.widgets.PokemonIconRenderer
+import com.ziroau.cobblequestbridge.api.client.widgets.PokemonWidgetText.getPokemonName
+import com.ziroau.cobblequestbridge.api.client.widgets.PokemonWidgetText.pluralizedTranslationText
 import com.ziroau.cobblequestbridge.tasks.PokemonEvolutionTask
+import com.ziroau.iolaus.api.client.widgets.AbstractProgressTaskWidget
 import earth.terrarium.heracles.common.handlers.progress.TaskProgress
 import net.minecraft.nbt.AbstractNbtNumber
 import net.minecraft.text.Text
@@ -10,17 +13,16 @@ import net.minecraft.text.Text
 class PokemonEvolutionTaskWidget(
     override val task: PokemonEvolutionTask,
     override val progress: TaskProgress<AbstractNbtNumber>,
-) : AbstractPokemonProgressTaskWidget<EvolutionCompleteEvent, AbstractNbtNumber, PokemonEvolutionTask>() {
+) : AbstractProgressTaskWidget<EvolutionCompleteEvent, AbstractNbtNumber, PokemonEvolutionTask>() {
     override val widgetItemIcon = task.icon()
 
-    override val pokemonIcon = if(task.pokemonIcon().isNotEmpty())
-        createPokemonIcon(task.pokemonIcon())
-    else
-        createPokemonIcon(task.toSpecies, task.toAttributes) // use target pokemon, makes more sense to show an "end result"
+    override val iconRenderer = PokemonIconRenderer.preferred(
+        task.pokemonIcon(), task.toSpecies, task.toAttributes
+    )
 
     override val widgetTitle: Text = task.titleOr(
         pluralizedTranslationText(
-            task.appearance.titleOverride,
+            task.display.titleOverride,
             task.amount,
             "tasks.cobblequestbridge.pokemon_evolution.title",
             getPokemonName(task.fromSpecies), getPokemonName(task.toSpecies)
@@ -29,7 +31,7 @@ class PokemonEvolutionTaskWidget(
 
     override val widgetDescription: Text = task.descriptionOr(
         pluralizedTranslationText(
-            task.appearance.descriptionOverride,
+            task.display.descriptionOverride,
             task.amount,
             "tasks.cobblequestbridge.pokemon_evolution.description",
             getPokemonName(task.fromSpecies), getPokemonName(task.toSpecies),

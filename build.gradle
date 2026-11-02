@@ -39,17 +39,10 @@ subprojects {
             name = "Team Resourceful"
             url = "https://maven.teamresourceful.com/repository/maven-public/"
         }
-        maven {
-            url = uri("https://maven.dediamondpro.dev/releases")
-        }
-        maven {
-            name = "MCEF"
-            url = uri("https://mcef-download.cinemamod.com/repositories/releases")
-        }
 
         maven {
-            name = "Modrinth"
-            url = "https://api.modrinth.com/maven/"
+            name = "ziro's maven"
+            url = "https://maven.ziroau.com"
         }
     }
 

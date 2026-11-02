@@ -22,7 +22,7 @@ object CobbleQuestBridge {
         BridgeTasks.register()
         BridgeRewards.register()
         registerEvents()
-        LOGGER.info("Cobble Quest Bridge initialized - Happy questing!")
+        LOGGER.info("Cobblemon Quest Bridge initialized - Happy questing!")
     }
 
     private fun registerEvents() {
