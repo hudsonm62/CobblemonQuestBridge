@@ -7,7 +7,6 @@ import earth.terrarium.heracles.common.handlers.progress.QuestProgressHandler
 import earth.terrarium.heracles.common.handlers.quests.QuestHandler
 import net.minecraft.server.network.ServerPlayerEntity
 
-@Deprecated("Move to BaseQuestReward instead")
 interface AbstractQuestReward<T : AbstractQuestReward<T>> : BaseQuestReward<T>, CustomizableQuestElement {
     /**
      * Marks this reward as unclaimed for the given [player].
@@ -17,7 +16,6 @@ interface AbstractQuestReward<T : AbstractQuestReward<T>> : BaseQuestReward<T>, 
      *
      * @param player The player for whom the reward should be marked as unclaimed.
      */
-    @Deprecated("Need to migrate off this method before release?")
     fun markUnclaimed(player: ServerPlayerEntity) {
         val entry = QuestHandler.quests().entries.firstOrNull { (_, quest) ->
             quest.rewards()[rewardId] === this

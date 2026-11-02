@@ -11,6 +11,7 @@ import com.ziroau.cobblequestbridge.api.data.CobblemonQuestElementDisplay
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
 import com.ziroau.cobblequestbridge.api.rewards.AbstractQuestReward
 import earth.terrarium.heracles.api.rewards.QuestRewardType
+import earth.terrarium.heracles.common.handlers.quests.QuestHandler
 import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
@@ -33,7 +34,7 @@ data class PokemonReward(
     val amount: Int = 1,
     val unclaimOnFail: Boolean = true,
     override val display: CobblemonQuestElementDisplay
-) : AbstractQuestReward<PokemonReward> /*, CustomizableQuestElement (uncomment when moved off abstractquestreward) **/ {
+) : AbstractQuestReward<PokemonReward> {
     override fun reward(player: ServerPlayerEntity): Stream<ItemStack> {
         val speciesId = parseSpeciesId(species) ?: return Stream.empty()
         val pokemonSpecies = speciesId.let(PokemonSpecies::getByIdentifier)
@@ -90,6 +91,22 @@ data class PokemonReward(
         // Heracles expects a stream of items for the toast for display purposes
         return Stream.empty()
     }
+
+    /**
+     * Temporary unclaim if the reward cant be delivered.
+     * This is only a workaround as there is (currently) no way to check claimability of a reward before claiming it.
+     *
+     * [terrarium-earth/Heracles#293](https://github.com/terrarium-earth/Heracles/issues/293)
+     */
+    @Deprecated("Temporary workaround - See terrarium-earth/Heracles#293")
+    override fun markUnclaimed(player: ServerPlayerEntity) {
+        val entry = QuestHandler.quests().entries.firstOrNull { (_, quest) ->
+            quest.rewards()[rewardId] === this
+        } ?: return
+        val questSettings = entry.value.settings
+        if(!questSettings.autoClaimRewards() && !questSettings.repeatable()) super.markUnclaimed(player)
+    }
+    override fun canBeMassClaimed(): Boolean = false // also temporary as to not break the above workaround
 
     companion object {
         @JvmField
