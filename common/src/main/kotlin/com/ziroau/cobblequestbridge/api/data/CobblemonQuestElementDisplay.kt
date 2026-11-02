@@ -6,6 +6,11 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.ziroau.iolaus.api.data.BasicQuestElementDisplay
 import com.ziroau.iolaus.api.data.QuestElementDisplay
 
+/**
+ * The main CQB [QuestElementDisplay].
+ *
+ * Currently, it only adds a [pokemonIconOverride], but it may be expanded in the future.
+ */
 data class CobblemonQuestElementDisplay(
     val base: BasicQuestElementDisplay = BasicQuestElementDisplay(),
     val pokemonIconOverride: String = "",

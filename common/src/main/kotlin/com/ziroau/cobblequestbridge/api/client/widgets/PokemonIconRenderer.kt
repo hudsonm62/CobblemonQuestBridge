@@ -16,8 +16,7 @@ import org.joml.Quaternionf
 import org.joml.Vector3f
 
 /**
- * Cobblemon-specific plugin for Iolaus' WidgetIconRenderer slot.
- * Item quest icons still take priority, as they did in CQB.
+ * [WidgetIconRenderer] for rendering a Pokémon icon in widgets.
  */
 class PokemonIconRenderer private constructor(private val pokemon: RenderablePokemon) : WidgetIconRenderer {
     private val modelState = FloatingState()

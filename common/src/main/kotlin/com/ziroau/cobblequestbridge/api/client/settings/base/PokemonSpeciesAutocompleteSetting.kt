@@ -2,11 +2,11 @@ package com.ziroau.cobblequestbridge.api.client.settings.base
 
 import com.cobblemon.mod.common.api.pokemon.PokemonSpecies
 import com.ziroau.iolaus.api.client.settings.base.BaseAutocompleteSetting
-import earth.terrarium.olympus.client.components.textbox.autocomplete.AutocompleteTextBox
 
 /**
- * Provides a [AutocompleteTextBox] for Pokémon species,
- * with an option to allow "any" as a valid value for elements that don't require a specific species.
+ * Provides a [BaseAutocompleteSetting] for Pokémon species.
+ *
+ * TODO: Look into a way to make this work with Cobblemon attributes???
  */
 class PokemonSpeciesAutocompleteSetting(val allowAny: Boolean = false) : BaseAutocompleteSetting(allowAny) {
     override val defaultValue: String = if (allowAny) "any" else PokemonSpecies.species.first().resourceIdentifier.toString()
