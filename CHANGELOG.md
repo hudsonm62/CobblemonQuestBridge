@@ -11,6 +11,7 @@
 
 - Handling of full PC/Party when claiming Pokémon Rewards
 - Pokémon icon animations being too fast
+- Invalid Pokédex IDs not falling back to the national dex in `PokedexProgressTask`
 
 ### Removed
 

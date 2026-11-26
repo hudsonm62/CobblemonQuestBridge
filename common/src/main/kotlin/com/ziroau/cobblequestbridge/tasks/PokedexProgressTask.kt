@@ -45,11 +45,18 @@ class PokedexProgressTask(
     private fun updatePokedexProgress(
         progress: AbstractNbtNumber, playerId: UUID
     ): AbstractNbtNumber {
+        // Default to national dex if the specified dex is invalid / not found
+        val nationalId = Identifier.of("cobblemon", "national")
+        val parsedDexId = parseDexIdentifier()
+        val dexId = when {
+            parsedDexId == null -> nationalId
+            parsedDexId == nationalId -> nationalId
+            Dexes.dexEntryMap.containsKey(parsedDexId) -> parsedDexId
+            else -> nationalId
+        }
+
         val pokedex = Cobblemon.playerDataManager
             .getPokedexData(playerId)
-
-        val dexId = parseDexIdentifier() ?: Identifier.of("cobblemon", "national")
-
         val count = if (dexId.path.equals("national", ignoreCase = true)) {
             if (caughtOnly) {
                 pokedex.getGlobalCalculatedValue(CaughtCount)
