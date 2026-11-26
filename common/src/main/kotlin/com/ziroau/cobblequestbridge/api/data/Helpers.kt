@@ -4,7 +4,7 @@ import com.cobblemon.mod.common.api.pokemon.PokemonProperties
 import com.cobblemon.mod.common.util.server
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Identifier
-import java.util.*
+import java.util.UUID
 
 object Helpers {
     /**
