@@ -24,9 +24,10 @@ class PokemonIconRenderer private constructor(private val pokemon: RenderablePok
     override fun render(
         context: DrawContext, scissor: ScissorBoxStack, x: Int, y: Int, size: Int
     ): Boolean {
+        val client = MinecraftClient.getInstance()
         val matrices = context.matrices
         RenderUtils.createScissorBoxStack(
-            scissor, MinecraftClient.getInstance(), matrices, x, y, size, size
+            scissor, client, matrices, x, y, size, size
         ).use {
             matrices.push()
             try {
@@ -37,7 +38,7 @@ class PokemonIconRenderer private constructor(private val pokemon: RenderablePok
                     matrixStack = matrices,
                     rotation = Quaternionf().fromEulerXYZDegrees(Vector3f(13f, 35f, 0f)),
                     state = modelState,
-                    partialTicks = MinecraftClient.getInstance().renderTickCounter.getTickDelta(false),
+                    partialTicks = client.renderTickCounter.lastFrameDuration,
                     scale = 4.5f
                 )
             } finally {
