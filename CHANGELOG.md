@@ -4,8 +4,17 @@
 
 ### Added
 
-- Migrated to [Iolaus](https://github.com/hudsonm62/Iolaus)!
+- Migrated to the [Iolaus](https://github.com/hudsonm62/Iolaus) Extension Library!
 - `PokedexAutocompleteSetting` for Pokédex Region Autocomplete in Quest Editor
+
+### Fixed
+
+- Handling of full PC/Party when claiming Pokémon Rewards
+- Pokémon icon animations being too fast
+
+### Removed
+
+- Some obsolete loggers & imports
 
 [Unreleased]: https://github.com/hudsonm62/CobblemonQuestBridge/compare/v0.0.5...master
 
