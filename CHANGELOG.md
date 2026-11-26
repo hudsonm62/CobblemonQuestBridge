@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+[Unreleased]: https://github.com/hudsonm62/CobblemonQuestBridge/compare/v0.1.0...master
+
+## [0.1.0] - 2026-11-26
+
 ### Added
 
 - Migrated to the [Iolaus](https://github.com/hudsonm62/Iolaus) Extension Library!
@@ -17,7 +21,7 @@
 
 - Some obsolete loggers & imports
 
-[Unreleased]: https://github.com/hudsonm62/CobblemonQuestBridge/compare/v0.0.5...master
+[0.1.0]: https://modrinth.com/mod/cobblemon-quest-bridge/version/0.1.0
 
 ## [0.0.5] - 2026-10-28
 
