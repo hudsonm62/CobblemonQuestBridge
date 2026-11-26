@@ -1,8 +1,8 @@
 package com.ziroau.cobblequestbridge.client.rewards.widgets
 
-import com.cobblemon.mod.common.pokemon.RenderablePokemon
-import com.ziroau.cobblequestbridge.api.client.widgets.AbstractPokemonRewardWidget
+import com.ziroau.cobblequestbridge.api.client.widgets.PokemonIconRenderer
 import com.ziroau.cobblequestbridge.rewards.MoLangCommandsReward
+import com.ziroau.iolaus.api.client.widgets.AbstractRewardWidget
 import earth.terrarium.heracles.api.quests.QuestIcon
 import earth.terrarium.heracles.common.handlers.progress.QuestProgress
 import net.minecraft.text.Text
@@ -12,7 +12,7 @@ class MoLangCommandsRewardWidget private constructor (
     override val questId: String,
     override val progress: QuestProgress?,
     override val interactive: Boolean
-): AbstractPokemonRewardWidget() {
+): AbstractRewardWidget() {
     companion object {
         @JvmStatic
         fun of(reward: MoLangCommandsReward, interactive: Boolean): MoLangCommandsRewardWidget {
@@ -23,11 +23,7 @@ class MoLangCommandsRewardWidget private constructor (
         }
     }
 
-    override val pokemonIcon: RenderablePokemon?
-        get() = if(reward.pokemonIcon().isNotEmpty())
-            createPokemonIcon(reward.pokemonIcon())
-        else
-            null
+    override val iconRenderer = PokemonIconRenderer.preferred(reward.display.pokemonIconOverride)
 
     override val widgetItemIcon: QuestIcon<*>
         get() = reward.icon()

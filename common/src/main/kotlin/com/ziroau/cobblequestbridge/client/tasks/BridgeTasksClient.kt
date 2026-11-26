@@ -1,22 +1,31 @@
 package com.ziroau.cobblequestbridge.client.tasks
 
-import com.ziroau.cobblequestbridge.api.client.registry.BridgeTasksClientRegistry
 import com.ziroau.cobblequestbridge.client.tasks.settings.BattleWinTaskSettings
+import com.ziroau.cobblequestbridge.client.tasks.settings.FossilRestoreTaskSettings
+import com.ziroau.cobblequestbridge.client.tasks.settings.PokedexProgressTaskSettings
 import com.ziroau.cobblequestbridge.client.tasks.settings.PokemonCatchTaskSettings
 import com.ziroau.cobblequestbridge.client.tasks.settings.PokemonDefeatTaskSettings
 import com.ziroau.cobblequestbridge.client.tasks.settings.PokemonEvolutionTaskSettings
+import com.ziroau.cobblequestbridge.client.tasks.settings.PokemonTradeTaskSettings
 import com.ziroau.cobblequestbridge.client.tasks.widgets.BattleWinTaskWidget
+import com.ziroau.cobblequestbridge.client.tasks.widgets.FossilRestoreTaskWidget
+import com.ziroau.cobblequestbridge.client.tasks.widgets.PokedexProgressTaskWidget
 import com.ziroau.cobblequestbridge.client.tasks.widgets.PokemonCatchTaskWidget
 import com.ziroau.cobblequestbridge.client.tasks.widgets.PokemonDefeatTaskWidget
 import com.ziroau.cobblequestbridge.client.tasks.widgets.PokemonEvolutionTaskWidget
+import com.ziroau.cobblequestbridge.client.tasks.widgets.PokemonTradeTaskWidget
 import com.ziroau.cobblequestbridge.tasks.BattleWinTask
+import com.ziroau.cobblequestbridge.tasks.FossilRestoreTask
+import com.ziroau.cobblequestbridge.tasks.PokedexProgressTask
 import com.ziroau.cobblequestbridge.tasks.PokemonCatchTask
 import com.ziroau.cobblequestbridge.tasks.PokemonDefeatTask
 import com.ziroau.cobblequestbridge.tasks.PokemonEvolutionTask
+import com.ziroau.cobblequestbridge.tasks.PokemonTradeTask
+import com.ziroau.iolaus.api.client.registry.TasksClientRegistry
 
 object BridgeTasksClient {
     fun register() {
-        BridgeTasksClientRegistry.register(
+        TasksClientRegistry.register(
             PokemonCatchTask.TYPE,
             PokemonCatchTaskSettings.INSTANCE,
             ::PokemonCatchTaskWidget
@@ -25,7 +34,7 @@ object BridgeTasksClient {
             "$caught/${task.amount.coerceAtLeast(1)}"
         }
 
-        BridgeTasksClientRegistry.register(
+        TasksClientRegistry.register(
             PokemonDefeatTask.TYPE,
             PokemonDefeatTaskSettings.INSTANCE,
             ::PokemonDefeatTaskWidget
@@ -34,7 +43,7 @@ object BridgeTasksClient {
             "$defeated/${task.amount.coerceAtLeast(1)}"
         }
 
-        BridgeTasksClientRegistry.register(
+        TasksClientRegistry.register(
             PokemonEvolutionTask.TYPE,
             PokemonEvolutionTaskSettings.INSTANCE,
             ::PokemonEvolutionTaskWidget
@@ -43,13 +52,40 @@ object BridgeTasksClient {
             "$evolutions/${task.amount.coerceAtLeast(1)}"
         }
 
-        BridgeTasksClientRegistry.register(
+        TasksClientRegistry.register(
             BattleWinTask.TYPE,
             BattleWinTaskSettings.INSTANCE,
             ::BattleWinTaskWidget
         ) { progress, task ->
             val wins = task.storage().readInt(progress.progress()).coerceAtLeast(0)
             "$wins/${task.amount.coerceAtLeast(1)}"
+        }
+
+        TasksClientRegistry.register(
+            PokedexProgressTask.TYPE,
+            PokedexProgressTaskSettings.INSTANCE,
+            ::PokedexProgressTaskWidget
+        ) { progress, task ->
+            val current = task.storage().readInt(progress.progress()).coerceAtLeast(0)
+            "$current/${task.amount.coerceAtLeast(1)}"
+        }
+
+        TasksClientRegistry.register(
+            PokemonTradeTask.TYPE,
+            PokemonTradeTaskSettings.INSTANCE,
+            ::PokemonTradeTaskWidget
+        ) { progress, task ->
+            val trades = task.storage().readInt(progress.progress()).coerceAtLeast(0)
+            "$trades/${task.amount.coerceAtLeast(1)}"
+        }
+
+        TasksClientRegistry.register(
+            FossilRestoreTask.TYPE,
+            FossilRestoreTaskSettings.INSTANCE,
+            ::FossilRestoreTaskWidget
+        ) { progress, task ->
+            val restored = task.storage().readInt(progress.progress()).coerceAtLeast(0)
+            "$restored/${task.amount.coerceAtLeast(1)}"
         }
     }
 }

@@ -5,7 +5,6 @@ import com.bedrockk.molang.runtime.value.DoubleValue
 import com.cobblemon.mod.common.api.molang.function.AbstractMoLangFunctionHolder
 import earth.terrarium.heracles.api.events.HeraclesEvents
 import earth.terrarium.heracles.api.events.TaskEventTarget
-import earth.terrarium.heracles.api.tasks.defaults.DummyTask
 import earth.terrarium.heracles.common.handlers.progress.QuestProgressHandler
 import earth.terrarium.heracles.common.handlers.quests.QuestHandler
 import net.minecraft.server.network.ServerPlayerEntity

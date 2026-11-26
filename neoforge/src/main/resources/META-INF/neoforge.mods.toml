@@ -1,42 +1,48 @@
 modLoader = "kotlinforforge"
 loaderVersion = "[5.3,)"
-issueTrackerURL = "https://github.com/hudsonm62/cobblemonquestbridge/issues"
+issueTrackerURL = "${issue_tracker}"
 license = "Apache-2.0"
 
 [[mods]]
-modId = "cobblequestbridge"
+modId = "${mod_id}"
 version = "${version}"
 displayName = "Cobblemon Quest Bridge"
 authors = "Hudson M."
-description = '''
-Cobblemon compatibility bridge for Heracles (aka Odyssey Quests)
-'''
-logoFile = "icon.png"
+description = '''${description}'''
+logoFile = "${icon_path}"
+displayURL = "${homepage}"
 
-[[dependencies.cobblequestbridge]]
+[[dependencies.${mod_id}]]
 modId = "neoforge"
 type = "required"
 versionRange = "[21.1,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.cobblequestbridge]]
+[[dependencies.${mod_id}]]
 modId = "minecraft"
 type = "required"
 versionRange = "[1.21.1]"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.cobblequestbridge]]
+[[dependencies.${mod_id}]]
 modId = "cobblemon"
 type = "required"
 versionRange = "[1.8.0,)"
 ordering = "AFTER"
 side = "BOTH"
 
-[[dependencies.cobblequestbridge]]
+[[dependencies.${mod_id}]]
 modId = "heracles"
 type = "required"
 versionRange = "[2.0.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "iolaus"
+type = "required"
+versionRange = "[${iolaus_version},)"
 ordering = "AFTER"
 side = "BOTH"

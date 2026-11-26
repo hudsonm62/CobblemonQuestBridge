@@ -35,17 +35,34 @@ dependencies {
     modImplementation ("com.cobblemon:fabric:${rootProject.cobblemon_version}")
 
     // Heracles
-    modImplementation ("earth.terrarium.heracles:heracles-fabric-1.21.1:${heracles_version}")
+    modImplementation ("earth.terrarium.heracles:heracles-fabric-1.21.1:${heracles_version}"){ transitive = false }
     modImplementation ("com.teamresourceful.resourcefullib:resourcefullib-fabric-1.21:${resourcefullib_version}")
     modImplementation ("earth.terrarium.hermes:hermes-fabric-1.21.1:${hermes_version}"){ transitive = false }
     modImplementation ("earth.terrarium.olympus:olympus-fabric-1.21:${olympus_version}")
+
+    // Iolaus Library
+    modImplementation ("com.ziroau:iolaus:${iolaus_version}+fabric")
 }
 
 processResources {
     inputs.property 'version', project.version
+    inputs.property 'mod_id', rootProject.mod_id
+    inputs.property 'description', rootProject.description
+    inputs.property 'homepage', rootProject.homepage
+    inputs.property 'issue_tracker', rootProject.issue_tracker
+    inputs.property 'icon_path', rootProject.icon_path
+    inputs.property 'iolaus_version', rootProject.iolaus_version
 
     filesMatching('fabric.mod.json') {
-        expand version: inputs.properties.version
+        expand(
+            version: inputs.properties.version,
+            mod_id: inputs.properties.mod_id,
+            description: inputs.properties.description,
+            homepage: inputs.properties.homepage,
+            issue_tracker: inputs.properties.issue_tracker,
+            icon_path: inputs.properties.icon_path,
+            iolaus_version: inputs.properties.iolaus_version
+        )
     }
 }
 

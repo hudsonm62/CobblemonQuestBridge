@@ -1,7 +1,7 @@
 package com.ziroau.cobblequestbridge.neoforge
 
-import net.neoforged.fml.common.Mod
 import com.ziroau.cobblequestbridge.CobbleQuestBridge
+import net.neoforged.fml.common.Mod
 
 @Mod(CobbleQuestBridge.MOD_ID)
 class CobbleQuestBridgeNeoForge {

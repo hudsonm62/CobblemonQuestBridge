@@ -6,68 +6,33 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.teamresourceful.resourcefullib.common.codecs.EnumCodec
 import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
+import com.ziroau.cobblequestbridge.api.data.CobblemonQuestElementDisplay
 import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
-import earth.terrarium.heracles.api.quests.QuestIcon
-import earth.terrarium.heracles.api.quests.QuestIcons
-import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
-import earth.terrarium.heracles.api.tasks.QuestTask
+import com.ziroau.iolaus.api.tasks.CountedQuestTask
 import earth.terrarium.heracles.api.tasks.QuestTaskType
-import earth.terrarium.heracles.api.tasks.storage.defaults.IntegerTaskStorage
-import net.minecraft.nbt.AbstractNbtNumber
 import net.minecraft.util.Identifier
 
 data class BattleWinTask(
-    private val taskId: String,
+    override val taskId: String,
     val battleType: BattleTypeEnum = BattleTypeEnum.ANY,
     val ignoreWildCaptures: Boolean,
-    val amount: Int = 1,
-    val titleOverride: String,
-    val descriptionOverride: String,
-    val pokemonIconOverride: String,
-    val iconOverride: QuestIcon<*> = ItemQuestIcon.AIR
-): QuestTask<BattleVictoryEvent, AbstractNbtNumber, BattleWinTask>, CustomizableQuestElement {
-    override fun id(): String = taskId
+    override val amount: Int = 1,
+    override val display: CobblemonQuestElementDisplay = DEFAULT_APPEARANCE
+): CountedQuestTask<BattleVictoryEvent, BattleWinTask>, CustomizableQuestElement {
+    override fun matches(input: BattleVictoryEvent): Boolean {
+        if (battleType != BattleTypeEnum.ANY && battleType != BattleTypeEnum.fromBattle(input.battle)) return false
+        if (ignoreWildCaptures && input.wasWildCapture) return false
 
-    override fun test(
-        type: QuestTaskType<*>,
-        progress: AbstractNbtNumber,
-        input: BattleVictoryEvent
-    ): AbstractNbtNumber {
-        if (battleType != BattleTypeEnum.ANY && battleType != BattleTypeEnum.fromBattle(input.battle))
-            return progress
-
-        // ignore wild captures if the task is set to ignore them
-        if(ignoreWildCaptures && input.wasWildCapture)
-            return progress
-
-        // Increment by 1, capped at the required amount
-        val current = storage().readInt(progress)
-        val target = amount.coerceAtLeast(1)
-        return storage().set(
-            (current + 1).coerceAtMost(target)
-        )
+        return true
     }
-
-    override fun getProgress(progress: AbstractNbtNumber): Float {
-        val current = storage().readInt(progress)
-        return (current.toFloat() / amount.coerceAtLeast(1))
-            .coerceIn(0f, 1f)
-    }
-
-    override fun storage(): IntegerTaskStorage = IntegerTaskStorage.INSTANCE
-
-    override fun type(): QuestTaskType<BattleWinTask> = TYPE
-
-    override fun title(): String = titleOverride
-    override fun description(): String = descriptionOverride
-    override fun pokemonIcon(): String = pokemonIconOverride
-    override fun icon(): QuestIcon<*> = iconOverride
-
 
     companion object {
+        val DEFAULT_APPEARANCE = CobblemonQuestElementDisplay(pokemonIconOverride = "pikachu")
+
         @JvmField
         val TYPE: QuestTaskType<BattleWinTask> = Type()
     }
+    override fun type(): QuestTaskType<BattleWinTask> = TYPE
 
     private class Type : QuestTaskType<BattleWinTask> {
         override fun id(): Identifier =
@@ -90,23 +55,11 @@ data class BattleWinTask(
                     Codec.INT.optionalFieldOf("amount", 1)
                         .forGetter(BattleWinTask::amount),
 
-                    Codec.STRING.optionalFieldOf("title", "")
-                        .forGetter(BattleWinTask::titleOverride),
+                    CobblemonQuestElementDisplay
+                        .codec(DEFAULT_APPEARANCE)
+                        .forGetter(BattleWinTask::display)
 
-                    Codec.STRING.optionalFieldOf("description", "")
-                        .forGetter(BattleWinTask::descriptionOverride),
-
-                    Codec.STRING.optionalFieldOf("pokemonIcon", "pikachu")
-                        .forGetter(BattleWinTask::pokemonIconOverride),
-
-                    QuestIcons.CODEC
-                        .lenientOptionalFieldOf("icon", ItemQuestIcon.AIR)
-                        .forGetter(BattleWinTask::iconOverride)
-
-                ).apply(instance) {
-                    taskId, battleType, ignoreWildCaptures, amount, title, description, pokemonIcon, icon ->
-                    BattleWinTask(taskId, battleType, ignoreWildCaptures, amount, title, description, pokemonIcon, icon)
-                }
+                ).apply(instance, ::BattleWinTask)
 
         }
     }

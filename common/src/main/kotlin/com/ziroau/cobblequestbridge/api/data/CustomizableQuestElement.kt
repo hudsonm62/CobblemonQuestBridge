@@ -1,33 +1,16 @@
 package com.ziroau.cobblequestbridge.api.data
 
-import net.minecraft.text.Text
+import com.ziroau.iolaus.api.data.CustomizableQuestElementExtended
 
 /**
- * Same as [earth.terrarium.heracles.api.CustomizableQuestElement], but extended for common CQB customization.
+ * An extension of [CustomizableQuestElementExtended] to support a [pokemonIcon] in all task/reward elements.
  */
-interface CustomizableQuestElement : earth.terrarium.heracles.api.CustomizableQuestElement {
-    /**
-     * The description of the element, used in the Quest Viewer.
-     * Supports translatable text if used with [descriptionOr]
-     */
-    fun description(): String
+interface CustomizableQuestElement : CustomizableQuestElementExtended {
+    override val display: CobblemonQuestElementDisplay
 
     /**
-     * The string of a Pokémon to use for the icon of the element.
-     * Should support Cobblemon attributes.
-     *
-     * Sample: `vaporeon shiny=yes`
+     * The Pokémon species string to use as the widget icon.
+     * Supports Cobblemon attributes (e.g. `vaporeon shiny=yes`).
      */
-    fun pokemonIcon(): String
-
-    /**
-     * The description if it is not empty, otherwise returns the overridden description.
-     */
-    fun descriptionOr(overridden: Text): Text {
-        return if (description().isNotEmpty()) {
-            Text.translatable(description())
-        } else {
-            overridden
-        }
-    }
+    fun pokemonIcon(): String = display.pokemonIconOverride
 }

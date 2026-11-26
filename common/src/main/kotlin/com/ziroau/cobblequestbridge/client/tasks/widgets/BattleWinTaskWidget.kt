@@ -1,11 +1,11 @@
 package com.ziroau.cobblequestbridge.client.tasks.widgets
 
 import com.cobblemon.mod.common.api.events.battles.BattleVictoryEvent
-import com.cobblemon.mod.common.pokemon.RenderablePokemon
-import com.ziroau.cobblequestbridge.api.client.widgets.AbstractPokemonProgressTaskWidget
+import com.ziroau.cobblequestbridge.api.client.widgets.PokemonIconRenderer
 import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
 import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum.Companion.alternateTranslation
 import com.ziroau.cobblequestbridge.tasks.BattleWinTask
+import com.ziroau.iolaus.api.client.widgets.AbstractProgressTaskWidget
 import earth.terrarium.heracles.api.quests.QuestIcon
 import earth.terrarium.heracles.common.handlers.progress.TaskProgress
 import net.minecraft.nbt.AbstractNbtNumber
@@ -14,7 +14,7 @@ import net.minecraft.text.Text
 class BattleWinTaskWidget(
     override val task: BattleWinTask,
     override val progress: TaskProgress<AbstractNbtNumber>
-) : AbstractPokemonProgressTaskWidget<BattleVictoryEvent, AbstractNbtNumber, BattleWinTask>() {
+) : AbstractProgressTaskWidget<BattleVictoryEvent, AbstractNbtNumber, BattleWinTask>() {
     private fun battleWinText(type: String): Text {
         val isAny = task.battleType == BattleTypeEnum.ANY
         val isPlural = task.amount > 1
@@ -33,10 +33,7 @@ class BattleWinTaskWidget(
         }
     }
 
-    override val pokemonIcon: RenderablePokemon?
-        get() = if(task.pokemonIcon().isNotEmpty())
-            createPokemonIcon(task.pokemonIcon())
-        else null
+    override val iconRenderer = PokemonIconRenderer.preferred(task.pokemonIcon())
     override val widgetItemIcon: QuestIcon<*>
         get() = task.icon()
 

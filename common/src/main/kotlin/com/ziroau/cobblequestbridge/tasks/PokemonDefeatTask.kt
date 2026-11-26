@@ -1,87 +1,50 @@
 package com.ziroau.cobblequestbridge.tasks
 
 import com.cobblemon.mod.common.api.events.battles.BattleFaintedEvent
-import com.cobblemon.mod.common.api.pokemon.PokemonProperties
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.teamresourceful.resourcefullib.common.codecs.EnumCodec
 import com.ziroau.cobblequestbridge.api.data.BattleTypeEnum
+import com.ziroau.cobblequestbridge.api.data.CobblemonQuestElementDisplay
 import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.data.Helpers.attributeMatcher
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
-import earth.terrarium.heracles.api.quests.QuestIcon
-import earth.terrarium.heracles.api.quests.QuestIcons
-import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
-import earth.terrarium.heracles.api.tasks.QuestTask
+import com.ziroau.iolaus.api.tasks.CountedQuestTask
 import earth.terrarium.heracles.api.tasks.QuestTaskType
-import earth.terrarium.heracles.api.tasks.storage.defaults.IntegerTaskStorage
-import net.minecraft.nbt.AbstractNbtNumber
 import net.minecraft.util.Identifier
 
 data class PokemonDefeatTask (
-    private val taskId: String,
+    override val taskId: String,
     val species: String = "any",
     val attributes: String = "",
     val minLevel: Int = 1,
     val battleType: BattleTypeEnum = BattleTypeEnum.ANY,
-    val amount: Int = 1,
-    val titleOverride: String,
-    val descriptionOverride: String,
-    val pokemonIconOverride: String,
-    val iconOverride: QuestIcon<*> = ItemQuestIcon.AIR
-) : QuestTask<BattleFaintedEvent, AbstractNbtNumber, PokemonDefeatTask>, CustomizableQuestElement {
-    override fun id(): String = taskId
+    override val amount: Int = 1,
+    override val display: CobblemonQuestElementDisplay
+) : CountedQuestTask<BattleFaintedEvent, PokemonDefeatTask>, CustomizableQuestElement {
+    override fun matches(input: BattleFaintedEvent): Boolean {
+        if (battleType != BattleTypeEnum.ANY && battleType != BattleTypeEnum.fromBattle(input.battle)) return false
 
-    override fun test(
-        type: QuestTaskType<*>,
-        progress: AbstractNbtNumber,
-        input: BattleFaintedEvent
-    ): AbstractNbtNumber {
-        if (battleType != BattleTypeEnum.ANY && battleType != BattleTypeEnum.fromBattle(input.battle))
-            return progress
-
-        val sourceBattlePkm = input.context.origin ?: return progress
+        val sourceBattlePkm = input.context.origin ?: return false
         val defeatedBattlePkm = input.killed
 
         // Ignore self-KOs and friendly fire
-        if (defeatedBattlePkm.actor.getSide() == sourceBattlePkm.actor.getSide()) return progress
+        if (defeatedBattlePkm.actor.getSide() == sourceBattlePkm.actor.getSide()) return false
 
         val defeatedMon = defeatedBattlePkm.effectedPokemon
         val defeatedSpecies = defeatedMon.species.resourceIdentifier
 
         val matchesSpecies: Boolean = species == "any" || defeatedSpecies == parseSpeciesId(species)
 
-        if (!matchesSpecies || defeatedMon.level < minLevel ||
-            !attributeMatcher(attributes).matches(defeatedMon)
-            ) return progress
-
-        // Increment by 1, capped at the required amount
-        val current = storage().readInt(progress)
-        val target = amount.coerceAtLeast(1)
-        return storage().set(
-            (current + 1).coerceAtMost(target)
-        )
+        return matchesSpecies && defeatedMon.level >= minLevel && attributeMatcher(attributes).matches(defeatedMon)
     }
-
-    override fun getProgress(progress: AbstractNbtNumber): Float {
-        val current = storage().readInt(progress)
-        return (current.toFloat() / amount.coerceAtLeast(1))
-            .coerceIn(0f, 1f)
-    }
-
-    override fun storage(): IntegerTaskStorage = IntegerTaskStorage.INSTANCE
-    override fun type(): QuestTaskType<PokemonDefeatTask> = TYPE
-
-    override fun title(): String = titleOverride
-    override fun description(): String = descriptionOverride
-    override fun pokemonIcon(): String = pokemonIconOverride
-    override fun icon(): QuestIcon<*> = iconOverride
 
     companion object {
         @JvmField
         val TYPE: QuestTaskType<PokemonDefeatTask> = Type()
     }
+    override fun type(): QuestTaskType<PokemonDefeatTask> = TYPE
 
     private class Type : QuestTaskType<PokemonDefeatTask> {
         override fun id(): Identifier =
@@ -114,25 +77,10 @@ data class PokemonDefeatTask (
                         .optionalFieldOf("amount", 1)
                         .forGetter(PokemonDefeatTask::amount),
 
-                    Codec.STRING
-                        .optionalFieldOf("title", "")
-                        .forGetter(PokemonDefeatTask::titleOverride),
+                    CobblemonQuestElementDisplay.CODEC
+                        .forGetter(PokemonDefeatTask::display)
 
-                    Codec.STRING
-                        .optionalFieldOf("description", "")
-                        .forGetter(PokemonDefeatTask::descriptionOverride),
-
-                    Codec.STRING
-                        .optionalFieldOf("pokemonIcon", "")
-                        .forGetter(PokemonDefeatTask::pokemonIconOverride),
-
-                    QuestIcons.CODEC
-                        .lenientOptionalFieldOf("icon", ItemQuestIcon.AIR)
-                        .forGetter(PokemonDefeatTask::iconOverride)
-
-                ).apply(instance) { id, species, attributes, minLevel, battleType, amount, title, description, pokemonIcon, icon ->
-                    PokemonDefeatTask(id, species, attributes, minLevel, battleType, amount, title, description, pokemonIcon, icon)
-                }
+                ).apply(instance, ::PokemonDefeatTask)
             }
     }
 }

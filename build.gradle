@@ -1,9 +1,9 @@
 plugins {
-    id 'dev.architectury.loom' version '1.17-SNAPSHOT' apply false
+    id 'dev.architectury.loom' version '1.17.493' apply false
     id 'architectury-plugin' version '3.5-SNAPSHOT'
-    id 'com.gradleup.shadow' version '9.4.3' apply false
-    id 'org.jetbrains.kotlin.jvm' version '2.4.0' apply false
-    id 'org.jetbrains.dokka' version '2.2.0' apply false
+    id 'com.gradleup.shadow' version '9.6.1' apply false
+    id 'org.jetbrains.kotlin.jvm' version '2.4.21' apply false
+    id 'org.jetbrains.dokka' version '2.3.0' apply false
     id 'idea'
 }
 
@@ -39,17 +39,10 @@ subprojects {
             name = "Team Resourceful"
             url = "https://maven.teamresourceful.com/repository/maven-public/"
         }
-        maven {
-            url = uri("https://maven.dediamondpro.dev/releases")
-        }
-        maven {
-            name = "MCEF"
-            url = uri("https://mcef-download.cinemamod.com/repositories/releases")
-        }
 
         maven {
-            name = "Modrinth"
-            url = "https://api.modrinth.com/maven/"
+            name = "ziro's maven"
+            url = "https://maven.ziroau.com"
         }
     }
 

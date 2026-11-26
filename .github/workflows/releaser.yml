@@ -139,6 +139,7 @@ jobs:
           dependencies: |
             cobblemon{modrinth:MdwFAVRL}
             odyssey-quests{modrinth:lo90fZoB}
+            iolaus{modrinth:BxQzS0ON}
             kotlin-for-forge{modrinth:ordsPcFz}
           fail-mode: fail
           retry-attempts: 2
@@ -159,11 +160,13 @@ jobs:
           version-type: ${{ github.event.inputs.version-type }}
           loaders: |
             fabric
+            quilt
           game-versions: |
             1.21.1
           dependencies: |
             cobblemon{modrinth:MdwFAVRL}
             odyssey-quests{modrinth:lo90fZoB}
+            iolaus{modrinth:BxQzS0ON}
             fabric-api{modrinth:P7dR8mSH}
           fail-mode: fail
           retry-attempts: 2

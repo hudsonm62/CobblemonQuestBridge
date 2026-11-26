@@ -1,77 +1,41 @@
 package com.ziroau.cobblequestbridge.tasks
 
-import com.cobblemon.mod.common.api.pokemon.PokemonProperties
 import com.cobblemon.mod.common.pokemon.Pokemon
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
+import com.ziroau.cobblequestbridge.api.data.CobblemonQuestElementDisplay
 import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
 import com.ziroau.cobblequestbridge.api.data.Helpers.attributeMatcher
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
-import earth.terrarium.heracles.api.quests.QuestIcon
-import earth.terrarium.heracles.api.quests.QuestIcons
-import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
-import earth.terrarium.heracles.api.tasks.QuestTask
+import com.ziroau.iolaus.api.tasks.CountedQuestTask
 import earth.terrarium.heracles.api.tasks.QuestTaskType
-import earth.terrarium.heracles.api.tasks.storage.defaults.IntegerTaskStorage
-import net.minecraft.nbt.AbstractNbtNumber
 import net.minecraft.util.Identifier
 
 /**
- * Heracles [QuestTask] for catching a Pokémon with optional requirements for species, attributes, and minimum level.
+ * [CountedQuestTask] for catching a Pokémon with optional requirements for species, attributes, and minimum level.
  */
 data class PokemonCatchTask(
-    private val taskId: String,
+    override val taskId: String,
     val species: String = "any",
     val attributes: String = "",
     val minLevel: Int = 1,
-    val amount: Int = 1,
-    val titleOverride: String,
-    val descriptionOverride: String,
-    val pokemonIconOverride: String,
-    val iconOverride: QuestIcon<*> = ItemQuestIcon.AIR
-) : QuestTask<Pokemon, AbstractNbtNumber, PokemonCatchTask>, CustomizableQuestElement {
-    override fun id(): String = taskId
+    override val amount: Int = 1,
+    override val display: CobblemonQuestElementDisplay
+) : CountedQuestTask<Pokemon, PokemonCatchTask>, CustomizableQuestElement {
 
-    override fun test(
-        type: QuestTaskType<*>,
-        progress: AbstractNbtNumber,
-        input: Pokemon
-    ): AbstractNbtNumber {
+    override fun matches(input: Pokemon): Boolean {
         val caughtMon = input.species.resourceIdentifier
-
-        // check requirements
         val matchesSpecies: Boolean = species == "any" || caughtMon == parseSpeciesId(species)
-        if (!matchesSpecies || input.level < minLevel || !attributeMatcher(attributes).matches(input)) {
-            return progress
-        }
 
-        // Increment by 1, capped at the required amount
-        val current = storage().readInt(progress)
-        val target = amount.coerceAtLeast(1)
-        return storage().set(
-            (current + 1).coerceAtMost(target)
-        )
+        return matchesSpecies && input.level >= minLevel && attributeMatcher(attributes).matches(input)
     }
-
-    override fun getProgress(progress: AbstractNbtNumber): Float {
-        val current = storage().readInt(progress)
-        return (current.toFloat() / amount.coerceAtLeast(1))
-            .coerceIn(0f, 1f)
-    }
-
-    override fun storage(): IntegerTaskStorage = IntegerTaskStorage.INSTANCE
-    override fun type(): QuestTaskType<PokemonCatchTask> = TYPE
-
-    override fun title(): String = titleOverride
-    override fun description(): String = descriptionOverride
-    override fun pokemonIcon(): String = pokemonIconOverride
-    override fun icon(): QuestIcon<*> = iconOverride
 
     companion object {
         @JvmField
         val TYPE: QuestTaskType<PokemonCatchTask> = Type()
     }
+    override fun type(): QuestTaskType<PokemonCatchTask> = TYPE
 
     private class Type : QuestTaskType<PokemonCatchTask> {
         override fun id(): Identifier =
@@ -100,26 +64,9 @@ data class PokemonCatchTask(
                         .optionalFieldOf("amount", 1)
                         .forGetter(PokemonCatchTask::amount),
 
-                    Codec.STRING
-                        .optionalFieldOf("title", "")
-                        .forGetter(PokemonCatchTask::titleOverride),
-
-                    Codec.STRING
-                        .optionalFieldOf("description", "")
-                        .forGetter(PokemonCatchTask::descriptionOverride),
-
-                    Codec.STRING
-                        .optionalFieldOf("pokemonIcon", "")
-                        .forGetter(PokemonCatchTask::pokemonIconOverride),
-
-                    QuestIcons.CODEC
-                        .lenientOptionalFieldOf("icon", ItemQuestIcon.AIR)
-                        .forGetter(PokemonCatchTask::iconOverride)
-                ).apply(instance) { taskId, species, attributes, minLevel, amount, title, description, pokemonIcon, icon ->
-                    PokemonCatchTask(
-                        taskId, species, attributes, minLevel, amount, title, description, pokemonIcon, icon
-                    )
-                }
+                    CobblemonQuestElementDisplay.CODEC
+                        .forGetter(PokemonCatchTask::display)
+                ).apply(instance, ::PokemonCatchTask)
             }
     }
 }

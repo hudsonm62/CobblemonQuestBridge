@@ -1,5 +1,44 @@
 # ChangeLog
 
+## [Unreleased]
+
+[Unreleased]: https://github.com/hudsonm62/CobblemonQuestBridge/compare/v0.1.0...master
+
+## [0.1.0] - 2026-11-26
+
+### Added
+
+- Migrated to the [Iolaus](https://github.com/hudsonm62/Iolaus) Extension Library!
+- `PokedexAutocompleteSetting` for Pokédex Region Autocomplete in Quest Editor
+
+### Fixed
+
+- Handling of full PC/Party when claiming Pokémon Rewards
+- Pokémon icon animations being too fast
+- Invalid Pokédex IDs not falling back to the national dex in `PokedexProgressTask`
+
+### Removed
+
+- Some obsolete loggers & imports
+
+[0.1.0]: https://modrinth.com/mod/cobblemon-quest-bridge/version/0.1.0
+
+## [0.0.5] - 2026-10-28
+
+### Added
+
+- `AbstractQuestTask` & `AbstractQuestReward` for quicker quest element creation
+- `CountedQuestTask` interface for tasks that "count" progression
+- `QuestAppearance` data class for storing common appearance data for tasks/rewards
+- Emojis to Task/Reward Titles (like how Heracles does theirs)
+- Checks + reward unclaim in `PokemonReward` if the player doesn't have enough space in their Party & PC
+- Auto Complete to most `species` fields in the Quest Editor
+- Pokedex Progress Task
+- Pokemon Trade Task
+- Fossil Restore Task
+
+[0.0.5]: https://modrinth.com/mod/cobblemon-quest-bridge/version/0.0.5
+
 ## [0.0.4] - 2026-10-27
 
 ### Added

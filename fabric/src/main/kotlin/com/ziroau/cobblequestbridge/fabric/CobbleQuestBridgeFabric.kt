@@ -1,7 +1,7 @@
 package com.ziroau.cobblequestbridge.fabric
 
-import net.fabricmc.api.ModInitializer
 import com.ziroau.cobblequestbridge.CobbleQuestBridge
+import net.fabricmc.api.ModInitializer
 
 class CobbleQuestBridgeFabric : ModInitializer {
     override fun onInitialize() {

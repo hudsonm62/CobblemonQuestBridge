@@ -1,14 +1,17 @@
 package com.ziroau.cobblequestbridge.tasks
 
-import com.ziroau.cobblequestbridge.api.registry.BridgeTasksRegistry
+import com.ziroau.iolaus.api.registry.TasksRegistry
 
 object BridgeTasks {
     fun register() {
-        BridgeTasksRegistry.registerAll(
+        TasksRegistry.registerAll(
             PokemonCatchTask.TYPE,
             PokemonDefeatTask.TYPE,
             PokemonEvolutionTask.TYPE,
-            BattleWinTask.TYPE
+            BattleWinTask.TYPE,
+            PokedexProgressTask.TYPE,
+            PokemonTradeTask.TYPE,
+            FossilRestoreTask.TYPE
         )
     }
 }

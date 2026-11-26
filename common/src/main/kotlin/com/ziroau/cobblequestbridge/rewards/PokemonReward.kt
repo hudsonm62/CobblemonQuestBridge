@@ -7,15 +7,15 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.ziroau.cobblequestbridge.CobbleQuestBridge
-import com.ziroau.cobblequestbridge.api.data.CustomizableQuestElement
+import com.ziroau.cobblequestbridge.api.data.CobblemonQuestElementDisplay
 import com.ziroau.cobblequestbridge.api.data.Helpers.parseSpeciesId
-import earth.terrarium.heracles.api.quests.QuestIcon
-import earth.terrarium.heracles.api.quests.QuestIcons
-import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
-import earth.terrarium.heracles.api.rewards.QuestReward
+import com.ziroau.cobblequestbridge.api.rewards.AbstractQuestReward
 import earth.terrarium.heracles.api.rewards.QuestRewardType
+import earth.terrarium.heracles.common.handlers.quests.QuestHandler
 import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.text.Text
+import net.minecraft.util.Formatting
 import net.minecraft.util.Identifier
 import java.util.stream.Stream
 
@@ -28,24 +28,13 @@ import java.util.stream.Stream
  * (IVs, gender, shininess, etc.) are rolled independently.
  */
 data class PokemonReward(
-    private val rewardId: String,
+    override val rewardId: String,
     val species: String = "pikachu",
     val attributes: String = "",
     val amount: Int = 1,
-    val titleOverride: String,
-    val descriptionOverride: String,
-    val pokemonIconOverride: String,
-    val iconOverride: QuestIcon<*> = ItemQuestIcon.AIR
-) : QuestReward<PokemonReward>, CustomizableQuestElement {
-
-    override fun id(): String = rewardId
-    override fun type(): QuestRewardType<PokemonReward> = TYPE
-
-    override fun title(): String = titleOverride
-    override fun description(): String = descriptionOverride
-    override fun pokemonIcon(): String = pokemonIconOverride
-    override fun icon(): QuestIcon<*> = iconOverride
-
+    val unclaimOnFail: Boolean = true,
+    override val display: CobblemonQuestElementDisplay
+) : AbstractQuestReward<PokemonReward> {
     override fun reward(player: ServerPlayerEntity): Stream<ItemStack> {
         val speciesId = parseSpeciesId(species) ?: return Stream.empty()
         val pokemonSpecies = speciesId.let(PokemonSpecies::getByIdentifier)
@@ -56,41 +45,74 @@ data class PokemonReward(
                 "[CQB] Cannot claim Pokémon Reward from '{}' for '{}': Invalid species '{}'",
                 rewardId, player.gameProfile.name, species
             )
+            if (unclaimOnFail)
+                markUnclaimed(player)
             return Stream.empty()
         }
 
-        // TODO: Validate party/pc space before generating Pokémon, to avoid wasting them.
-
         val party = Cobblemon.storage.getParty(player)
+        val pc = Cobblemon.storage.getPC(player)
         val count = amount.coerceAtLeast(1)
 
-        for (index in 0 until count) {
-            // Reparse for each iteration: every awarded Pokémon is distinct.
+        // Check combined party and PC capacity.
+        if(unclaimOnFail) {
+            val partySpace = party.size() - party.occupied()
+            val pcSpace = pc.boxes.sumOf { it.unoccupiedSlots }
+            val availableSpace = partySpace + pcSpace
+            if (availableSpace < count) {
+                CobbleQuestBridge.LOGGER.warn(
+                    "[CQB] Cannot deliver Pokémon reward '{}' to '{}': Insufficient storage (required: {} | available: {})",
+                    rewardId, player.gameProfile.name, count, availableSpace
+                )
+                markUnclaimed(player)
+                player.sendMessage(
+                    Text.translatable("chat.cobblequestbridge.pokemon_reward.insufficient_space", count, pokemonSpecies.translatedName)
+                        .formatted(Formatting.RED)
+                )
+                player.sendMessage(
+                    Text.translatable("chat.cobblequestbridge.pokemon_reward.insufficient_space.hint")
+                        .formatted(Formatting.RED)
+                )
+                player.closeHandledScreen()
+                return Stream.empty()
+            }
+        }
+
+        repeat(count) {
+            // Reparse for each iteration: every awarded Pokémon is distinct
             val props = PokemonProperties.parse(attributes)
             // Species field takes precedence over a species embedded in properties.
             props.species = pokemonSpecies.resourceIdentifier.toString()
             props.updateAspects()
-
             val pokemon = props.create(player)
-            // PlayerPartyStore.add() automatically tries the PC when party is full.
-            if (!party.add(pokemon)) {
-                CobbleQuestBridge.LOGGER.error(
-                    "[CQB] Cannot deliver Pokémon reward {} to {}: " +
-                        "party and PC are full (delivered {}/{})",
-                    rewardId, player.gameProfile.name, index, count
-                )
-                break
-            }
+            party.add(pokemon)
         }
 
         // Heracles expects a stream of items for the toast for display purposes
         return Stream.empty()
     }
 
+    /**
+     * Temporary unclaim if the reward cant be delivered.
+     * This is only a workaround as there is (currently) no way to check claimability of a reward before claiming it.
+     *
+     * [terrarium-earth/Heracles#293](https://github.com/terrarium-earth/Heracles/issues/293)
+     */
+    @Deprecated("Temporary workaround - See terrarium-earth/Heracles#293")
+    override fun markUnclaimed(player: ServerPlayerEntity) {
+        val entry = QuestHandler.quests().entries.firstOrNull { (_, quest) ->
+            quest.rewards()[rewardId] === this
+        } ?: return
+        val questSettings = entry.value.settings
+        if(!questSettings.autoClaimRewards() && !questSettings.repeatable()) super.markUnclaimed(player)
+    }
+    override fun canBeMassClaimed(): Boolean = false // also temporary as to not break the above workaround
+
     companion object {
         @JvmField
         val TYPE: QuestRewardType<PokemonReward> = Type()
     }
+    override fun type(): QuestRewardType<PokemonReward> = TYPE
 
     private class Type : QuestRewardType<PokemonReward> {
         override fun id(): Identifier = Identifier.of(CobbleQuestBridge.MOD_ID, "pokemon_reward")
@@ -108,22 +130,13 @@ data class PokemonReward(
                     Codec.INT.optionalFieldOf("amount", 1)
                         .forGetter(PokemonReward::amount),
 
-                    Codec.STRING.optionalFieldOf("title", "")
-                        .forGetter(PokemonReward::titleOverride),
+                    Codec.BOOL.optionalFieldOf("unclaimOnFail", true)
+                        .forGetter(PokemonReward::unclaimOnFail),
 
-                    Codec.STRING.optionalFieldOf("description", "")
-                        .forGetter(PokemonReward::descriptionOverride),
+                    CobblemonQuestElementDisplay.CODEC
+                        .forGetter(PokemonReward::display)
 
-                    Codec.STRING.optionalFieldOf("pokemonIcon", "")
-                        .forGetter(PokemonReward::pokemonIconOverride),
-
-                    QuestIcons.CODEC
-                        .lenientOptionalFieldOf("icon", ItemQuestIcon.AIR)
-                        .forGetter(PokemonReward::iconOverride)
-
-                ).apply(instance) { rewardId, species, attributes, amount, title, description, pokemonIcon, icon ->
-                    PokemonReward(rewardId, species, attributes, amount, title, description, pokemonIcon, icon)
-                }
+                ).apply(instance, ::PokemonReward)
             }
     }
 }

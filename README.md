@@ -7,6 +7,7 @@ Track captures, defeats, and victories through tasks, reward players with Pokém
 ## Requirements
 
 - [Heracles 2.0+](https://modrinth.com/project/lo90fZoB)
+- [Iolaus](https://modrinth.com/project/BxQzS0ON)
 - [Cobblemon 1.8+](https://modrinth.com/project/MdwFAVRL)
 - Fabric or NeoForge
 
@@ -94,6 +95,44 @@ Track battles won by a player, with restrictions on battle type and victory by c
 | `battleType`         | Battle type: `ANY`, `PVW`, `PVP`, or `PVN`                       |
 | `ignoreWildCaptures` | Whether wild Pokémon captures should be ignored (default=`true`) |
 
+#### Pokedéx Progress
+
+**Task ID:** `cobblequestbridge:pokedex_progress`
+
+Track Pokédex progress for a player, with optional filters for dex region type and whether to count only caught Pokémon.
+
+| Property     | Description                                                               |
+| ------------ | ------------------------------------------------------------------------- |
+| `dex`        | Pokédex region type to track progress for, (default=`cobblemon:national`) |
+| `caughtOnly` | Whether to count only caught Pokémon (default=`false`)                    |
+
+Pokédex region types are specified by a registered identifier, such as `cobblemon:alola` or `fakemonmod:dex`.
+If no region is specified or identifier is invalid, automatically defaults to the National Pokédex.
+
+#### Trade Pokémon
+
+**Task ID:** `cobblequestbridge:pokemon_trade`
+
+Track Pokémon traded both ways, with optional filters for species, attributes, and minimum level.
+
+| Property             | Description                                             |
+| -------------------- | ------------------------------------------------------- |
+| `speciesSent`        | Species of Pokémon to send (default=`any`)              |
+| `attributesSent`     | Cobblemon attributes to filter for the sent Pokémon     |
+| `minLevelSent`       | Minimum level of the sent Pokémon                       |
+| `speciesReceived`    | Species of Pokémon to receive (default=`any`)           |
+| `attributesReceived` | Cobblemon attributes to filter for the received Pokémon |
+| `minLevelReceived`   | Minimum level of the received Pokémon                   |
+
+#### Restore Fossil
+
+**Task ID:** `cobblequestbridge:fossil_restore`
+
+| Property     | Description                                                     |
+| ------------ | --------------------------------------------------------------- |
+| `species`    | Species of Pokémon to restore from a fossil                     |
+| `attributes` | Attributes required for the restored Pokémon (i.e. `shiny=yes`) |
+
 ### Reward Types
 
 Reward players when they complete quests.
@@ -104,10 +143,14 @@ Reward players when they complete quests.
 
 Rewards Pokémon to the player.
 
-| Property     | Description                                  |
-| ------------ | -------------------------------------------- |
-| `species`    | Species of Pokémon to reward                 |
-| `attributes` | Cobblemon attributes to apply, i.e. `lvl=42` |
+| Property        | Description                                                            |
+| --------------- | ---------------------------------------------------------------------- |
+| `species`       | Species of Pokémon to reward                                           |
+| `attributes`    | Cobblemon attributes to apply, i.e. `lvl=42`                           |
+| `unclaimOnFail` | Marks reward as unclaimed, if claiming failed (i.e. PC/Party was full) |
+
+**Warning**: If you use `unclaimOnFail`, ensure you don't have automatic reward claiming and repeatable quests enabled with this reward.
+Handling for this may be improved in the future.
 
 #### MoLang Script Reward
 
@@ -133,8 +176,6 @@ Executes a set of MoLang Commands when the reward is claimed - Runs in `player` 
 ### MoLang Extensions
 
 Cobblemon Quest Bridge extends MoLang with functions for interacting with the quest system:
-
-#### Player Functions
 
 `q.player.<function_name>(<args>)`
 
@@ -163,6 +204,7 @@ repositories {
 }
 dependencies {
     modImplementation("com.ziroau:cobblemonquestbridge:1.0.0+fabric")
+    modImplementation("com.ziroau:iolaus:1.0.0+fabric") // Heracles Extensions Library API
 }
 ```
 

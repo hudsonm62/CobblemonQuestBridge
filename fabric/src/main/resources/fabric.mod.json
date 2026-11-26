@@ -1,17 +1,17 @@
 {
     "schemaVersion": 1,
-    "id": "cobblequestbridge",
+    "id": "${mod_id}",
     "version": "${version}",
     "name": "Cobblemon Quest Bridge",
-    "description": "Cobblemon compatibility bridge for Heracles (aka Odyssey Quests)",
+    "description": "${description}",
     "authors": ["Hudson M."],
     "contact": {
-        "homepage": "https://modrinth.com/project/eLwyHtUJ",
+        "homepage": "${homepage}",
         "sources": "https://github.com/hudsonm62/cobblemonquestbridge",
-        "issues": "https://github.com/hudsonm62/cobblemonquestbridge/issues"
+        "issues": "${issue_tracker}"
     },
     "license": "Apache-2.0",
-    "icon": "icon.png",
+    "icon": "${icon_path}",
     "environment": "*",
     "entrypoints": {
         "main": ["com.ziroau.cobblequestbridge.fabric.CobbleQuestBridgeFabric"],
@@ -25,6 +25,7 @@
         "java": ">=21",
         "fabric-api": "*",
         "cobblemon": ">=1.8.0",
-        "heracles": ">=2.0.0"
+        "heracles": ">=2.0.0",
+        "iolaus": "~${iolaus_version}"
     }
 }
